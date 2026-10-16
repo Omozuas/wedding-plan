@@ -3157,8 +3157,12 @@ footer .made a {
   padding: 1.4rem;
 }
 
-.genz-fit img {
+.genz-fit-photo {
   width: min(220px, 38%);
+}
+
+.genz-fit img {
+  width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
   border-radius: 1.2rem;
@@ -3173,17 +3177,6 @@ footer .made a {
 .genz-gift p {
   margin: 0.7rem 0 0;
   color: rgba(246, 243, 236, 0.75);
-}
-
-.genz [data-rise] {
-  opacity: 0;
-  transform: translateY(36px);
-  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.genz [data-rise].is-in {
-  opacity: 1;
-  transform: none;
 }
 
 @keyframes genz-float {
@@ -3332,7 +3325,7 @@ footer .made a {
     height: 380px;
   }
 
-  .genz-fit img {
+  .genz-fit-photo {
     width: min(220px, 70%);
   }
 
@@ -3370,8 +3363,4 @@ footer .made a {
     animation: none;
   }
 
-  .genz [data-rise] {
-    opacity: 1;
-    transform: none;
-  }
 }

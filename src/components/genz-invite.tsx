@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ElementType, type FormEvent, type ReactNode } from "react";
 import { saveTheDateIcs, wedding } from "@/data/wedding";
 
 function useCountdown(target: string) {
@@ -65,9 +65,93 @@ const questions = [
   { q: "Where do I park?", a: "Eko Hotels, Victoria Island. Entrance is on Adetokunbo Ademola Street." },
 ];
 
+type FadeVariant = "piece" | "section";
+
+function motionStyle(progress: number, variant: FadeVariant): CSSProperties {
+  if (variant === "section") {
+    return { transform: `translateY(${(1 - progress) * 18}px)` };
+  }
+  return {
+    opacity: progress,
+    transform: `translateY(${(1 - progress) * 24}px)`,
+  };
+}
+
+const revealers = new Set<() => void>();
+let revealFrame = 0;
+let revealListening = false;
+
+function ensureRevealLoop() {
+  if (revealListening) return;
+  revealListening = true;
+  const run = () => {
+    revealFrame = 0;
+    revealers.forEach((update) => update());
+  };
+  const onScroll = () => {
+    if (revealFrame) return;
+    revealFrame = requestAnimationFrame(run);
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+}
+
+function measureReveal(element: HTMLElement) {
+  const start = window.innerHeight * 0.94;
+  const end = window.innerHeight * 0.62;
+  const rect = element.getBoundingClientRect();
+  return Math.min(1, Math.max(0, (start - rect.top) / (start - end)));
+}
+
+function useElementFade(variant: FadeVariant) {
+  const ref = useRef<HTMLElement>(null);
+  const [progress, setProgress] = useState(1);
+
+  useLayoutEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const update = () => {
+      const next = measureReveal(element);
+      setProgress((current) => (Math.abs(current - next) < 0.012 ? current : next));
+    };
+
+    update();
+    ensureRevealLoop();
+    revealers.add(update);
+    return () => {
+      revealers.delete(update);
+    };
+  }, []);
+
+  return { ref, style: motionStyle(progress, variant) };
+}
+
+function Reveal({
+  as: Tag = "div",
+  variant = "piece",
+  className,
+  style,
+  children,
+  ...rest
+}: {
+  as?: ElementType;
+  variant?: FadeVariant;
+  className?: string;
+  style?: CSSProperties;
+  children?: ReactNode;
+} & Record<string, unknown>) {
+  const motion = useElementFade(variant);
+  return (
+    <Tag ref={motion.ref} className={className} style={{ ...motion.style, ...style }} {...rest}>
+      {children}
+    </Tag>
+  );
+}
+
 export function GenZInvite({ onClose }: { onClose: () => void }) {
   const countdown = useCountdown(wedding.ceremonyAt);
-  const rootRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState<number | null>(0);
   const [guests, setGuests] = useState(0);
   const [sent, setSent] = useState(false);
@@ -93,28 +177,8 @@ export function GenZInvite({ onClose }: { onClose: () => void }) {
     setSent(true);
   }
 
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-    const nodes = root.querySelectorAll("[data-rise]");
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      nodes.forEach((node) => node.classList.add("is-in"));
-      return;
-    }
-    const watcher = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add("is-in");
-        });
-      },
-      { threshold: 0.16 },
-    );
-    nodes.forEach((node) => watcher.observe(node));
-    return () => watcher.disconnect();
-  }, []);
-
   return (
-    <div className="genz" ref={rootRef}>
+    <div className="genz">
       <button className="genz-close" type="button" onClick={onClose}>
         Close
       </button>
@@ -125,58 +189,60 @@ export function GenZInvite({ onClose }: { onClose: () => void }) {
       </div>
 
       <header className="genz-hero">
-        <div data-rise>
-          <p className="genz-chip">Lagos. Locked in.</p>
-          <h1>
+        <div>
+          <Reveal as="p" className="genz-chip">
+            Lagos. Locked in.
+          </Reveal>
+          <Reveal as="h1">
             Adaeze
             <span>&amp;</span>
             Emeka
-          </h1>
-          <p className="genz-lead">
+          </Reveal>
+          <Reveal as="p" className="genz-lead">
             We are getting married. Saturday 17 October 2026, 4PM, Eko Hotels on the Island. If you are reading this, you are on the list.
-          </p>
-          <button type="button" onClick={saveTheDateIcs}>
+          </Reveal>
+          <Reveal as="button" type="button" onClick={saveTheDateIcs}>
             Save it
-          </button>
+          </Reveal>
         </div>
-        <div className="genz-stack" data-rise>
+        <Reveal className="genz-stack">
           <img src="/photos/story-4.jpg" alt="" />
           <img src="/photos/story-2.jpg" alt="Adaeze and Emeka" />
           <img src="/photos/rings.jpg" alt="" />
           <span>main characters</span>
-        </div>
+        </Reveal>
       </header>
 
-      <div className="genz-film" aria-hidden="true">
+      <Reveal className="genz-film" aria-hidden="true">
         <div>
           {[...shots, ...shots].map((src, index) => (
             <img key={`${src}-${index}`} src={src} alt="" />
           ))}
         </div>
-      </div>
+      </Reveal>
 
-      <section className="genz-clock" id="countdown" data-rise>
+      <section className="genz-clock" id="countdown">
         {[
           [countdown.days, "days"],
           [countdown.hours, "hrs"],
           [countdown.minutes, "mins"],
         ].map(([value, label]) => (
-          <div key={label}>
+          <Reveal key={label}>
             <strong>{value}</strong>
             <span>{label}</span>
-          </div>
+          </Reveal>
         ))}
       </section>
 
-      <section className="genz-note" data-rise>
-        <div>
+      <section className="genz-note">
+        <Reveal>
           <p>Not a speech</p>
           <h2>Lagos put us in the same room. We are not leaving.</h2>
-        </div>
-        <img src="/photos/story-6.jpg" alt="Adaeze and Emeka together" />
+        </Reveal>
+        <Reveal as="img" src="/photos/story-6.jpg" alt="Adaeze and Emeka together" />
       </section>
 
-      <section className="genz-bento" data-rise aria-label="Photos">
+      <Reveal as="section" className="genz-bento" aria-label="Photos">
         <div className="genz-rail">
           <div>
             {[...frames, ...frames].map((frame, index) => (
@@ -187,79 +253,97 @@ export function GenZInvite({ onClose }: { onClose: () => void }) {
             ))}
           </div>
         </div>
-      </section>
+      </Reveal>
 
       <section>
-        <p className="genz-label">The rundown</p>
-        <ol className="genz-drops" data-rise>
+        <Reveal as="p" className="genz-label">
+          The rundown
+        </Reveal>
+        <ol className="genz-drops">
           {drops.map((item) => (
-            <li key={item.title}>
+            <Reveal as="li" key={item.title}>
               <time>{item.time}</time>
               <strong>{item.title}</strong>
               <em>{item.detail}</em>
-            </li>
+            </Reveal>
           ))}
         </ol>
       </section>
 
-      <section className="genz-fit" data-rise>
+      <section className="genz-fit">
         <div>
-          <p className="genz-label">The fit</p>
-          <h2>Royal blue. Gold. That is the whole brief.</h2>
-          <p>Aso-ebi is ₦55,000 a set. Send it to Adaeze Nwosu, UBA.</p>
-          <button type="button" onClick={() => copy(wedding.asoEbi.account)}>
+          <Reveal as="p" className="genz-label">
+            The fit
+          </Reveal>
+          <Reveal as="h2">Royal blue. Gold. That is the whole brief.</Reveal>
+          <Reveal as="p">Aso-ebi is ₦55,000 a set. Send it to Adaeze Nwosu, UBA.</Reveal>
+          <Reveal as="button" type="button" onClick={() => copy(wedding.asoEbi.account)}>
             {copied === wedding.asoEbi.account ? "Copied" : wedding.asoEbi.account}
-          </button>
+          </Reveal>
         </div>
-        <img src="/photos/bouquet.jpg" alt="Bouquet" />
+        <Reveal className="genz-fit-photo">
+          <img src="/photos/bouquet.jpg" alt="Bouquet" />
+        </Reveal>
       </section>
 
       <section className="genz-gift">
-        <p className="genz-label">If you insist</p>
-        <h2>Showing up is the gift. Cash is also fine.</h2>
-        <p>Access Bank · Adaeze &amp; Emeka Fund</p>
-        <button type="button" onClick={() => copy(wedding.gift.account)}>
-          {copied === wedding.gift.account ? "Copied" : wedding.gift.account}
-        </button>
+        <div>
+          <Reveal as="p" className="genz-label">
+            If you insist
+          </Reveal>
+          <Reveal as="h2">Showing up is the gift. Cash is also fine.</Reveal>
+          <Reveal as="p">Access Bank · Adaeze &amp; Emeka Fund</Reveal>
+          <Reveal as="button" type="button" onClick={() => copy(wedding.gift.account)}>
+            {copied === wedding.gift.account ? "Copied" : wedding.gift.account}
+          </Reveal>
+        </div>
       </section>
 
       <section>
-        <p className="genz-label">Crash here</p>
+        <Reveal as="p" className="genz-label">
+          Crash here
+        </Reveal>
         <div className="genz-stays">
           {stays.map((stay) => (
-            <a key={stay.name} href={stay.url} target="_blank" rel="noreferrer">
+            <Reveal as="a" key={stay.name} href={stay.url} target="_blank" rel="noreferrer">
               <strong>{stay.name}</strong>
               <span>{stay.note}</span>
-            </a>
+            </Reveal>
           ))}
         </div>
-        <a className="genz-map" href={wedding.mapsUrl} target="_blank" rel="noreferrer">
+        <Reveal as="a" className="genz-map" href={wedding.mapsUrl} target="_blank" rel="noreferrer">
           Plot 1415 Adetokunbo Ademola, VI — open map
-        </a>
+        </Reveal>
       </section>
 
       <section className="genz-ask">
-        <p className="genz-label">Real questions</p>
+        <Reveal as="p" className="genz-label">
+          Real questions
+        </Reveal>
         {questions.map((item, index) => {
           const shown = open === index;
           return (
-            <div key={item.q}>
+            <Reveal key={item.q}>
               <button type="button" aria-expanded={shown} onClick={() => setOpen(shown ? null : index)}>
                 {item.q}
               </button>
               {shown && <p>{item.a}</p>}
-            </div>
+            </Reveal>
           );
         })}
       </section>
 
       <section className="genz-rsvp">
-        <p className="genz-label">Be honest</p>
-        <h2>You in?</h2>
+        <Reveal as="p" className="genz-label">
+          Be honest
+        </Reveal>
+        <Reveal as="h2">You in?</Reveal>
         {sent ? (
-          <p className="genz-thanks">Noted. We will keep your seat warm.</p>
+          <Reveal as="p" className="genz-thanks">
+            Noted. We will keep your seat warm.
+          </Reveal>
         ) : (
-          <form onSubmit={submit}>
+          <Reveal as="form" onSubmit={submit}>
             <input name="name" required placeholder="Your name" autoComplete="name" />
             <input name="phone" required placeholder="Your number" autoComplete="tel" />
             <select name="attending" required defaultValue="">
@@ -281,13 +365,13 @@ export function GenZInvite({ onClose }: { onClose: () => void }) {
               />
             </label>
             <button type="submit">Count me in</button>
-          </form>
+          </Reveal>
         )}
       </section>
 
       <footer className="genz-end">
-        <p>Adaeze × Emeka</p>
-        <span>17.10.26</span>
+        <Reveal as="p">Adaeze × Emeka</Reveal>
+        <Reveal as="span">17.10.26</Reveal>
       </footer>
       <a className="template-cta" href="https://invytelle.com/dashboard">
         Use this template →
