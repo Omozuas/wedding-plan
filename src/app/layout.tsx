@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans, Pinyon_Script } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans, Pinyon_Script, Syne } from "next/font/google";
 import "./globals.css";
 
 const serif = Cormorant_Garamond({
@@ -20,6 +20,12 @@ const ui = DM_Sans({
   variable: "--font-ui",
 });
 
+const display = Syne({
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  variable: "--font-display",
+});
+
 export const metadata: Metadata = {
   title: "Adaeze & Emeka",
   description: "You are invited to the wedding of Adaeze and Emeka.",
@@ -27,7 +33,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${serif.variable} ${script.variable} ${ui.variable} h-full`}>
+    <html lang="en" className={`${serif.variable} ${script.variable} ${ui.variable} ${display.variable} h-full`}>
       <body className="min-h-full">{children}</body>
     </html>
   );

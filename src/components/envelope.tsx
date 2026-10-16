@@ -14,7 +14,7 @@ function Sprig({ className }: { className?: string }) {
 
 function FlapEdges() {
   return (
-    <svg className="pointer-events-none absolute inset-0 h-full w-full text-[#d7c39a]" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    <svg className="pointer-events-none absolute inset-0 h-full w-full text-[#e6d3a4]" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
       <line x1="0" y1="0" x2="50" y2="52" stroke="currentColor" strokeWidth="0.35" vectorEffect="nonScalingStroke" />
       <line x1="100" y1="0" x2="50" y2="52" stroke="currentColor" strokeWidth="0.35" vectorEffect="nonScalingStroke" />
       <line x1="0" y1="100" x2="50" y2="52" stroke="currentColor" strokeWidth="0.35" vectorEffect="nonScalingStroke" />
@@ -31,7 +31,7 @@ export function Envelope({ opening, onOpen }: { opening: boolean; onOpen: () => 
       onClick={onOpen}
       aria-label="Open the invitation"
     >
-      <span className="envelope-back absolute inset-0 bg-[#0c0b0a]" />
+      <span className="envelope-back absolute inset-0 bg-[#0b1a3a]" />
       <span className="envelope-scene absolute inset-0">
         <span className="flap flap-bottom">
           <FlapEdges />
