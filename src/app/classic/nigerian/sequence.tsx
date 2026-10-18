@@ -13,6 +13,13 @@ const plates = [
 const closing = { text: "Your presence is our greatest gift", drift: 1, down: true };
 const beats = plates.length + 1;
 
+const filmLines = [
+  { text: "You are welcome", from: [-48, 12, -8], hold: [-4, -16, -1], to: [34, -36, 7] },
+  { text: "Victoria Island, Lagos", from: [46, 22, 8], hold: [6, 12, 1], to: [-40, 26, -8] },
+  { text: "Saturday, the seventeenth", from: [0, 42, 5], hold: [0, -2, 0], to: [-28, -32, -6] },
+  { text: "Evening gathers at Eko", from: [38, -34, 9], hold: [2, 8, 0], to: [-44, 20, -7] },
+];
+
 const videoEnd = 0.34;
 const riseEnd = 0.46;
 
@@ -30,6 +37,50 @@ function scrubTime(local: number, duration: number) {
   }
   const t = (local - replay) / (1 - replay);
   return duration * 0.62 + t * duration * 0.38;
+}
+
+function lerp(from: number, to: number, amount: number) {
+  return from + (to - from) * amount;
+}
+
+function smoothstep(amount: number) {
+  const t = clamp(amount);
+  return t * t * (3 - 2 * t);
+}
+
+function filmLineMotion(index: number, progress: number) {
+  const line = filmLines[index];
+  const slot = riseEnd / filmLines.length;
+  const lead = slot * 0.34;
+  const start = Math.max(0, index * slot - (index === 0 ? 0 : lead));
+  const end = Math.min(riseEnd, (index + 1) * slot + (index === filmLines.length - 1 ? 0 : lead));
+  const local = (progress - start) / (end - start);
+  const pose = (point: number[]) => `translate(-50%, -50%) translate3d(${point[0]}vw, ${point[1]}vh, 0) rotate(${point[2]}deg)`;
+  if (local <= 0 || local >= 1) return { opacity: 0, transform: pose(local <= 0 ? line.from : line.to) };
+
+  if (local < 0.34) {
+    const t = smoothstep(local / 0.34);
+    return {
+      opacity: t,
+      transform: pose([lerp(line.from[0], line.hold[0], t), lerp(line.from[1], line.hold[1], t), lerp(line.from[2], line.hold[2], t)]),
+    };
+  }
+  if (local < 0.62) {
+    const t = (local - 0.34) / 0.28;
+    return {
+      opacity: 1,
+      transform: pose([
+        line.hold[0] + Math.sin(t * Math.PI) * 2.4,
+        line.hold[1] + Math.cos(t * Math.PI) * 1.8,
+        line.hold[2] + Math.sin(t * Math.PI) * 1.4,
+      ]),
+    };
+  }
+  const t = smoothstep((local - 0.62) / 0.38);
+  return {
+    opacity: 1 - t,
+    transform: pose([lerp(line.hold[0], line.to[0], t), lerp(line.hold[1], line.to[1], t), lerp(line.hold[2], line.to[2], t)]),
+  };
 }
 
 function beatMotion(index: number, progress: number, drift: number, down: boolean) {
@@ -121,8 +172,19 @@ export function ClassicScrollSequence() {
           className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/40"
           style={{ opacity: videoOpacity }}
         />
+        <div className="pointer-events-none absolute inset-0 z-[2]">
+          {filmLines.map((line, index) => (
+            <p
+              key={line.text}
+              className="absolute top-1/2 left-1/2 m-0 max-w-[12ch] text-center font-[family-name:var(--font-serif)] text-[clamp(1.8rem,6vw,3rem)] leading-tight text-[#f6f1e6]"
+              style={filmLineMotion(index, progress)}
+            >
+              {line.text}
+            </p>
+          ))}
+        </div>
         <p
-          className="pointer-events-none absolute bottom-16 left-1/2 m-0 -translate-x-1/2 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.32em] text-[#e6d3a4] uppercase"
+          className="pointer-events-none absolute bottom-16 left-1/2 z-[2] m-0 -translate-x-1/2 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.32em] text-[#e6d3a4] uppercase"
           style={{ opacity: progress < videoEnd ? 0.9 : 0 }}
         >
           Lagos, in motion
