@@ -336,7 +336,7 @@ function DetailCard({
   );
 }
 
-export function ClassicInvite({ onClose }: { onClose: () => void }) {
+export function ClassicInvite({ onClose, afterHero }: { onClose: () => void; afterHero?: ReactNode }) {
   const countdown = useCountdown(wedding.ceremonyAt);
   const heroScroll = useHeroScroll();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -439,6 +439,8 @@ export function ClassicInvite({ onClose }: { onClose: () => void }) {
           <span className="motion-safe:animate-bounce block h-0 w-0 border-x-[5px] border-t-[7px] border-x-transparent border-t-[#c9a96e]" />
         </a>
       </section>
+
+      {afterHero}
 
       <Reveal as="section" variant="section" className="relative bg-[#f8e9d8] px-4 pt-[3.6rem] pb-[2.8rem] text-center" id="countdown">
         <Reveal>

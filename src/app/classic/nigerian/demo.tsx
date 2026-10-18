@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Envelope } from "@/components/envelope";
 import { SoundButton } from "@/components/sound-button";
 import { ClassicInvite } from "@/templates/classic/invite";
+import { ClassicScrollSequence } from "./sequence";
 
 const introMs = 1450;
 
@@ -70,10 +71,21 @@ export function ClassicNigerianDemo() {
   }
 
   return (
-    <>
-      {phase !== "sealed" && <ClassicInvite onClose={closeInvite} />}
+    <div className="classic-cinema">
+      {phase !== "sealed" && <ClassicInvite onClose={closeInvite} afterHero={<ClassicScrollSequence />} />}
       {phase !== "open" && <Envelope opening={phase === "opening"} onOpen={openInvite} />}
+      <div className={`classic-cinema-frame ${phase === "open" ? "is-seated" : ""}`} aria-hidden="true">
+        <span className="classic-cinema-bar classic-cinema-bar-top" />
+        <span className="classic-cinema-bar classic-cinema-bar-bottom" />
+        <span className="classic-cinema-spot" />
+        <span className="classic-cinema-vignette" />
+        <span className="classic-cinema-leak" />
+        <span className="classic-cinema-grain" />
+        <span className="classic-cinema-mote classic-cinema-mote-a" />
+        <span className="classic-cinema-mote classic-cinema-mote-b" />
+        <span className="classic-cinema-mote classic-cinema-mote-c" />
+      </div>
       {phase !== "sealed" && <SoundButton playing={playing} onToggle={toggleSound} />}
-    </>
+    </div>
   );
 }
