@@ -471,9 +471,6 @@ export function ModernInvite({ onClose }: { onClose: () => void }) {
         </p>
         <Rule />
         <span className="block font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.24em] text-[#e6d3a4] uppercase">{wedding.shortDate}</span>
-        <small className="mt-8 block font-[family-name:var(--font-ui)] text-[0.62rem] tracking-[0.2em] text-white/50 uppercase">
-          Made with love by Invytelle
-        </small>
       </footer>
     </div>
   );

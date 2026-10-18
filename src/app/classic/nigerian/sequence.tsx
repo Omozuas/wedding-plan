@@ -157,10 +157,10 @@ export function ClassicScrollSequence() {
       <div className="sticky top-0 h-dvh overflow-hidden">
         <video
           ref={videoRef}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full bg-black object-cover object-center md:object-contain"
           style={{
             opacity: videoOpacity,
-            transform: `translate3d(0, ${-rise * 16}vh, 0) scale(${1.04 + rise * 0.04})`,
+            transform: `translate3d(0, ${-rise * 16}vh, 0)`,
           }}
           src="/cinema/eko.mp4"
           poster="/photos/story-4.jpg"
@@ -193,8 +193,8 @@ export function ClassicScrollSequence() {
         {plates.map((plate, index) => {
           const motion = beatMotion(index, progress, plate.drift, plate.down);
           return (
-            <figure key={plate.text} className="absolute inset-0 m-0" style={{ opacity: motion.opacity, transform: motion.transform }}>
-              <img src={plate.src} alt="" className="h-full w-full object-cover" />
+            <figure key={plate.text} className="absolute inset-0 m-0 bg-black" style={{ opacity: motion.opacity, transform: motion.transform }}>
+              <img src={plate.src} alt="" className="h-full w-full object-cover object-center md:object-contain" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-black/35" />
               <figcaption className="absolute inset-0 flex items-center justify-center px-8 text-center font-[family-name:var(--font-script)] text-[clamp(2.6rem,8vw,4.6rem)] leading-none text-[#f6f1e6]">
                 {plate.text}

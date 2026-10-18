@@ -796,6 +796,264 @@ body {
   }
 }
 
+.canadian-shot {
+  transform: scale(1.08);
+  animation: canadian-idle 18s ease-in-out infinite alternate;
+}
+
+.canadian-veil {
+  background:
+    radial-gradient(ellipse at 50% 46%, transparent 18%, rgba(8, 20, 14, 0.28) 52%, rgba(8, 20, 14, 0.78) 100%),
+    linear-gradient(to top, rgba(8, 20, 14, 0.72), transparent 42%);
+}
+
+.canadian-flare {
+  opacity: 0;
+  background: radial-gradient(circle at 50% 58%, rgba(255, 214, 150, 0.72), rgba(230, 194, 122, 0.18) 28%, transparent 58%);
+  mix-blend-mode: screen;
+}
+
+.canadian-kicker,
+.canadian-date,
+.canadian-names {
+  animation: canadian-rise 1.15s cubic-bezier(0.16, 0.84, 0.3, 1) both;
+}
+
+.canadian-names {
+  animation-delay: 0.12s;
+}
+
+.canadian-date {
+  animation-delay: 0.28s;
+}
+
+.canadian-iris {
+  width: 4.6rem;
+  height: 4.6rem;
+  border: 1px solid rgba(230, 194, 122, 0.85);
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  animation: canadian-ring 2.8s ease-in-out infinite;
+}
+
+.canadian-intro.is-opening .canadian-shot {
+  animation: canadian-push 1.45s cubic-bezier(0.16, 0.84, 0.28, 1) forwards;
+}
+
+.canadian-intro.is-opening .canadian-parallax {
+  animation: canadian-parallax 1.45s ease forwards;
+}
+
+.canadian-intro.is-opening .canadian-flare {
+  animation: canadian-flare 1.25s ease 0.12s forwards;
+}
+
+.canadian-intro.is-opening .canadian-kicker {
+  animation: canadian-slip-left 0.85s ease 0.08s forwards;
+}
+
+.canadian-intro.is-opening .canadian-names {
+  animation: canadian-lift 1s cubic-bezier(0.16, 0.84, 0.3, 1) 0.16s forwards;
+}
+
+.canadian-intro.is-opening .canadian-date {
+  animation: canadian-slip-right 0.85s ease 0.14s forwards;
+}
+
+.canadian-intro.is-opening .canadian-iris {
+  animation: canadian-iris 1.15s cubic-bezier(0.16, 0.84, 0.2, 1) forwards;
+}
+
+.canadian-intro.is-opening .canadian-enter {
+  animation: canadian-enter-out 0.55s ease forwards;
+}
+
+.canadian-intro.is-opening {
+  animation: canadian-fade 0.85s ease 1.4s forwards;
+}
+
+@keyframes canadian-idle {
+  from {
+    transform: scale(1.06) translate3d(0, 1%, 0);
+  }
+  to {
+    transform: scale(1.16) translate3d(0, -2.5%, 0);
+  }
+}
+
+@keyframes canadian-push {
+  to {
+    transform: scale(1.42) translate3d(0, -7%, 0);
+    filter: brightness(1.22);
+  }
+}
+
+@keyframes canadian-parallax {
+  to {
+    opacity: 0.42;
+    transform: scale(1.2) translate3d(0, 8%, 0);
+  }
+}
+
+@keyframes canadian-flare {
+  0% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.72;
+  }
+}
+
+@keyframes canadian-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes canadian-lift {
+  to {
+    opacity: 0;
+    transform: translateY(-16vh) scale(1.06);
+  }
+}
+
+@keyframes canadian-slip-left {
+  to {
+    opacity: 0;
+    transform: translate3d(-18vw, -6vh, 0);
+  }
+}
+
+@keyframes canadian-slip-right {
+  to {
+    opacity: 0;
+    transform: translate3d(16vw, 8vh, 0);
+  }
+}
+
+@keyframes canadian-ring {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(230, 194, 122, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(230, 194, 122, 0);
+  }
+}
+
+@keyframes canadian-iris {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(26);
+  }
+}
+
+@keyframes canadian-enter-out {
+  to {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes canadian-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes canadian-title {
+  0%,
+  4% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate3d(var(--cx), var(--cy), 0);
+  }
+  12% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translate3d(var(--hx), var(--hy), 0);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translate3d(var(--hx), calc(var(--hy) - 1.2vh), 0);
+  }
+  28%,
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate3d(var(--tx), var(--ty), 0);
+  }
+}
+
+.canadian-cinema-frame {
+  position: fixed;
+  inset: 0;
+  z-index: 58;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.canadian-cinema-bar {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 32px;
+  background: #07140f;
+}
+
+.canadian-cinema-bar-top {
+  top: 0;
+}
+
+.canadian-cinema-bar-bottom {
+  bottom: 0;
+}
+
+.canadian-cinema-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 42%, rgba(7, 20, 15, 0.5) 100%);
+}
+
+.canadian-cinema-leak {
+  position: absolute;
+  inset: -20% -30%;
+  background: linear-gradient(115deg, transparent 36%, rgba(230, 194, 122, 0.2) 48%, transparent 62%);
+  mix-blend-mode: screen;
+  animation: classic-cinema-leak 12s ease-in-out infinite;
+}
+
+.canadian-cinema-grain {
+  position: absolute;
+  inset: -12%;
+  opacity: 0.18;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.4) 0.6px, transparent 0.7px);
+  background-size: 3px 3px;
+  mix-blend-mode: overlay;
+  animation: classic-cinema-grain 1.1s steps(2) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canadian-cinema-leak,
+  .canadian-cinema-grain,
+  .canadian-shot,
+  .canadian-kicker,
+  .canadian-names,
+  .canadian-date,
+  .canadian-iris {
+    animation: none;
+  }
+
+  .canadian-intro.is-opening {
+    opacity: 0;
+  }
+}
+
 @media (max-width: 640px) {
   h1:not(.hero-names) {
     font-size: 3.6rem;

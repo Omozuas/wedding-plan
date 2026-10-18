@@ -101,7 +101,12 @@ export function TemplatePicker() {
               style={{ animation: `picker-in 0.8s ease ${family.delay} both` }}
             >
               <h2 className="m-0 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">{family.family}</h2>
-              {family.href === "/classic/nigerian" && <ClassicCard family={family} />}
+              {family.href === "/classic/nigerian" && (
+                <>
+                  <ClassicCard family={family} />
+                  <CanadianCard />
+                </>
+              )}
               {family.href === "/hubble/nigerian" && <HarbourCard family={family} />}
               {family.href === "/modern/nigerian" && <ModernCard family={family} />}
               {family.href === "/genz/nigerian" && <GenZCard family={family} />}
@@ -141,6 +146,29 @@ function ClassicCard({ family }: CardProps) {
       <p className="m-0 mt-2 text-center font-[family-name:var(--font-serif)] text-lg text-[#16356e]/80">{family.note}</p>
       <div className="mt-5">
         <Actions href={family.href} tone="navy" />
+      </div>
+    </article>
+  );
+}
+
+function CanadianCard() {
+  return (
+    <article className="mt-4 rounded-[1.6rem] bg-[#f4f1ea] px-5 pt-6 pb-5 shadow-[0_18px_40px_rgba(28,58,46,0.16)] ring-1 ring-[#1c3a2e]/15">
+      <div className="relative mx-auto w-[78%] overflow-hidden rounded-[8rem] border border-[#1c3a2e]/20 bg-[#1c3a2e]">
+        <img
+          src="/photos/couple.jpg"
+          alt="Claire and Thomas at the lake"
+          className="aspect-[3/4] w-full object-cover object-[center_30%] motion-safe:animate-[picker-ken_16s_ease-in-out_infinite_alternate] motion-reduce:animate-none"
+        />
+        <span className="absolute bottom-4 left-1/2 grid size-14 -translate-x-1/2 place-items-center rounded-full border border-[#e6c27a] bg-[#8d3b24] font-[family-name:var(--font-serif)] text-sm tracking-[0.08em] text-[#f7f4ee] motion-safe:animate-[picker-seal_2.8s_ease-in-out_infinite] motion-reduce:animate-none">
+          C·T
+        </span>
+      </div>
+      <h3 className="m-0 mt-5 text-center font-[family-name:var(--font-script)] text-6xl leading-none text-[#1c3a2e]">Canadian</h3>
+      <p className="m-0 mt-2 text-center font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#8d5a2b] uppercase">Classic · Muskoka</p>
+      <p className="m-0 mt-2 text-center font-[family-name:var(--font-serif)] text-lg text-[#1c3a2e]/80">Lake light, maple, and autumn gold</p>
+      <div className="mt-5">
+        <Actions href="/classic/canadian" tone="navy" />
       </div>
     </article>
   );

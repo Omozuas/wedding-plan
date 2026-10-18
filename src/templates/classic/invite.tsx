@@ -767,9 +767,6 @@ export function ClassicInvite({ onClose, afterHero }: { onClose: () => void; aft
         <Reveal as="p" className="mt-2 font-[family-name:var(--font-ui)] text-[0.6rem] font-medium tracking-[0.3em] text-[rgba(227,217,184,0.8)] uppercase">
           {wedding.shortDate}
         </Reveal>
-        <Reveal as="p" className="mt-10 font-[family-name:var(--font-ui)] text-[0.55rem] tracking-[0.25em] text-[rgba(227,217,184,0.467)] uppercase [&_a]:text-inherit [&_a]:no-underline">
-          Made with love by Invytelle
-        </Reveal>
       </Reveal>
     </div>
   );
