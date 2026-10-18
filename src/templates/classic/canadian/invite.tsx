@@ -37,6 +37,40 @@ function usePinned(ref: RefObject<HTMLElement | null>) {
   return progress;
 }
 
+function useScrollY() {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      setScrollY(window.scrollY);
+    };
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  return scrollY;
+}
+
+function depthY(node: HTMLElement | null, amount: number, reduced: boolean, scrollY: number) {
+  if (reduced || !node || scrollY < 0) return 0;
+  const rect = node.getBoundingClientRect();
+  const total = Math.max(node.offsetHeight - window.innerHeight, window.innerHeight);
+  const progress = clamp(-rect.top / total);
+  return (progress - 0.5) * amount;
+}
+
 function useReducedMotion() {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {
@@ -106,11 +140,25 @@ function Lights() {
 }
 
 export function CanadianInvite({ onClose }: { onClose: () => void }) {
+  const arrivalRef = useRef<HTMLElement>(null);
   const dockRef = useRef<HTMLElement>(null);
   const hoursRef = useRef<HTMLElement>(null);
+  const tableRef = useRef<HTMLElement>(null);
+  const stayRef = useRef<HTMLElement>(null);
+  const replyRef = useRef<HTMLElement>(null);
+  const lastRef = useRef<HTMLElement>(null);
   const dock = usePinned(dockRef);
   const hours = usePinned(hoursRef);
   const reduced = useReducedMotion();
+  const scrollY = useScrollY();
+  const layer = (node: HTMLElement | null, amount: number) => `translate3d(0, ${depthY(node, amount, reduced, scrollY)}px, 0)`;
+  const tilt = (node: HTMLElement | null) => {
+    if (reduced || !node || scrollY < 0) return "0deg";
+    const rect = node.getBoundingClientRect();
+    const total = Math.max(node.offsetHeight - window.innerHeight, window.innerHeight);
+    const progress = clamp(-rect.top / total);
+    return `${((progress - 0.5) * -7).toFixed(2)}deg`;
+  };
   const [sent, setSent] = useState(false);
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -132,30 +180,73 @@ export function CanadianInvite({ onClose }: { onClose: () => void }) {
         @keyframes ca-water { from { transform: scale(1.06); } to { transform: scale(1.14) translate3d(0, -2%, 0); } }
         @keyframes ca-leaf { 0% { opacity: 0; transform: translate3d(0, 0, 0) rotate(0deg); } 12% { opacity: 0.8; } 100% { opacity: 0; transform: translate3d(8vw, 105vh, 0) rotate(48deg); } }
         @keyframes ca-bulb { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+        .ca-depth-type, .ca-depth-ink {
+          display: inline-block;
+          transform: perspective(800px) rotateX(8deg);
+          transform-origin: center bottom;
+        }
+        .ca-depth-type {
+          text-shadow:
+            0 1px 0 rgba(8, 20, 14, 0.55),
+            0 2px 0 rgba(8, 20, 14, 0.38),
+            0 4px 0 rgba(8, 20, 14, 0.2),
+            0 14px 22px rgba(0, 0, 0, 0.32);
+        }
+        .ca-depth-ink {
+          text-shadow:
+            0 1px 0 rgba(255, 250, 242, 0.85),
+            0 2px 0 rgba(120, 86, 48, 0.16),
+            0 12px 18px rgba(28, 42, 34, 0.14);
+        }
+        .ca-plate {
+          transform: perspective(1200px) rotateX(var(--tilt, 0deg));
+          transform-origin: center 42%;
+          transition: transform 0.55s cubic-bezier(0.16, 0.84, 0.3, 1);
+        }
+        .ca-plate::after {
+          content: "";
+          position: absolute;
+          inset: auto 0 0 0;
+          height: 16%;
+          background: linear-gradient(to top, rgba(0, 0, 0, 0.28), transparent);
+          pointer-events: none;
+        }
+        @media (hover: hover) and (pointer: fine) {
+          .ca-plate:hover {
+            transform: perspective(1200px) rotateX(var(--tilt, 0deg)) rotateY(-4deg) translateZ(16px);
+          }
+        }
         @media (prefers-reduced-motion: reduce) {
           .ca-rise, .ca-water, .ca-leaf, .ca-lights i, .ca-reveal, .ca-reveal.is-in { animation: none; opacity: 1; transform: none; }
+          .ca-depth-type, .ca-depth-ink, .ca-plate, .ca-plate:hover { transform: none; }
         }
       `}</style>
       <button className="fixed top-12 left-4 z-[5] cursor-pointer rounded-full border-0 bg-[#1c2a22] px-3.5 py-2 text-[#f7f4ee]" type="button" onClick={onClose}>
         ← Back
       </button>
 
-      <section className="relative h-[150vh]" aria-label="Arrival on the lake">
+      <section ref={arrivalRef} className="relative h-[150vh]" aria-label="Arrival on the lake">
         <div className="sticky top-0 h-dvh overflow-hidden bg-[#10241c]">
-          <img
-            src="/photos/couple.jpg"
-            alt=""
-            className="ca-water absolute inset-0 h-full w-full object-cover object-[center_40%]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#10241c] via-[#10241c]/25 to-[#10241c]/35" />
-          <Leaves />
-          <div className="absolute inset-x-0 bottom-20 px-6 text-center text-[#f7f4ee]">
+          <div className="absolute inset-[-8%]" style={{ transform: layer(arrivalRef.current, 42) }}>
+            <div className="ca-plate absolute inset-0" style={{ ["--tilt" as string]: tilt(arrivalRef.current) }}>
+              <img
+                src="/photos/couple.jpg"
+                alt=""
+                className="ca-water absolute inset-0 h-full w-full object-cover object-[center_40%]"
+              />
+            </div>
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#10241c] via-[#10241c]/25 to-[#10241c]/35" style={{ transform: layer(arrivalRef.current, 16) }} />
+          <div className="absolute inset-0" style={{ transform: layer(arrivalRef.current, -56) }}>
+            <Leaves />
+          </div>
+          <div className="absolute inset-x-0 bottom-20 px-6 text-center text-[#f7f4ee]" style={{ transform: layer(arrivalRef.current, -30) }}>
             <p className="ca-rise m-0 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.38em] text-[#e6c27a] uppercase">Muskoka</p>
             <p className="ca-rise m-0 mx-auto mt-4 max-w-[16ch] font-[family-name:var(--font-serif)] text-[clamp(2rem,6vw,3.4rem)] leading-tight" style={{ animationDelay: "0.15s" }}>
-              {wedding.arrival}
+              <span className="ca-depth-type">{wedding.arrival}</span>
             </p>
             <p className="ca-rise m-0 mt-5 font-[family-name:var(--font-script)] text-4xl" style={{ animationDelay: "0.35s" }}>
-              Cedar Point
+              <span className="ca-depth-type">Cedar Point</span>
             </p>
             <p className="ca-rise m-0 mt-3 font-[family-name:var(--font-ui)] text-xs tracking-[0.22em] text-[#e6c27a] uppercase" style={{ animationDelay: "0.5s" }}>
               {wedding.shortDate} · {wedding.time}
@@ -166,19 +257,23 @@ export function CanadianInvite({ onClose }: { onClose: () => void }) {
 
       <section ref={dockRef} className={reduced ? "bg-[#10241c]" : "relative h-[420vh] bg-[#10241c]"} aria-label="On the dock">
         <div className={reduced ? "relative min-h-dvh overflow-hidden" : "sticky top-0 h-dvh overflow-hidden"}>
-          <img
-            src="/photos/walk.jpg"
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover object-center"
-            style={reduced ? undefined : { transform: `scale(${1.08 + dock * 0.14}) translate3d(0, ${dock * -4}%, 0)` }}
-          />
-          <div className="absolute inset-0 bg-[#10241c]/45" />
-          <div className="absolute inset-0 flex items-center justify-center px-8 text-center text-[#f7f4ee]">
+          <div className="absolute inset-[-8%]" style={{ transform: layer(dockRef.current, 34) }}>
+            <div className="ca-plate absolute inset-0" style={{ ["--tilt" as string]: tilt(dockRef.current) }}>
+              <img
+                src="/photos/walk.jpg"
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover object-center"
+                style={reduced ? undefined : { transform: `scale(${1.08 + dock * 0.14}) translate3d(0, ${dock * -4}%, 0)` }}
+              />
+            </div>
+          </div>
+          <div className="absolute inset-0 bg-[#10241c]/45" style={{ transform: layer(dockRef.current, 12) }} />
+          <div className="absolute inset-0 flex items-center justify-center px-8 text-center text-[#f7f4ee]" style={{ transform: layer(dockRef.current, -26) }}>
             {reduced ? (
               <div className="grid gap-8">
                 {wedding.dock.map((line) => (
                   <p key={line} className="m-0 font-[family-name:var(--font-serif)] text-[clamp(1.6rem,4vw,2.5rem)] leading-snug">
-                    {line}
+                    <span className="ca-depth-type">{line}</span>
                   </p>
                 ))}
               </div>
@@ -189,7 +284,7 @@ export function CanadianInvite({ onClose }: { onClose: () => void }) {
                   className="absolute inset-x-8 top-1/2 m-0 font-[family-name:var(--font-serif)] text-[clamp(1.7rem,4.5vw,2.8rem)] leading-snug"
                   style={beatStyle(dock, index * 0.22, index === wedding.dock.length - 1 ? 1 : (index + 1) * 0.22 + 0.06, true)}
                 >
-                  {line}
+                  <span className="ca-depth-type">{line}</span>
                 </p>
               ))
             )}
@@ -199,17 +294,23 @@ export function CanadianInvite({ onClose }: { onClose: () => void }) {
 
       <section ref={hoursRef} className={reduced ? "bg-[#1a120c] text-[#f7f4ee]" : "relative h-[460vh] bg-[#1a120c] text-[#f7f4ee]"} aria-label="Lantern hours">
         <div className={reduced ? "relative px-6 py-24" : "sticky top-0 flex h-dvh items-center overflow-hidden px-6"}>
-          <img src="/photos/couple.jpg" alt="" className="absolute inset-0 h-full w-full object-cover opacity-25" style={reduced ? undefined : { transform: `translate3d(0, ${hours * -8}%, 0) scale(1.12)` }} />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1a120c]/70 via-[#1a120c]/55 to-[#1a120c]" />
-          <Lights />
-          <div className="relative mx-auto w-full max-w-lg">
+          <div className="absolute inset-[-10%]" style={{ transform: layer(hoursRef.current, 48) }}>
+            <div className="ca-plate absolute inset-0" style={{ ["--tilt" as string]: tilt(hoursRef.current) }}>
+              <img src="/photos/couple.jpg" alt="" className="absolute inset-0 h-full w-full object-cover opacity-25" style={reduced ? undefined : { transform: `translate3d(0, ${hours * -8}%, 0) scale(1.12)` }} />
+            </div>
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1a120c]/70 via-[#1a120c]/55 to-[#1a120c]" style={{ transform: layer(hoursRef.current, 14) }} />
+          <div className="absolute inset-0" style={{ transform: layer(hoursRef.current, -46) }}>
+            <Lights />
+          </div>
+          <div className="relative mx-auto w-full max-w-lg" style={{ transform: layer(hoursRef.current, -22) }}>
             <p className="m-0 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.34em] text-[#e6c27a] uppercase">The evening</p>
             {reduced ? (
               <ol className="mt-8 list-none p-0">
                 {wedding.hours.map((item) => (
                   <li key={item.title} className="border-t border-white/15 py-5">
                     <p className="m-0 font-[family-name:var(--font-ui)] text-xs tracking-[0.22em] text-[#e6c27a] uppercase">{item.time}</p>
-                    <p className="m-0 mt-1 font-[family-name:var(--font-serif)] text-3xl">{item.title}</p>
+                    <p className="m-0 mt-1 font-[family-name:var(--font-serif)] text-3xl"><span className="ca-depth-type">{item.title}</span></p>
                     <p className="m-0 mt-1 text-white/75">{item.detail}</p>
                   </li>
                 ))}
@@ -219,7 +320,7 @@ export function CanadianInvite({ onClose }: { onClose: () => void }) {
                 {wedding.hours.map((item, index) => (
                   <div key={item.title} className="absolute inset-x-0 top-0" style={beatStyle(hours, index * 0.22, index === wedding.hours.length - 1 ? 1 : (index + 1) * 0.22 + 0.05)}>
                     <p className="m-0 font-[family-name:var(--font-ui)] text-xs tracking-[0.28em] text-[#e6c27a] uppercase">{item.time}</p>
-                    <p className="m-0 mt-2 font-[family-name:var(--font-script)] text-[clamp(3.2rem,10vw,5rem)] leading-none">{item.title}</p>
+                    <p className="m-0 mt-2 font-[family-name:var(--font-script)] text-[clamp(3.2rem,10vw,5rem)] leading-none"><span className="ca-depth-type">{item.title}</span></p>
                     <p className="m-0 mt-4 max-w-[28ch] font-[family-name:var(--font-serif)] text-xl leading-relaxed text-white/80">{item.detail}</p>
                   </div>
                 ))}
@@ -229,15 +330,19 @@ export function CanadianInvite({ onClose }: { onClose: () => void }) {
         </div>
       </section>
 
-      <section className="relative min-h-dvh overflow-hidden" aria-label="The long table">
-        <img src="/photos/dress.jpg" alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
-        <div className="absolute inset-0 bg-[#1c2a22]/55" />
-        <div className="relative flex min-h-dvh flex-col items-center justify-end px-6 py-24 text-center text-[#f7f4ee]">
+      <section ref={tableRef} className="relative min-h-dvh overflow-hidden" aria-label="The long table">
+        <div className="absolute inset-[-8%]" style={{ transform: layer(tableRef.current, 36) }}>
+          <div className="ca-plate absolute inset-0" style={{ ["--tilt" as string]: tilt(tableRef.current) }}>
+            <img src="/photos/dress.jpg" alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
+          </div>
+        </div>
+        <div className="absolute inset-0 bg-[#1c2a22]/55" style={{ transform: layer(tableRef.current, 12) }} />
+        <div className="relative flex min-h-dvh flex-col items-center justify-end px-6 py-24 text-center text-[#f7f4ee]" style={{ transform: layer(tableRef.current, -28) }}>
           <Rise>
             <p className="m-0 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.34em] text-[#e6c27a] uppercase">Supper</p>
           </Rise>
           <Rise delay="0.12s">
-            <h2 className="m-0 mt-4 max-w-[16ch] font-[family-name:var(--font-serif)] text-[clamp(2rem,6vw,3.4rem)] leading-tight">A long table in the boathouse</h2>
+            <h2 className="m-0 mt-4 max-w-[16ch] font-[family-name:var(--font-serif)] text-[clamp(2rem,6vw,3.4rem)] leading-tight"><span className="ca-depth-type">A long table in the boathouse</span></h2>
           </Rise>
           <Rise delay="0.24s">
             <p className="m-0 mt-5 max-w-md font-[family-name:var(--font-serif)] text-xl leading-relaxed text-white/85">{wedding.dress}</p>
@@ -248,16 +353,18 @@ export function CanadianInvite({ onClose }: { onClose: () => void }) {
         </div>
       </section>
 
-      <section className="bg-[#f4efe6] px-6 py-24" aria-label="Stay the weekend">
+      <section ref={stayRef} className="bg-[#f4efe6] px-6 py-24" aria-label="Stay the weekend">
+        <div style={{ transform: layer(stayRef.current, 18) }}>
         <Rise className="text-center">
           <p className="m-0 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.34em] text-[#8d5a2b] uppercase">If you stay</p>
-          <h2 className="m-0 mt-3 font-[family-name:var(--font-script)] text-6xl text-[#1c2a22]">Come up Friday</h2>
+          <h2 className="m-0 mt-3 font-[family-name:var(--font-script)] text-6xl text-[#1c2a22]"><span className="ca-depth-ink">Come up Friday</span></h2>
         </Rise>
-        <div className="mx-auto mt-12 grid max-w-3xl gap-8">
+        </div>
+        <div className="mx-auto mt-12 grid max-w-3xl gap-8" style={{ transform: layer(stayRef.current, -20) }}>
           {wedding.stays.map((stay, index) => (
             <Rise key={stay.name} delay={`${index * 0.1}s`}>
               <article className="border-t border-[#1c2a22]/15 pt-6">
-                <h3 className="m-0 font-[family-name:var(--font-serif)] text-3xl">{stay.name}</h3>
+                <h3 className="m-0 font-[family-name:var(--font-serif)] text-3xl"><span className="ca-depth-ink">{stay.name}</span></h3>
                 <p className="m-0 mt-2 max-w-xl font-[family-name:var(--font-serif)] text-xl leading-relaxed text-[#1c2a22]/75">{stay.detail}</p>
               </article>
             </Rise>
@@ -265,17 +372,19 @@ export function CanadianInvite({ onClose }: { onClose: () => void }) {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[#10241c] px-6 py-24 text-[#f7f4ee]" aria-label="Reply">
-        <Leaves />
-        <div className="relative mx-auto max-w-md text-center">
+      <section ref={replyRef} className="relative overflow-hidden bg-[#10241c] px-6 py-24 text-[#f7f4ee]" aria-label="Reply">
+        <div className="absolute inset-0" style={{ transform: layer(replyRef.current, -52) }}>
+          <Leaves />
+        </div>
+        <div className="relative mx-auto max-w-md text-center" style={{ transform: layer(replyRef.current, -16) }}>
           <Rise>
-            <h2 className="m-0 font-[family-name:var(--font-script)] text-6xl">Come up the lake</h2>
+            <h2 className="m-0 font-[family-name:var(--font-script)] text-6xl"><span className="ca-depth-type">Come up the lake</span></h2>
           </Rise>
           <Rise delay="0.12s">
             <p className="m-0 mt-4 font-[family-name:var(--font-serif)] text-xl text-white/75">Tell us your name and we will keep a chair by the fire.</p>
           </Rise>
           {sent ? (
-            <p className="mt-10 font-[family-name:var(--font-serif)] text-2xl">A lantern on the dock has your name.</p>
+            <p className="mt-10 font-[family-name:var(--font-serif)] text-2xl"><span className="ca-depth-type">A lantern on the dock has your name.</span></p>
           ) : (
             <form className="mt-10 grid gap-3 text-left" onSubmit={submit}>
               <input className="rounded-full border border-white/20 bg-white/10 px-4 py-3 text-[#f7f4ee] placeholder:text-white/50" name="name" required placeholder="Your name" aria-label="Full name" />
@@ -288,21 +397,25 @@ export function CanadianInvite({ onClose }: { onClose: () => void }) {
         </div>
       </section>
 
-      <section className="relative min-h-dvh overflow-hidden" aria-label="Last light">
-        <img src="/photos/rings.jpg" alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
-        <div className="absolute inset-0 bg-[#10241c]/50" />
-        <div className="relative flex min-h-dvh flex-col items-center justify-center px-6 text-center text-[#f7f4ee]">
+      <section ref={lastRef} className="relative min-h-dvh overflow-hidden" aria-label="Last light">
+        <div className="absolute inset-[-8%]" style={{ transform: layer(lastRef.current, 32) }}>
+          <div className="ca-plate absolute inset-0" style={{ ["--tilt" as string]: tilt(lastRef.current) }}>
+            <img src="/photos/rings.jpg" alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
+          </div>
+        </div>
+        <div className="absolute inset-0 bg-[#10241c]/50" style={{ transform: layer(lastRef.current, 10) }} />
+        <div className="relative flex min-h-dvh flex-col items-center justify-center px-6 text-center text-[#f7f4ee]" style={{ transform: layer(lastRef.current, -24) }}>
           <Rise>
             <p className="m-0 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.34em] text-[#e6c27a] uppercase">{wedding.place}</p>
           </Rise>
           <Rise delay="0.12s">
-            <p className="m-0 mt-4 font-[family-name:var(--font-script)] text-[clamp(3rem,10vw,5.5rem)] leading-none">{wedding.bride}</p>
+            <p className="m-0 mt-4 font-[family-name:var(--font-script)] text-[clamp(3rem,10vw,5.5rem)] leading-none"><span className="ca-depth-type">{wedding.bride}</span></p>
           </Rise>
           <Rise delay="0.22s">
             <p className="m-0 font-[family-name:var(--font-serif)] text-2xl italic text-[#e6c27a]">and</p>
           </Rise>
           <Rise delay="0.32s">
-            <p className="m-0 font-[family-name:var(--font-script)] text-[clamp(3rem,10vw,5.5rem)] leading-none">{wedding.groom}</p>
+            <p className="m-0 font-[family-name:var(--font-script)] text-[clamp(3rem,10vw,5.5rem)] leading-none"><span className="ca-depth-type">{wedding.groom}</span></p>
           </Rise>
           <Rise delay="0.46s">
             <p className="m-0 mt-6 font-[family-name:var(--font-serif)] text-xl">{wedding.dateLabel}</p>
