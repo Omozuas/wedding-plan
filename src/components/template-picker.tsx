@@ -105,11 +105,35 @@ export function TemplatePicker() {
                 <>
                   <ClassicCard family={family} />
                   <CanadianCard />
+                  <SaltlineCard />
                 </>
               )}
-              {family.href === "/hubble/nigerian" && <HarbourCard family={family} />}
-              {family.href === "/modern/nigerian" && <ModernCard family={family} />}
-              {family.href === "/genz/nigerian" && <GenZCard family={family} />}
+              {family.href === "/hubble/nigerian" && (
+                <>
+                  <HarbourCard family={family} />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Canadian</p>
+                  <NorthlightCard />
+                  <GoldhourCard />
+                </>
+              )}
+              {family.href === "/modern/nigerian" && (
+                <>
+                  <ModernCard family={family} />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Canadian</p>
+                  <StarfallCard />
+                  <FlurryCard />
+                </>
+              )}
+              {family.href === "/genz/nigerian" && (
+                <>
+                  <GenZCard family={family} />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Canadian</p>
+                  <PlungeCard />
+                  <RippleCard />
+                  <ShutterCard />
+                  <KindlingCard />
+                </>
+              )}
             </section>
           ))}
         </div>
@@ -174,6 +198,67 @@ function CanadianCard() {
   );
 }
 
+function SaltlineCard() {
+  return (
+    <article className="mt-4 rounded-[1.6rem] bg-[#10241e] px-5 pt-6 pb-5 text-[#e7efe9] shadow-[0_18px_40px_rgba(16,36,30,0.28)]">
+      <div className="relative mx-auto w-[78%] overflow-hidden rounded-[1.2rem] bg-[#1a463b]">
+        <img
+          src="/photos/walk.jpg"
+          alt="Elise and Jonah on the path"
+          className="aspect-[3/4] w-full object-cover object-[center_30%] motion-safe:animate-[picker-ken_16s_ease-in-out_infinite_alternate] motion-reduce:animate-none"
+        />
+        <span className="absolute bottom-4 left-1/2 grid size-14 -translate-x-1/2 place-items-center rounded-full bg-[#d85a3a] font-[family-name:var(--font-display)] text-sm font-extrabold text-[#fff6ef] motion-safe:animate-[picker-seal_2.8s_ease-in-out_infinite] motion-reduce:animate-none">
+          E·J
+        </span>
+      </div>
+      <h3 className="m-0 mt-5 text-center font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-tight">Saltline</h3>
+      <p className="m-0 mt-2 text-center font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#e7b2a4] uppercase">Classic · Bowen Island</p>
+      <p className="m-0 mt-2 text-center font-[family-name:var(--font-serif)] text-lg text-[#e7efe9]/80">A letter from the 4:40 sailing</p>
+      <div className="mt-5">
+        <Actions href="/classic/canadian/saltline" tone="cream" />
+      </div>
+    </article>
+  );
+}
+
+function NorthlightCard() {
+  return (
+    <article className="mt-3 overflow-hidden rounded-[1.4rem] bg-[#070b0a] text-[#efe6d6] shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
+      <div className="relative h-64 overflow-hidden">
+        <img src="/photos/walk.jpg" alt="The shore at Cedar Point" className="size-full object-cover object-[center_40%] motion-safe:animate-[picker-ken_16s_ease-in-out_infinite_alternate] motion-reduce:animate-none" style={{ clipPath: "inset(0 62% 0 8%)" }} />
+        <span className="pointer-events-none absolute inset-y-0 left-[8%] w-[30%] bg-[linear-gradient(90deg,transparent,rgba(231,161,90,0.35),transparent)]" />
+      </div>
+      <div className="px-5 pt-4 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-serif)] text-5xl leading-none font-medium">Northlight</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#e7a15a] uppercase">Hubble · Lake Rosseau</p>
+        <p className="m-0 mt-2 font-[family-name:var(--font-serif)] text-lg text-[#efe6d6]/75">A slit of light across the bay</p>
+        <div className="mt-5">
+          <Actions href="/hubble/canadian/northlight" tone="gold" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function GoldhourCard() {
+  return (
+    <article className="mt-4 overflow-hidden rounded-[1.6rem] bg-[#f3e2cf] text-[#1e3328] shadow-[0_18px_40px_rgba(196,106,69,0.18)]">
+      <div className="relative h-64 overflow-hidden">
+        <img src="/photos/couple.jpg" alt="Claire and Thomas in the afternoon" className="size-full object-cover object-[center_30%] motion-safe:animate-[picker-ken_16s_ease-in-out_infinite_alternate] motion-reduce:animate-none" />
+        <span className="absolute bottom-4 left-6 size-16 rounded-full bg-[radial-gradient(circle_at_40%_40%,#fff1c9,#e7a15a_55%,#c46a45)]" />
+      </div>
+      <div className="px-5 pt-4 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-serif)] text-5xl leading-none italic">Goldhour</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#c46a45] uppercase">Hubble · Cedar Point</p>
+        <p className="m-0 mt-2 font-[family-name:var(--font-serif)] text-lg">The afternoon opens on the dock</p>
+        <div className="mt-5">
+          <Actions href="/hubble/canadian/goldhour" tone="navy" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
 function HarbourCard({ family }: CardProps) {
   return (
     <article className="relative mt-3 overflow-hidden rounded-[1.4rem] bg-[#0c2348] text-[#f7f3ea] shadow-[0_18px_40px_rgba(12,35,72,0.28)]">
@@ -190,6 +275,46 @@ function HarbourCard({ family }: CardProps) {
         <div className="mt-5">
           <Actions href={family.href} tone="gold" />
         </div>
+      </div>
+    </article>
+  );
+}
+
+function StarfallCard() {
+  return (
+    <article className="mt-3 overflow-hidden rounded-[1.4rem] bg-[#07091c] text-[#f4f7ff] shadow-[0_18px_40px_rgba(0,0,0,0.32)]">
+      <div className="relative h-64 overflow-hidden">
+        <img src="/photos/couple.jpg" alt="Claire and Thomas at dusk" className="size-full object-cover object-[center_30%] brightness-75 motion-safe:animate-[picker-ken_16s_ease-in-out_infinite_alternate] motion-reduce:animate-none" />
+        <span className="absolute top-8 left-[18%] size-2 rounded-full bg-[#ffcf70] shadow-[0_0_16px_6px_rgba(255,207,112,0.75)] motion-safe:animate-[picker-seal_2.4s_ease-in-out_infinite] motion-reduce:animate-none" />
+        <span className="absolute top-16 right-[22%] size-1.5 rounded-full bg-[#ff5a7a] shadow-[0_0_14px_5px_rgba(255,90,122,0.7)] motion-safe:animate-[picker-seal_2.8s_ease-in-out_infinite] motion-reduce:animate-none" />
+        <span className="absolute top-10 left-[48%] size-1.5 rounded-full bg-[#d7f6ff] shadow-[0_0_14px_5px_rgba(215,246,255,0.7)] motion-safe:animate-[picker-seal_3.1s_ease-in-out_infinite] motion-reduce:animate-none" />
+      </div>
+      <div className="px-5 pt-4 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em]">Starfall</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#ffcf70] uppercase">Modern · Lake Rosseau</p>
+        <p className="m-0 mt-2 font-[family-name:var(--font-ui)] text-sm text-white/70">Fireworks over the bay</p>
+        <div className="mt-5">
+          <Actions href="/modern/canadian/starfall" tone="cream" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function FlurryCard() {
+  return (
+    <article className="relative mt-4 overflow-hidden rounded-[1.6rem] bg-[#f6f3ec] px-5 pt-6 pb-5 text-[#141414] shadow-[0_18px_40px_rgba(36,87,255,0.12)] ring-1 ring-[#141414]/10">
+      <span className="absolute top-4 left-4 size-3 rotate-12 bg-[#2457ff]" />
+      <span className="absolute top-8 right-8 size-2 rounded-full bg-[#ff4d3a]" />
+      <span className="absolute top-14 right-5 h-2 w-4 -rotate-6 bg-[#ffe14a]" />
+      <div className="overflow-hidden rounded-[1rem]">
+        <img src="/photos/bouquet.jpg" alt="The bouquet" className="aspect-[4/5] w-full object-cover motion-safe:animate-[picker-ken_16s_ease-in-out_infinite_alternate] motion-reduce:animate-none" />
+      </div>
+      <h3 className="m-0 mt-5 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em] text-[#2457ff]">Flurry</h3>
+      <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#ff4d3a] uppercase">Modern · Cedar Point</p>
+      <p className="m-0 mt-2 font-[family-name:var(--font-ui)] text-sm text-[#141414]/70">A burst of colour, then the day</p>
+      <div className="mt-5">
+        <Actions href="/modern/canadian/flurry" tone="navy" />
       </div>
     </article>
   );
@@ -212,6 +337,79 @@ function ModernCard({ family }: CardProps) {
       <p className="m-0 mt-2 font-[family-name:var(--font-ui)] text-sm text-white/65">{family.note}</p>
       <div className="mt-5">
         <Actions href={family.href} tone="cream" />
+      </div>
+    </article>
+  );
+}
+
+function PlungeCard() {
+  return (
+    <article className="mt-3 overflow-hidden rounded-[1.4rem] bg-[#090909] text-[#f6f6f1] shadow-[0_18px_40px_rgba(0,0,0,0.32)]">
+      <div className="relative h-64 overflow-hidden [perspective:600px]">
+        <img src="/photos/couple.jpg" alt="Claire and Thomas at the lake" className="absolute top-[12%] left-[14%] h-[70%] w-[72%] object-cover object-[center_30%] shadow-[0_18px_40px_rgba(0,0,0,0.45)]" style={{ transform: "translateZ(40px) rotateX(8deg)" }} />
+      </div>
+      <div className="px-5 pt-4 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em]">Plunge</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#e8ff47] uppercase">Gen Z · Lake Rosseau</p>
+        <p className="m-0 mt-2 text-sm text-white/70">Fall through the day to the dock</p>
+        <div className="mt-5">
+          <Actions href="/genz/canadian/plunge" tone="story" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function RippleCard() {
+  return (
+    <article className="mt-4 overflow-hidden rounded-[1.8rem] bg-[#04141a] px-5 pt-6 pb-5 text-[#e9fff8] shadow-[0_18px_40px_rgba(4,20,26,0.35)]">
+      <div className="relative mx-auto aspect-square w-[78%] overflow-hidden rounded-full">
+        <img src="/photos/walk.jpg" alt="Claire and Thomas by the water" className="size-full object-cover object-[center_30%]" />
+        <span className="pointer-events-none absolute top-1/2 left-1/2 size-24 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#7dffe4]" />
+      </div>
+      <h3 className="m-0 mt-5 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em] text-[#7dffe4]">Ripple</h3>
+      <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#7dffe4] uppercase">Gen Z · Cedar Point</p>
+      <p className="m-0 mt-2 text-sm text-[#e9fff8]/75">The lake clears, one ring at a time</p>
+      <div className="mt-5">
+        <Actions href="/genz/canadian/ripple" tone="story" />
+      </div>
+    </article>
+  );
+}
+
+function ShutterCard() {
+  return (
+    <article className="mt-4 overflow-hidden rounded-[1.2rem] bg-white text-[#111] shadow-[0_18px_40px_rgba(0,0,0,0.12)] ring-1 ring-black/10">
+      <div className="relative h-56 overflow-hidden">
+        <img src="/photos/couple.jpg" alt="Claire and Thomas" className="size-full object-cover object-[center_30%]" />
+        <span className="absolute inset-x-0 top-0 h-1/2 origin-top bg-black/80" />
+      </div>
+      <div className="px-5 pt-4 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.06em]">Shutter</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#ff2f86] uppercase">Gen Z · Four o&apos;clock</p>
+        <p className="m-0 mt-2 text-sm text-[#111]/70">Hard cuts, then the frame holds</p>
+        <div className="mt-5">
+          <Actions href="/genz/canadian/shutter" tone="navy" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function KindlingCard() {
+  return (
+    <article className="mt-4 overflow-hidden rounded-[1.6rem] bg-[#1a120e] text-[#f6efe6] shadow-[0_18px_40px_rgba(26,18,14,0.4)]">
+      <div className="relative h-56 overflow-hidden">
+        <img src="/photos/walk.jpg" alt="Claire and Thomas by the water" className="size-full object-cover object-[center_40%]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1a120e] via-transparent to-transparent" />
+      </div>
+      <div className="px-5 pt-2 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-script)] text-6xl leading-none text-[#ff9a4a]">Kindling</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#ffd7b0] uppercase">Gen Z · Lake Rosseau</p>
+        <p className="m-0 mt-2 text-sm text-[#f6efe6]/75">Dusk on the dock, one lantern at a time</p>
+        <div className="mt-5">
+          <Actions href="/genz/canadian/kindling" tone="gold" />
+        </div>
       </div>
     </article>
   );
