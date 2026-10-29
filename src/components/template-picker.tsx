@@ -106,6 +106,10 @@ export function TemplatePicker() {
                   <ClassicCard family={family} />
                   <CanadianCard />
                   <SaltlineCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Mexican</p>
+                  <SoleraCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Spanish</p>
+                  <AzaharCard />
                 </>
               )}
               {family.href === "/hubble/nigerian" && (
@@ -114,6 +118,10 @@ export function TemplatePicker() {
                   <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Canadian</p>
                   <NorthlightCard />
                   <GoldhourCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Mexican</p>
+                  <MiradorCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Spanish</p>
+                  <DuendeCard />
                 </>
               )}
               {family.href === "/modern/nigerian" && (
@@ -122,6 +130,10 @@ export function TemplatePicker() {
                   <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Canadian</p>
                   <StarfallCard />
                   <FlurryCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Mexican</p>
+                  <FandangoCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Spanish</p>
+                  <CompasCard />
                 </>
               )}
               {family.href === "/genz/nigerian" && (
@@ -132,6 +144,12 @@ export function TemplatePicker() {
                   <RippleCard />
                   <ShutterCard />
                   <KindlingCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Mexican</p>
+                  <PaseoCard />
+                  <TalaveraCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Spanish</p>
+                  <VelaCard />
+                  <JaleoCard />
                 </>
               )}
             </section>
@@ -409,6 +427,197 @@ function KindlingCard() {
         <p className="m-0 mt-2 text-sm text-[#f6efe6]/75">Dusk on the dock, one lantern at a time</p>
         <div className="mt-5">
           <Actions href="/genz/canadian/kindling" tone="gold" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function SoleraCard() {
+  return (
+    <article className="mt-3 rounded-[1.6rem] bg-[#f3eadc] px-5 pt-6 pb-5 text-[#2c1812] shadow-[0_18px_40px_rgba(156,66,32,0.16)] ring-1 ring-[#9c4220]/20">
+      <div className="relative mx-auto w-[70%] overflow-hidden rounded-full border-8 border-[#f7f1e6] shadow-[0_0_0_1px_#b8893d]">
+        <img src="/photos/couple.jpg" alt="Claire and Thomas at the lake" className="aspect-square w-full object-cover object-[center_30%]" />
+      </div>
+      <h3 className="m-0 mt-5 text-center font-[family-name:var(--font-serif)] text-5xl leading-none">Solera</h3>
+      <p className="m-0 mt-3 text-center font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#9c4220] uppercase">Classic · Lake Rosseau</p>
+      <p className="m-0 mt-2 text-center font-[family-name:var(--font-serif)] text-lg">A place is set, then the day turns toward you</p>
+      <div className="mt-5">
+        <Actions href="/classic/mexican/solera" tone="navy" />
+      </div>
+    </article>
+  );
+}
+
+function MiradorCard() {
+  return (
+    <article className="mt-3 overflow-hidden rounded-[1.2rem] bg-[#6b2b22] text-[#f3e7d8] shadow-[0_18px_40px_rgba(107,43,34,0.28)]">
+      <div className="px-8 pt-6">
+        <div className="overflow-hidden border-8 border-[#f3e7d8]">
+          <img src="/photos/walk.jpg" alt="Claire and Thomas by the water" className="aspect-[4/3] w-full object-cover object-[center_40%]" />
+          <div className="h-1.5 bg-[#c4375a]" />
+        </div>
+      </div>
+      <div className="px-5 pt-4 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-serif)] text-5xl leading-none">Mirador</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#e7b15a] uppercase">Hubble · Cedar Point</p>
+        <p className="m-0 mt-2 font-[family-name:var(--font-serif)] text-lg text-[#f3e7d8]/85">Climb from the courtyard to the view</p>
+        <div className="mt-5">
+          <Actions href="/hubble/mexican/mirador" tone="gold" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function FandangoCard() {
+  return (
+    <article className="mt-3 overflow-hidden bg-[#12080c] text-[#fff6ea] shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
+      <div className="grid grid-cols-4">
+        <img src="/photos/bouquet.jpg" alt="" className="h-16 w-full object-cover" />
+        <img src="/photos/walk.jpg" alt="" className="h-16 w-full object-cover" />
+        <img src="/photos/kiss.jpg" alt="" className="h-16 w-full object-cover" />
+        <img src="/photos/rings.jpg" alt="" className="h-16 w-full object-cover" />
+      </div>
+      <div className="bg-[#ffb000] px-5 py-4 text-[#12080c]">
+        <h3 className="m-0 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em]">Fandango</h3>
+      </div>
+      <div className="px-5 pt-3 pb-5">
+        <p className="m-0 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#ffb000] uppercase">Modern · Four o&apos;clock</p>
+        <p className="m-0 mt-2 text-sm text-white/75">Banners drop, then the evening opens</p>
+        <div className="mt-5">
+          <Actions href="/modern/mexican/fandango" tone="cream" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function PaseoCard() {
+  return (
+    <article className="mt-3 overflow-hidden rounded-[1.4rem] bg-[#140c10] text-[#f6efe6] shadow-[0_18px_40px_rgba(20,12,16,0.35)]">
+      <div className="relative h-52 overflow-hidden">
+        <img src="/photos/couple.jpg" alt="Claire and Thomas" className="absolute top-4 left-1/2 h-44 w-36 -translate-x-1/2 object-cover object-[center_30%]" />
+        <img src="/photos/bouquet.jpg" alt="" className="absolute top-8 left-4 h-32 w-24 object-cover opacity-80" />
+      </div>
+      <div className="px-5 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em]">Paseo</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#ffb067] uppercase">Gen Z · Lake Rosseau</p>
+        <p className="m-0 mt-2 text-sm text-white/70">The evening walks past, then stops with you</p>
+        <div className="mt-5">
+          <Actions href="/genz/mexican/paseo" tone="story" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function TalaveraCard() {
+  return (
+    <article className="mt-4 overflow-hidden rounded-[1.2rem] bg-[#f7f1e8] text-[#1c140f] shadow-[0_18px_40px_rgba(20,58,140,0.16)] ring-1 ring-[#143a8c]/15">
+      <div className="grid grid-cols-3 gap-1 p-3">
+        <img src="/photos/couple.jpg" alt="Claire and Thomas" className="col-span-2 row-span-2 aspect-square h-full w-full object-cover object-[center_30%]" />
+        <div className="bg-[#143a8c]" />
+        <div className="bg-[#f0a202]" />
+      </div>
+      <div className="px-5 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em] text-[#143a8c]">Talavera</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#d23b6a] uppercase">Gen Z · Cedar Point</p>
+        <p className="m-0 mt-2 text-sm">Tiles gather, then the celebration turns</p>
+        <div className="mt-5">
+          <Actions href="/genz/mexican/talavera" tone="navy" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function AzaharCard() {
+  return (
+    <article className="mt-3 rounded-[1.6rem] bg-[#f6f1e7] px-5 pt-6 pb-5 text-[#2a241c] shadow-[0_18px_40px_rgba(42,36,28,0.12)] ring-1 ring-[#8a5a18]/20">
+      <div className="overflow-hidden">
+        <img src="/photos/couple.jpg" alt="Claire and Thomas at the lake" className="aspect-[16/10] w-full object-cover object-[center_30%]" />
+      </div>
+      <h3 className="m-0 mt-5 text-center font-[family-name:var(--font-serif)] text-5xl leading-none">Azahar</h3>
+      <p className="m-0 mt-3 text-center font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#8a5a18] uppercase">Classic · Lake Rosseau</p>
+      <p className="m-0 mt-2 text-center font-[family-name:var(--font-serif)] text-lg">The afternoon comes into focus</p>
+      <div className="mt-5">
+        <Actions href="/classic/spanish/azahar" tone="navy" />
+      </div>
+    </article>
+  );
+}
+
+function DuendeCard() {
+  return (
+    <article className="mt-3 overflow-hidden bg-[#3c1218] text-[#f4efe8] shadow-[0_18px_40px_rgba(60,18,24,0.28)]">
+      <img src="/photos/bouquet.jpg" alt="The flowers" className="h-40 w-full object-cover" />
+      <div className="px-5 py-5">
+        <h3 className="m-0 font-[family-name:var(--font-serif)] text-5xl leading-none">Duende</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#e7c27a] uppercase">Hubble · Cedar Point</p>
+        <p className="m-0 mt-2 font-[family-name:var(--font-serif)] text-lg">Pull back from the flowers to the couple</p>
+        <div className="mt-5">
+          <Actions href="/hubble/spanish/duende" tone="gold" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function CompasCard() {
+  return (
+    <article className="mt-3 overflow-hidden bg-[#12080c] text-[#f4efe6] shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
+      <div className="grid grid-cols-4">
+        <span className="h-3 bg-[#9b1d2e]" />
+        <span className="h-3 bg-[#e3a008]" />
+        <span className="h-3 bg-[#f4efe6]" />
+        <span className="h-3 bg-[#9b1d2e]" />
+      </div>
+      <img src="/photos/couple.jpg" alt="Claire and Thomas" className="h-36 w-full object-cover object-[center_30%]" />
+      <div className="px-5 py-5">
+        <h3 className="m-0 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em]">Compás</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#e3a008] uppercase">Modern · Four o&apos;clock</p>
+        <p className="m-0 mt-2 text-sm text-white/75">The picture assembles on the beat</p>
+        <div className="mt-5">
+          <Actions href="/modern/spanish/compas" tone="cream" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function VelaCard() {
+  return (
+    <article className="mt-3 overflow-hidden rounded-[1.4rem] bg-[#100c0a] text-[#f6efe6] shadow-[0_18px_40px_rgba(16,12,10,0.4)]">
+      <div className="relative h-48 overflow-hidden">
+        <img src="/photos/couple.jpg" alt="Claire and Thomas" className="size-full object-cover object-[center_30%]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0_18%,#100c0a_42%)]" />
+      </div>
+      <div className="px-5 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em] text-[#ffb25a]">Vela</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#ffb25a] uppercase">Gen Z · Lake Rosseau</p>
+        <p className="m-0 mt-2 text-sm text-white/70">A pool of light crosses the room</p>
+        <div className="mt-5">
+          <Actions href="/genz/spanish/vela" tone="story" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function JaleoCard() {
+  return (
+    <article className="mt-4 overflow-hidden rounded-[1.2rem] bg-[#f7f1ea] text-[#1c1214] shadow-[0_18px_40px_rgba(155,27,48,0.16)]">
+      <div className="relative h-44 bg-[#1a1014]">
+        <img src="/photos/kiss.jpg" alt="" className="absolute top-6 left-8 h-32 w-24 rotate-[-6deg] object-cover" />
+        <img src="/photos/couple.jpg" alt="Claire and Thomas" className="absolute top-4 left-16 h-36 w-28 object-cover shadow-lg" />
+      </div>
+      <div className="px-5 py-5">
+        <h3 className="m-0 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em] text-[#9b1b30]">Jaleo</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#9b1b30] uppercase">Gen Z · Cedar Point</p>
+        <p className="m-0 mt-2 text-sm">Prints peel away until the couple remains</p>
+        <div className="mt-5">
+          <Actions href="/genz/spanish/jaleo" tone="navy" />
         </div>
       </div>
     </article>
