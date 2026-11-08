@@ -1,27 +1,28 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { paseoDay as day } from "./paseo-day";
 
 const WALKERS = [
-  { src: "/photos/bouquet.jpg", note: "Someone carried the flowers.", delay: "0.4s", noteDelay: "1.6s" },
-  { src: "/photos/rings.jpg", note: "The rings, catching the last light.", delay: "4.8s", noteDelay: "6s" },
-  { src: "/photos/dress.jpg", note: "A coat for the dock, later.", delay: "9.2s", noteDelay: "10.4s" },
+  { src: day.images.bouquet.src, note: "Someone carried the flowers.", delay: "0.4s", noteDelay: "1.6s" },
+  { src: day.images.rings.src, note: "The rings, catching the last light.", delay: "4.8s", noteDelay: "6s" },
+  { src: day.images.dress.src, note: "A coat for the dock, later.", delay: "9.2s", noteDelay: "10.4s" },
 ];
 
 const STOPS = [
-  { src: "/photos/walk.jpg", focus: "center 40%", kicker: "01", line: day.dock[0] },
-  { src: "/photos/bouquet.jpg", focus: "center", kicker: "02", line: day.dock[1] },
-  { src: "/photos/rings.jpg", focus: "center", kicker: "03", line: day.dock[2] },
-  { src: "/photos/kiss.jpg", focus: "center 35%", kicker: "04", line: day.dock[3] },
-  { src: "/photos/dress.jpg", focus: "center", kicker: "05", line: day.dress },
-  { src: "/photos/couple.jpg", focus: "center 30%", kicker: "06", line: `${day.venue}. ${day.time}.` },
+  { src: day.images.walk.src, focus: "center 40%", kicker: "01", line: day.dock[0] },
+  { src: day.images.bouquet.src, focus: "center", kicker: "02", line: day.dock[1] },
+  { src: day.images.rings.src, focus: "center", kicker: "03", line: day.dock[2] },
+  { src: day.images.kiss.src, focus: "center 35%", kicker: "04", line: day.dock[3] },
+  { src: day.images.dress.src, focus: "center", kicker: "05", line: day.dress },
+  { src: day.images.couple.src, focus: "center 30%", kicker: "06", line: `${day.venue}. ${day.time}.` },
 ];
 
 export function Paseo() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="overflow-x-hidden bg-[#140c10] text-[#f6efe6]">
+    <div className="overflow-x-hidden bg-[#140c10] text-[#f6efe6]" style={themeVars(day.colors)}>
       <style>{`
         .ps-sky { opacity: 1; transition: opacity 1.1s ease; }
         .ps-sky.is-leaving { opacity: 0; }
@@ -75,7 +76,7 @@ function Street({ onDone }: { onDone: () => void }) {
         </div>
       ))}
       <div className="ps-arrive absolute top-[16vh] left-1/2 z-[3] w-[min(72vw,24rem)]">
-        <img src="/photos/couple.jpg" alt="" className="h-[64vh] w-full object-cover object-[center_30%] shadow-[0_24px_50px_rgba(0,0,0,0.5)]" />
+        <img src={day.images.couple.src} alt="" className="h-[64vh] w-full object-cover object-[center_30%] shadow-[0_24px_50px_rgba(0,0,0,0.5)]" />
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#140c10] to-transparent px-4 pt-16 pb-4">
           <p className="ps-name m-0 font-[family-name:var(--font-display)] text-[clamp(2.2rem,8vw,4rem)] leading-none font-extrabold tracking-[-0.05em]" style={{ animationDelay: "15.6s" }}>{day.first}</p>
           <p className="ps-name m-0 font-[family-name:var(--font-display)] text-[clamp(2.2rem,8vw,4rem)] leading-none font-extrabold tracking-[-0.05em] text-[#ffb067]" style={{ animationDelay: "17s" }}>{day.second}</p>

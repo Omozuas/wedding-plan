@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { fandangoDay as day } from "./fandango-day";
 
 const BANNERS = [
@@ -22,7 +23,7 @@ const SLABS = [
 export function Fandango() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="overflow-x-hidden bg-[#12080c] text-[#fff6ea]">
+    <div className="overflow-x-hidden bg-[#12080c] text-[#fff6ea]" style={themeVars(day.colors)}>
       <style>{`
         .fa-sky { opacity: 1; transition: opacity 0.9s ease; }
         .fa-sky.is-leaving { opacity: 0; }
@@ -82,7 +83,7 @@ function Dance({ onDone }: { onDone: () => void }) {
         ))}
       </div>
       <div className="fa-gem absolute top-1/2 left-1/2 z-[2] size-[min(46vw,18rem)] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.4)]">
-        <img src="/photos/couple.jpg" alt="" className="size-full object-cover object-[center_30%]" />
+        <img src={day.images.couple.src} alt="" className="size-full object-cover object-[center_30%]" />
       </div>
       {RIBBONS.map((color, index) => (
         <span key={color + index} className="fa-ribbon z-[3]" style={{ left: `${5 + index * 9.2}%`, height: `${26 + (index % 4) * 10}vh`, background: color, animationDelay: `${13.4 + index * 0.07}s, ${15 + index * 0.07}s` }} />
@@ -100,7 +101,7 @@ function Floor({ live }: { live: boolean }) {
   return (
     <div inert={live ? undefined : true} aria-hidden={live ? undefined : true}>
       <section className="relative min-h-dvh">
-        <img src="/photos/couple.jpg" alt="Claire and Thomas at the lake" className="absolute inset-0 size-full object-cover object-[center_30%]" />
+        <img src={day.images.couple.src} alt="Claire and Thomas at the lake" className="absolute inset-0 size-full object-cover object-[center_30%]" />
         <div className="absolute inset-0 bg-[#12080c]/35" />
         <div className="fa-picado absolute inset-x-0 top-1/2 -translate-y-1/2 bg-[#ffb000] px-6 pt-8 pb-16 text-center text-[#12080c]">
           <p className="m-0 text-[0.68rem] font-semibold tracking-[0.28em] uppercase">{day.place}</p>

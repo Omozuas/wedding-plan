@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { rippleDay as day } from "./ripple-day";
 
 const LINES = ["Lake Rosseau", "Claire", "Thomas", "Four o'clock"];
@@ -8,7 +9,7 @@ const LINES = ["Lake Rosseau", "Claire", "Thomas", "Four o'clock"];
 export function Ripple() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="overflow-x-hidden bg-[#f3fffb] text-[#06282e]">
+    <div className="overflow-x-hidden bg-[#f3fffb] text-[#06282e]" style={themeVars(day.colors)}>
       <style>{`
         .rp-sky { opacity: 1; transition: opacity 1.1s ease; }
         .rp-sky.is-leaving { opacity: 0; }
@@ -67,7 +68,7 @@ function Water({ onDone }: { onDone: () => void }) {
 
   return (
     <section className={`rp-sky fixed inset-0 z-50 overflow-hidden bg-[#031016] ${leaving ? "is-leaving" : ""}`} aria-label="Ripples clear the lake">
-      <img src="/photos/couple.jpg" alt="" className="rp-photo absolute inset-0 size-full object-cover object-[center_32%]" />
+      <img src={day.images.couple.src} alt="" className="rp-photo absolute inset-0 size-full object-cover object-[center_32%]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(3,16,22,0.55)_100%)]" />
       {[0, 1, 2, 3].map((index) => (
         <span key={index} className="rp-ring" style={{ animationDelay: `${0.15 + index * 1.7}s` }} />
@@ -91,10 +92,10 @@ function Water({ onDone }: { onDone: () => void }) {
 }
 
 const BUBBLES = [
-  { src: "/photos/kiss.jpg", alt: "The kiss" },
-  { src: "/photos/dress.jpg", alt: "Supper in the boathouse" },
-  { src: "/photos/bouquet.jpg", alt: "The bouquet" },
-  { src: "/photos/walk.jpg", alt: "The walk to the water" },
+  { src: day.images.kiss.src, alt: "The kiss" },
+  { src: day.images.dress.src, alt: "Supper in the boathouse" },
+  { src: day.images.bouquet.src, alt: "The bouquet" },
+  { src: day.images.walk.src, alt: "The walk to the water" },
 ];
 
 function Shore({ live }: { live: boolean }) {
@@ -111,16 +112,16 @@ function Shore({ live }: { live: boolean }) {
         <Rise live={live}>
           <div className="relative mx-auto mt-8 aspect-[3/4] w-full max-w-[40rem] sm:aspect-square sm:max-w-4xl">
             <div className="absolute top-[7%] left-[16%] size-[70%] overflow-hidden rounded-full bg-[#d7fff4] shadow-[0_24px_60px_rgba(6,40,46,0.16)] ring-[10px] ring-white">
-              <img src="/photos/couple.jpg" alt="Claire and Thomas at the lake" className="rp-breathe size-full object-cover object-[center_24%]" />
+              <img src={day.images.couple.src} alt="Claire and Thomas at the lake" className="rp-breathe size-full object-cover object-[center_24%]" />
             </div>
             <div className="rp-float absolute bottom-[1%] left-0 size-[34%] overflow-hidden rounded-full ring-[8px] ring-white">
-              <img src="/photos/walk.jpg" alt="Claire and Thomas walking to the water" className="size-full object-cover object-[center_36%]" />
+              <img src={day.images.walk.src} alt="Claire and Thomas walking to the water" className="size-full object-cover object-[center_36%]" />
             </div>
             <div className="rp-float absolute top-0 right-[1%] size-[28%] overflow-hidden rounded-full ring-[8px] ring-white" style={{ animationDelay: "-2.4s" }}>
-              <img src="/photos/bouquet.jpg" alt="" className="size-full object-cover object-center" />
+              <img src={day.images.bouquet.src} alt="" className="size-full object-cover object-center" />
             </div>
             <div className="rp-float absolute right-[8%] bottom-[6%] size-[23%] overflow-hidden rounded-full ring-[8px] ring-white" style={{ animationDelay: "-4.2s" }}>
-              <img src="/photos/rings.jpg" alt="" className="size-full object-cover" />
+              <img src={day.images.rings.src} alt="" className="size-full object-cover" />
             </div>
           </div>
         </Rise>
@@ -160,7 +161,7 @@ function Shore({ live }: { live: boolean }) {
 
       <section className="mx-4 my-10 overflow-hidden rounded-[2.2rem] bg-[#08343a] text-[#f3fffb] sm:mx-8">
         <div className="grid lg:grid-cols-2">
-          <img src="/photos/dress.jpg" alt="The table in the boathouse" className="aspect-[4/3] w-full object-cover object-center lg:aspect-auto lg:min-h-full" />
+          <img src={day.images.dress.src} alt="The table in the boathouse" className="aspect-[4/3] w-full object-cover object-center lg:aspect-auto lg:min-h-full" />
           <div className="px-5 py-10 sm:px-10">
             <Rise live={live}>
               <h2 className="m-0 font-[family-name:var(--font-serif)] text-[clamp(2.4rem,5vw,3.6rem)] leading-none">Stay through Sunday.</h2>

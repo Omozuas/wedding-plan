@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { flurryDay as day } from "./flurry-day";
 
 const COLORS = ["#2457ff", "#ff4d3a", "#ffe14a", "#141414", "#7aa2ff", "#ff8a3d"];
@@ -10,7 +11,7 @@ const BIT_COUNT = 96;
 export function Flurry() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="overflow-x-hidden bg-[#f6f3ec] text-[#141414]">
+    <div className="overflow-x-hidden bg-[#f6f3ec] text-[#141414]" style={themeVars(day.colors)}>
       <style>{`
         .fl-sky { opacity: 1; transition: opacity 1.1s ease; }
         .fl-sky.is-leaving { opacity: 0; }
@@ -174,7 +175,7 @@ function Splash({ onDone }: { onDone: () => void }) {
         />
       ))}
       <div className="fl-stage relative z-[3] flex h-full flex-col items-center justify-center px-6 text-center">
-        <img src="/photos/couple.jpg" alt="" className="fl-iris h-[34vh] w-[34vh] max-w-[70vw] rounded-full object-cover" />
+        <img src={day.images.couple.src} alt="" className="fl-iris h-[34vh] w-[34vh] max-w-[70vw] rounded-full object-cover" />
         <p className="fl-name m-0 mt-6 font-[family-name:var(--font-display)] text-[clamp(3.4rem,12vw,6.5rem)] leading-[0.84] font-extrabold tracking-[-0.07em]">
           Claire
         </p>
@@ -200,7 +201,7 @@ function Invitation({ live }: { live: boolean }) {
   return (
     <div inert={live ? undefined : true} aria-hidden={live ? undefined : true}>
       <section className="relative min-h-dvh overflow-hidden">
-        <img src="/photos/couple.jpg" alt="Claire and Thomas at the lake" className="fl-ken absolute inset-0 size-full object-cover object-[center_30%]" />
+        <img src={day.images.couple.src} alt="Claire and Thomas at the lake" className="fl-ken absolute inset-0 size-full object-cover object-[center_30%]" />
         <div className="absolute inset-0 bg-[#f6f3ec]/48" />
         <div className="relative grid min-h-dvh content-end gap-6 px-6 py-14 sm:px-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
           <div>
@@ -231,7 +232,7 @@ function Invitation({ live }: { live: boolean }) {
           {[0, 1, 2].map((index) => (
             <img
               key={index}
-              src="/photos/walk.jpg"
+              src={day.images.walk.src}
               alt={index === 0 ? "Claire and Thomas walking to the water" : ""}
               className="fl-band absolute inset-0 size-full object-cover"
               style={{
@@ -255,10 +256,10 @@ function Invitation({ live }: { live: boolean }) {
       </section>
       <section className="grid gap-4 px-6 py-16 sm:px-12 md:grid-cols-2">
         <Rise live={live} className="overflow-hidden">
-          <img src="/photos/bouquet.jpg" alt="The bouquet" className="fl-ken aspect-[5/4] w-full object-cover" />
+          <img src={day.images.bouquet.src} alt="The bouquet" className="fl-ken aspect-[5/4] w-full object-cover" />
         </Rise>
         <Rise live={live} className="overflow-hidden">
-          <img src="/photos/rings.jpg" alt="The rings" className="aspect-[5/4] w-full object-cover" />
+          <img src={day.images.rings.src} alt="The rings" className="aspect-[5/4] w-full object-cover" />
         </Rise>
       </section>
       <section className="px-6 pb-8 sm:px-12">

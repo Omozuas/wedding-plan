@@ -1,19 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { miradorDay as day } from "./mirador-day";
 
+const FLOORS = day.floors ?? ["The courtyard", "The stair", "The view"];
+
 const SHOTS = [
-  { src: "/photos/bouquet.jpg", focus: "center" },
-  { src: "/photos/walk.jpg", focus: "center 40%" },
-  { src: "/photos/couple.jpg", focus: "center 30%" },
+  { src: day.images.bouquet.src, focus: "center" },
+  { src: day.images.walk.src, focus: "center 40%" },
+  { src: day.images.couple.src, focus: "center 30%" },
 ];
 
 const PANELS = [
-  { src: "/photos/walk.jpg", focus: "center 40%", line: day.dock[0], side: "left" },
-  { src: "/photos/bouquet.jpg", focus: "center", line: day.dock[1], side: "right" },
-  { src: "/photos/kiss.jpg", focus: "center 40%", line: day.dock[2], side: "left" },
-  { src: "/photos/dress.jpg", focus: "center", line: day.dock[3], side: "right" },
+  { src: day.images.walk.src, focus: "center 40%", line: day.dock[0], side: "left" },
+  { src: day.images.bouquet.src, focus: "center", line: day.dock[1], side: "right" },
+  { src: day.images.kiss.src, focus: "center 40%", line: day.dock[2], side: "left" },
+  { src: day.images.dress.src, focus: "center", line: day.dock[3], side: "right" },
 ];
 
 function coverFade(progress: number, start: number, end: number) {
@@ -23,7 +26,7 @@ function coverFade(progress: number, start: number, end: number) {
 
 export function Mirador() {
   return (
-    <div className="overflow-x-clip bg-[#f3e7d8] text-[#2a1210]">
+    <div className="overflow-x-clip bg-[#f3e7d8] text-[#2a1210]" style={themeVars(day.colors)}>
       <style>{`
         .mi-rise { opacity: 0; transform: translateY(28px); }
         .mi-rise.is-in { animation: mi-rise 1.1s cubic-bezier(0.16, 0.84, 0.3, 1) forwards; }
@@ -81,7 +84,7 @@ function Climb() {
       });
       if (label) {
         const floor = p < 0.34 ? 0 : p < 0.62 ? 1 : 2;
-        label.textContent = day.floors[floor] ?? day.floors[0];
+        label.textContent = FLOORS[floor] ?? FLOORS[0];
         label.style.opacity = String(coverFade(p, 0.05, 0.14));
       }
       if (vine) vine.style.transform = `scaleX(${0.15 + open * 0.85})`;
@@ -124,7 +127,7 @@ function Climb() {
           ))}
           <div data-vine className="mi-vine absolute inset-x-0 top-0 h-2 origin-left bg-[#c4375a]" style={{ transform: "scaleX(0.15)" }} />
         </div>
-        <p data-label className="absolute inset-x-0 top-[10vh] m-0 text-center font-[family-name:var(--font-serif)] text-[clamp(1.6rem,4vw,2.8rem)] italic opacity-0">{day.floors[0]}</p>
+        <p data-label className="absolute inset-x-0 top-[10vh] m-0 text-center font-[family-name:var(--font-serif)] text-[clamp(1.6rem,4vw,2.8rem)] italic opacity-0">{FLOORS[0]}</p>
         <div data-names className="pointer-events-none absolute inset-x-0 bottom-[8vh] text-center opacity-0">
           <p className="m-0 font-[family-name:var(--font-serif)] text-[clamp(3rem,9vw,6rem)] leading-[0.86]">{day.first}</p>
           <p className="m-0 font-[family-name:var(--font-serif)] text-[clamp(3rem,9vw,6rem)] leading-[0.86] text-[#e7b15a]">{day.second}</p>
@@ -178,7 +181,7 @@ function Terrace() {
       </section>
       <section className="grid items-center gap-10 px-6 py-20 md:grid-cols-2 md:px-12">
         <Rise>
-          <img src="/photos/couple.jpg" alt="Claire and Thomas" className="aspect-[4/5] w-full object-cover shadow-[-16px_16px_0_#c4375a]" />
+          <img src={day.images.couple.src} alt="Claire and Thomas" className="aspect-[4/5] w-full object-cover shadow-[-16px_16px_0_#c4375a]" />
         </Rise>
         <Rise>
           <p className="m-0 text-xs tracking-[0.28em] text-[#c4375a] uppercase">What to wear</p>

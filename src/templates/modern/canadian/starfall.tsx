@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { starfallDay as day } from "./starfall-day";
 
 type Spark = {
@@ -194,7 +195,7 @@ function paintSky(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
 export function Starfall() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="overflow-x-hidden bg-[#07091c] text-[#f4f7ff]">
+    <div className="overflow-x-hidden bg-[#07091c] text-[#f4f7ff]" style={themeVars(day.colors)}>
       <style>{`
         .sf-sky { opacity: 1; transition: opacity 1.15s ease; }
         .sf-sky.is-leaving { opacity: 0; }
@@ -284,7 +285,7 @@ function Sky({ onDone }: { onDone: () => void }) {
       className={`sf-sky fixed inset-0 z-50 overflow-hidden bg-[#05060f] ${leaving ? "is-leaving" : ""} ${lit ? "is-lit" : ""}`}
       aria-label="Fireworks over the bay"
     >
-      <img src="/photos/couple.jpg" alt="" className="sf-photo absolute inset-0 size-full object-cover object-[center_30%]" />
+      <img src={day.images.couple.src} alt="" className="sf-photo absolute inset-0 size-full object-cover object-[center_30%]" />
       <div className="absolute inset-0 bg-[linear-gradient(to_top,#05060f_0%,rgba(5,6,15,0.2)_42%,rgba(5,6,15,0.55)_100%)]" />
       <canvas ref={canvasRef} data-bursts="0" className="absolute inset-0 size-full" aria-hidden="true" />
       <span className="sf-ring" />
@@ -317,7 +318,7 @@ function Night({ live }: { live: boolean }) {
   return (
     <div inert={live ? undefined : true} aria-hidden={live ? undefined : true}>
       <section className="relative h-dvh min-h-[36rem] overflow-hidden">
-        <img src="/photos/walk.jpg" alt="Claire and Thomas beside the lake" className="sf-drift absolute inset-0 size-full object-cover object-[center_35%]" />
+        <img src={day.images.walk.src} alt="Claire and Thomas beside the lake" className="sf-drift absolute inset-0 size-full object-cover object-[center_35%]" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#07091c] via-[#07091c]/25 to-[#07091c]/40" />
         <div className="absolute inset-x-0 bottom-0 px-6 pb-12 sm:px-12">
           <p className="m-0 text-[0.68rem] tracking-[0.36em] text-[#ffcf70] uppercase">Starfall · Lake Rosseau</p>
@@ -349,10 +350,10 @@ function Night({ live }: { live: boolean }) {
       </section>
       <section className="grid gap-4 px-6 sm:px-12 md:grid-cols-2">
         <Rise live={live} className="overflow-hidden">
-          <img src="/photos/bouquet.jpg" alt="The bouquet" className="sf-zoom aspect-[4/5] w-full object-cover" />
+          <img src={day.images.bouquet.src} alt="The bouquet" className="sf-zoom aspect-[4/5] w-full object-cover" />
         </Rise>
         <Rise live={live} className="overflow-hidden">
-          <img src="/photos/rings.jpg" alt="The rings" className="sf-zoom aspect-[4/5] w-full object-cover" />
+          <img src={day.images.rings.src} alt="The rings" className="sf-zoom aspect-[4/5] w-full object-cover" />
         </Rise>
       </section>
       <Rise live={live} className="px-6 py-20 sm:px-12">
@@ -371,7 +372,7 @@ function Night({ live }: { live: boolean }) {
       </Rise>
       <section className="grid items-center gap-8 bg-[#ffcf70] px-6 py-16 text-[#14110c] sm:px-12 lg:grid-cols-[0.9fr_1.1fr]">
         <Rise live={live}>
-          <img src="/photos/dress.jpg" alt="The table at the boathouse" className="aspect-[4/5] w-full object-cover" />
+          <img src={day.images.dress.src} alt="The table at the boathouse" className="aspect-[4/5] w-full object-cover" />
         </Rise>
         <Rise live={live}>
           <h2 className="m-0 font-[family-name:var(--font-display)] text-[clamp(2.4rem,5vw,4rem)] leading-none font-extrabold tracking-[-0.04em]">Stay through Sunday.</h2>

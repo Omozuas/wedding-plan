@@ -1,20 +1,21 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { shutterDay as day } from "./shutter-day";
 
 const CUTS = [
-  { src: "/photos/walk.jpg", motion: "sh-from-left" },
-  { src: "/photos/bouquet.jpg", motion: "sh-from-top" },
-  { src: "/photos/rings.jpg", motion: "sh-from-right" },
-  { src: "/photos/kiss.jpg", motion: "sh-from-bottom" },
+  { src: day.images.walk.src, motion: "sh-from-left" },
+  { src: day.images.bouquet.src, motion: "sh-from-top" },
+  { src: day.images.rings.src, motion: "sh-from-right" },
+  { src: day.images.kiss.src, motion: "sh-from-bottom" },
 ];
 const CUT_STEP = 1.45;
 
 export function Shutter() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="overflow-x-hidden bg-[#101114] text-[#f6f3ee]">
+    <div className="overflow-x-hidden bg-[#101114] text-[#f6f3ee]" style={themeVars(day.colors)}>
       <style>{`
         .sh-sky { opacity: 1; transition: opacity 0.9s ease; }
         .sh-sky.is-leaving { opacity: 0; }
@@ -100,7 +101,7 @@ function Cuts({ onDone }: { onDone: () => void }) {
       {CUTS.map((cut, index) => (
         <img key={cut.src} src={cut.src} alt="" className={`sh-cut ${cut.motion} absolute inset-0 size-full object-cover object-[center_34%]`} style={{ animationDelay: `${index * CUT_STEP}s`, zIndex: index + 1 }} />
       ))}
-      <img src="/photos/couple.jpg" alt="" className="sh-hold absolute inset-0 z-[5] size-full object-cover object-[center_30%]" />
+      <img src={day.images.couple.src} alt="" className="sh-hold absolute inset-0 z-[5] size-full object-cover object-[center_30%]" />
       {CUTS.map((cut, index) => (
         <span key={cut.src} className="sh-leak pointer-events-none absolute inset-y-0 left-0 z-[6] w-1/2 bg-gradient-to-r from-transparent via-white/80 to-transparent" style={{ animationDelay: `${index * CUT_STEP + 0.08}s` }} />
       ))}
@@ -127,10 +128,10 @@ function Cuts({ onDone }: { onDone: () => void }) {
 }
 
 const FRAMES = [
-  { src: "/photos/walk.jpg", alt: "The walk to the water", no: "02" },
-  { src: "/photos/bouquet.jpg", alt: "The bouquet", no: "03" },
-  { src: "/photos/kiss.jpg", alt: "The kiss", no: "04" },
-  { src: "/photos/rings.jpg", alt: "The rings", no: "05" },
+  { src: day.images.walk.src, alt: "The walk to the water", no: "02" },
+  { src: day.images.bouquet.src, alt: "The bouquet", no: "03" },
+  { src: day.images.kiss.src, alt: "The kiss", no: "04" },
+  { src: day.images.rings.src, alt: "The rings", no: "05" },
 ];
 
 function Frame({ live }: { live: boolean }) {
@@ -143,7 +144,7 @@ function Frame({ live }: { live: boolean }) {
         </div>
         <div className="mt-3 grid grid-cols-2 gap-2 sm:h-[calc(100dvh-8rem)] sm:grid-cols-4 sm:grid-rows-2 sm:gap-3">
           <figure className="relative col-span-2 overflow-hidden sm:row-span-2">
-            <img src="/photos/couple.jpg" alt="Claire and Thomas at the lake" className="sh-in aspect-[4/5] w-full object-cover object-[center_30%] sm:absolute sm:inset-0 sm:aspect-auto sm:size-full" />
+            <img src={day.images.couple.src} alt="Claire and Thomas at the lake" className="sh-in aspect-[4/5] w-full object-cover object-[center_30%] sm:absolute sm:inset-0 sm:aspect-auto sm:size-full" />
             <figcaption className="absolute inset-x-0 bottom-0 bg-black/75 px-4 py-4">
               <p className="m-0 text-[0.68rem] tracking-[0.28em] text-[#ff2f86] uppercase">01 · {day.time}</p>
               <h1 className="m-0 mt-1 max-w-full font-[family-name:var(--font-display)] text-[clamp(1.7rem,4.2vw,3.2rem)] leading-[0.88] font-extrabold tracking-[-0.05em]">
@@ -170,7 +171,7 @@ function Frame({ live }: { live: boolean }) {
 
       <section className="px-3 sm:px-6">
         <div className="relative overflow-hidden">
-          <img src="/photos/kiss.jpg" alt="The kiss" className="sh-pan aspect-[16/9] w-full object-cover object-[center_42%] sm:aspect-[21/9]" />
+          <img src={day.images.kiss.src} alt="The kiss" className="sh-pan aspect-[16/9] w-full object-cover object-[center_42%] sm:aspect-[21/9]" />
           <p className="absolute bottom-3 left-3 m-0 bg-[#ff2f86] px-3 py-1 text-[0.68rem] font-extrabold tracking-[0.22em] text-white uppercase">{day.place}</p>
         </div>
         <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -203,7 +204,7 @@ function Frame({ live }: { live: boolean }) {
         <Rise live={live}>
           <div className="pr-3 pb-3">
             <div className="relative">
-              <img src="/photos/dress.jpg" alt="Supper in the boathouse" className="relative z-[1] aspect-[4/5] w-full object-cover" />
+              <img src={day.images.dress.src} alt="Supper in the boathouse" className="relative z-[1] aspect-[4/5] w-full object-cover" />
               <span className="absolute top-3 left-3 size-full border-2 border-[#ff2f86]" />
             </div>
           </div>

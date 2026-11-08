@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { northlightDay as day } from "./northlight-day";
 
 function coverFade(progress: number, start: number, end: number) {
@@ -36,7 +37,7 @@ function Rise({ children, className = "" }: { children: ReactNode; className?: s
 
 export function Northlight() {
   return (
-    <div className="bg-[#070b0a] text-[#efe6d6]">
+    <div className="bg-[#070b0a] text-[#efe6d6]" style={themeVars(day.colors)}>
       <style>{`
         .nl-rise { opacity: 0; transform: translateY(28px); }
         .nl-rise.is-in { animation: nl-rise 1.1s cubic-bezier(0.16, 0.84, 0.3, 1) forwards; }
@@ -120,7 +121,7 @@ function SlitIntro() {
   return (
     <section ref={rootRef} className="relative h-[480vh]" aria-label="Scroll to bring the light across the bay">
       <div className="sticky top-0 h-dvh overflow-hidden">
-        <img data-photo src="/photos/walk.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" style={{ clipPath: "inset(0 82% 0 0%)" }} />
+        <img data-photo src={day.images.walk.src} alt="" className="absolute inset-0 h-full w-full object-cover" style={{ clipPath: "inset(0 82% 0 0%)" }} />
         <div data-beam className="nl-beam pointer-events-none absolute inset-y-0 left-0 w-[18%] bg-[linear-gradient(90deg,transparent,rgba(231,161,90,0.28),transparent)]" />
         <div data-names className="pointer-events-none absolute inset-0 grid place-items-center px-6 text-center opacity-0">
           <div>
@@ -173,7 +174,7 @@ function Shore() {
       </section>
       <section ref={dockRef} className="relative h-[260vh]">
         <div className="sticky top-0 grid h-dvh items-end md:grid-cols-2">
-          <img src="/photos/dress.jpg" alt="" className="h-[42vh] w-full object-cover md:h-dvh" />
+          <img src={day.images.dress.src} alt="" className="h-[42vh] w-full object-cover md:h-dvh" />
           <div className="relative px-6 py-10 md:px-12">
             {day.dock.map((line, index) => (
               <p key={line} data-line className="absolute inset-x-6 bottom-10 m-0 font-[family-name:var(--font-serif)] text-[clamp(1.7rem,4vw,2.8rem)] leading-snug md:inset-x-12" style={{ opacity: index === 0 ? 1 : 0 }}>
@@ -201,7 +202,7 @@ function Shore() {
       </section>
       <section className="grid items-center gap-8 px-6 py-16 md:grid-cols-2 md:px-12">
         <Rise>
-          <img src="/photos/rings.jpg" alt="" className="aspect-[4/5] w-full object-cover" />
+          <img src={day.images.rings.src} alt="" className="aspect-[4/5] w-full object-cover" />
         </Rise>
         <Rise>
           <h2 className="m-0 font-[family-name:var(--font-serif)] text-[clamp(2rem,5vw,3.4rem)] leading-none font-medium">A place on the dock.</h2>

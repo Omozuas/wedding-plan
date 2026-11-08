@@ -1,21 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { duendeDay as day } from "./duende-day";
 
 const ROOMS = [
-  { src: "/photos/walk.jpg", focus: "center 42%", kicker: "One", line: day.dock[0], note: day.letter[0] },
-  { src: "/photos/bouquet.jpg", focus: "center", kicker: "Two", line: day.dock[1], note: day.letter[1] },
-  { src: "/photos/rings.jpg", focus: "center", kicker: "Three", line: day.dock[2], note: day.letter[2] },
-  { src: "/photos/kiss.jpg", focus: "center 38%", kicker: "Four", line: day.dock[3], note: day.letter[3] },
-  { src: "/photos/dress.jpg", focus: "center", kicker: "Five", line: day.hours[2].title, note: day.hours[2].detail },
-  { src: "/photos/couple.jpg", focus: "center 30%", kicker: "Six", line: day.arrival, note: `${day.bride} and ${day.groom}. ${day.address}.` },
+  { src: day.images.walk.src, focus: "center 42%", kicker: "One", line: day.dock[0], note: day.letter[0] },
+  { src: day.images.bouquet.src, focus: "center", kicker: "Two", line: day.dock[1], note: day.letter[1] },
+  { src: day.images.rings.src, focus: "center", kicker: "Three", line: day.dock[2], note: day.letter[2] },
+  { src: day.images.kiss.src, focus: "center 38%", kicker: "Four", line: day.dock[3], note: day.letter[3] },
+  { src: day.images.dress.src, focus: "center", kicker: "Five", line: day.hours[2].title, note: day.hours[2].detail },
+  { src: day.images.couple.src, focus: "center 30%", kicker: "Six", line: day.arrival, note: `${day.bride} and ${day.groom}. ${day.address}.` },
 ];
 
 export function Duende() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="overflow-x-clip bg-[#f4efe8] text-[#2a1214]">
+    <div className="overflow-x-clip bg-[#f4efe8] text-[#2a1214]" style={themeVars(day.colors)}>
       <style>{`
         .du-sky { opacity: 1; transition: opacity 1s ease; }
         .du-sky.is-leaving { opacity: 0; }
@@ -62,8 +63,8 @@ function Pull({ onDone }: { onDone: () => void }) {
 
   return (
     <section className={`du-sky fixed inset-0 z-50 overflow-hidden bg-[#1a0c0e] text-[#f4efe8] ${leaving ? "is-leaving" : ""}`} aria-label="The camera pulls back from the flowers to the couple">
-      <img src="/photos/couple.jpg" alt="" className="du-back absolute inset-0 size-full object-cover object-[center_30%]" />
-      <img src="/photos/bouquet.jpg" alt="" className="du-pull absolute inset-0 size-full object-cover object-center" />
+      <img src={day.images.couple.src} alt="" className="du-back absolute inset-0 size-full object-cover object-[center_30%]" />
+      <img src={day.images.bouquet.src} alt="" className="du-pull absolute inset-0 size-full object-cover object-center" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30" />
       <p className="du-said absolute inset-x-0 top-[10vh] m-0 text-center font-[family-name:var(--font-serif)] text-[clamp(1.6rem,4vw,2.8rem)] italic">Closer.</p>
       <div className="absolute inset-x-0 bottom-[9vh] px-6 text-center">
@@ -94,7 +95,7 @@ function Essay({ live }: { live: boolean }) {
         </div>
       </section>
       <section className="grid md:grid-cols-2">
-        <img src="/photos/bouquet.jpg" alt="The flowers" className="h-[70vh] w-full object-cover md:h-auto md:min-h-[80vh]" />
+        <img src={day.images.bouquet.src} alt="The flowers" className="h-[70vh] w-full object-cover md:h-auto md:min-h-[80vh]" />
         <div className="flex flex-col justify-center gap-8 px-6 py-16 md:px-12">
           {day.letter.map((paragraph) => (
             <Rise key={paragraph} live={live}>
@@ -132,7 +133,7 @@ function Essay({ live }: { live: boolean }) {
       </section>
       <section className="grid items-center gap-10 px-6 py-20 md:grid-cols-2 md:px-14">
         <Rise live={live}>
-          <img src="/photos/dress.jpg" alt="The table set for supper" className="aspect-[4/5] w-full object-cover" />
+          <img src={day.images.dress.src} alt="The table set for supper" className="aspect-[4/5] w-full object-cover" />
         </Rise>
         <Rise live={live}>
           <p className="m-0 text-[0.68rem] tracking-[0.28em] text-[#8a3030] uppercase">What to wear</p>

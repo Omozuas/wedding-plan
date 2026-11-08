@@ -1,23 +1,24 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { compasDay as day } from "./compas-day";
 
 const STRIPS = Array.from({ length: 8 }, (_, index) => index);
 
 const BEATS = [
-  { src: "/photos/walk.jpg", focus: "center 40%", time: "01", line: day.dock[0], note: day.letter[0], ink: "#12080c", wash: "#f4efe6" },
-  { src: "/photos/bouquet.jpg", focus: "center", time: "02", line: day.dock[1], note: day.letter[1], ink: "#f4efe6", wash: "#9b1d2e" },
-  { src: "/photos/rings.jpg", focus: "center", time: "03", line: day.dock[2], note: day.letter[2], ink: "#12080c", wash: "#e3a008" },
-  { src: "/photos/kiss.jpg", focus: "center 40%", time: "04", line: day.dock[3], note: day.letter[3], ink: "#f4efe6", wash: "#12080c" },
-  { src: "/photos/dress.jpg", focus: "center", time: "05", line: day.hours[2].title, note: day.hours[2].detail, ink: "#12080c", wash: "#f4efe6" },
-  { src: "/photos/couple.jpg", focus: "center 30%", time: "06", line: day.arrival, note: day.address, ink: "#f4efe6", wash: "#9b1d2e" },
+  { src: day.images.walk.src, focus: "center 40%", time: "01", line: day.dock[0], note: day.letter[0], ink: "#12080c", wash: "#f4efe6" },
+  { src: day.images.bouquet.src, focus: "center", time: "02", line: day.dock[1], note: day.letter[1], ink: "#f4efe6", wash: "#9b1d2e" },
+  { src: day.images.rings.src, focus: "center", time: "03", line: day.dock[2], note: day.letter[2], ink: "#12080c", wash: "#e3a008" },
+  { src: day.images.kiss.src, focus: "center 40%", time: "04", line: day.dock[3], note: day.letter[3], ink: "#f4efe6", wash: "#12080c" },
+  { src: day.images.dress.src, focus: "center", time: "05", line: day.hours[2].title, note: day.hours[2].detail, ink: "#12080c", wash: "#f4efe6" },
+  { src: day.images.couple.src, focus: "center 30%", time: "06", line: day.arrival, note: day.address, ink: "#f4efe6", wash: "#9b1d2e" },
 ];
 
 export function Compas() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="overflow-x-clip bg-[#12080c] text-[#f4efe6]">
+    <div className="overflow-x-clip bg-[#12080c] text-[#f4efe6]" style={themeVars(day.colors)}>
       <style>{`
         .co-sky { opacity: 1; transition: opacity 0.9s ease; }
         .co-sky.is-leaving { opacity: 0; }
@@ -67,8 +68,8 @@ function Beat({ onDone }: { onDone: () => void }) {
 
   return (
     <section className={`co-sky fixed inset-0 z-50 overflow-hidden bg-[#12080c] text-[#f4efe6] ${leaving ? "is-leaving" : ""}`} aria-label="The picture assembles on the beat, then the couple arrives">
-      <img src="/photos/walk.jpg" alt="" className="absolute inset-0 size-full object-cover object-[center_40%]" />
-      <img src="/photos/couple.jpg" alt="" className="co-arrive absolute inset-0 size-full object-cover object-[center_30%]" />
+      <img src={day.images.walk.src} alt="" className="absolute inset-0 size-full object-cover object-[center_40%]" />
+      <img src={day.images.couple.src} alt="" className="co-arrive absolute inset-0 size-full object-cover object-[center_30%]" />
       <div className="absolute inset-0 z-[1] flex">
         {STRIPS.map((index) => (
           <div key={index} className={`h-full flex-1 overflow-hidden ${index % 2 ? "co-lift-down" : "co-lift-up"}`} style={{ animationDelay: `${6 + index * 0.08}s` }}>
@@ -99,7 +100,7 @@ function Score({ live }: { live: boolean }) {
   return (
     <div inert={live ? undefined : true} aria-hidden={live ? undefined : true}>
       <section className="relative min-h-dvh">
-        <img src="/photos/couple.jpg" alt="Claire and Thomas at the lake" className="absolute inset-0 size-full object-cover object-[center_30%]" />
+        <img src={day.images.couple.src} alt="Claire and Thomas at the lake" className="absolute inset-0 size-full object-cover object-[center_30%]" />
         <div className="absolute inset-0 bg-[#12080c]/40" />
         <div className="relative flex min-h-dvh flex-col justify-end px-6 pt-16 pb-20">
           <p className="m-0 text-[0.68rem] font-semibold tracking-[0.28em] text-[#e3a008] uppercase">{day.place}</p>
@@ -151,7 +152,7 @@ function Score({ live }: { live: boolean }) {
           </ul>
         </Rise>
         <Rise live={live}>
-          <img src="/photos/rings.jpg" alt="The rings" className="aspect-square w-full object-cover" />
+          <img src={day.images.rings.src} alt="The rings" className="aspect-square w-full object-cover" />
         </Rise>
       </section>
       <section className="bg-[#9b1d2e] px-6 py-16">

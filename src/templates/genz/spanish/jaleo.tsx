@@ -1,28 +1,29 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { jaleoDay as day } from "./jaleo-day";
 
 const CARDS = [
-  { src: "/photos/kiss.jpg", focus: "center 40%", tilt: "-5deg", delay: "0.5s", line: "A kiss, before you put it down.", lineDelay: "0.8s" },
-  { src: "/photos/bouquet.jpg", focus: "center", tilt: "4deg", delay: "4.2s", line: "The flowers, still warm.", lineDelay: "4.4s" },
-  { src: "/photos/rings.jpg", focus: "center", tilt: "-3deg", delay: "7.9s", line: "The rings, in the last light.", lineDelay: "8.1s" },
-  { src: "/photos/dress.jpg", focus: "center", tilt: "3deg", delay: "11.6s", line: "The long table, waiting.", lineDelay: "11.8s" },
+  { src: day.images.kiss.src, focus: "center 40%", tilt: "-5deg", delay: "0.5s", line: "A kiss, before you put it down.", lineDelay: "0.8s" },
+  { src: day.images.bouquet.src, focus: "center", tilt: "4deg", delay: "4.2s", line: "The flowers, still warm.", lineDelay: "4.4s" },
+  { src: day.images.rings.src, focus: "center", tilt: "-3deg", delay: "7.9s", line: "The rings, in the last light.", lineDelay: "8.1s" },
+  { src: day.images.dress.src, focus: "center", tilt: "3deg", delay: "11.6s", line: "The long table, waiting.", lineDelay: "11.8s" },
 ];
 
 const PRINTS = [
-  { src: "/photos/walk.jpg", focus: "center 40%", kicker: "01", line: day.dock[0], note: day.letter[0] },
-  { src: "/photos/bouquet.jpg", focus: "center", kicker: "02", line: day.dock[1], note: day.letter[1] },
-  { src: "/photos/rings.jpg", focus: "center", kicker: "03", line: day.dock[2], note: day.letter[2] },
-  { src: "/photos/kiss.jpg", focus: "center 36%", kicker: "04", line: day.dock[3], note: day.letter[3] },
-  { src: "/photos/dress.jpg", focus: "center", kicker: "05", line: day.hours[2].title, note: day.dress },
-  { src: "/photos/couple.jpg", focus: "center 30%", kicker: "06", line: `${day.time}. ${day.venue}.`, note: day.address },
+  { src: day.images.walk.src, focus: "center 40%", kicker: "01", line: day.dock[0], note: day.letter[0] },
+  { src: day.images.bouquet.src, focus: "center", kicker: "02", line: day.dock[1], note: day.letter[1] },
+  { src: day.images.rings.src, focus: "center", kicker: "03", line: day.dock[2], note: day.letter[2] },
+  { src: day.images.kiss.src, focus: "center 36%", kicker: "04", line: day.dock[3], note: day.letter[3] },
+  { src: day.images.dress.src, focus: "center", kicker: "05", line: day.hours[2].title, note: day.dress },
+  { src: day.images.couple.src, focus: "center 30%", kicker: "06", line: `${day.time}. ${day.venue}.`, note: day.address },
 ];
 
 export function Jaleo() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="overflow-x-clip bg-[#f7f1ea] text-[#1c1214]">
+    <div className="overflow-x-clip bg-[#f7f1ea] text-[#1c1214]" style={themeVars(day.colors)}>
       <style>{`
         .ja-sky { opacity: 1; transition: opacity 1s ease; }
         .ja-sky.is-leaving { opacity: 0; }
@@ -65,7 +66,7 @@ function Stack({ onDone }: { onDone: () => void }) {
   return (
     <section className={`ja-sky fixed inset-0 z-50 overflow-hidden bg-[#1a1014] text-[#f7f1ea] ${leaving ? "is-leaving" : ""}`} aria-label="Prints peel away until Claire and Thomas remain">
       <div className="absolute top-[7vh] left-1/2 h-[min(62vh,34rem)] w-[min(78vw,26rem)] -translate-x-1/2">
-        <img src="/photos/couple.jpg" alt="" className="absolute inset-0 size-full border-[10px] border-[#f7f1ea] object-cover object-[center_30%] shadow-[0_24px_50px_rgba(0,0,0,0.45)]" />
+        <img src={day.images.couple.src} alt="" className="absolute inset-0 size-full border-[10px] border-[#f7f1ea] object-cover object-[center_30%] shadow-[0_24px_50px_rgba(0,0,0,0.45)]" />
         {CARDS.map((card, index) => (
           <img
             key={card.src}

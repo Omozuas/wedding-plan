@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { goldhourDay as day } from "./goldhour-day";
 
 function coverFade(progress: number, start: number, end: number) {
@@ -43,7 +44,7 @@ const lines = [
 
 export function Goldhour() {
   return (
-    <div className="bg-[#f6ead8] text-[#1e3328]">
+    <div className="bg-[#f6ead8] text-[#1e3328]" style={themeVars(day.colors)}>
       <style>{`
         .gh-rise { opacity: 0; transform: translateY(32px); }
         .gh-rise.is-in { animation: gh-rise 1.15s cubic-bezier(0.16, 0.84, 0.3, 1) forwards; }
@@ -128,7 +129,7 @@ function SunIntro() {
   return (
     <section ref={rootRef} className="relative h-[500vh] bg-[#1a120c]" aria-label="Scroll and the afternoon opens">
       <div className="sticky top-0 h-dvh overflow-hidden">
-        <img data-photo src="/photos/couple.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" style={{ filter: "brightness(0.28)" }} />
+        <img data-photo src={day.images.couple.src} alt="" className="absolute inset-0 h-full w-full object-cover" style={{ filter: "brightness(0.28)" }} />
         <div data-veil className="absolute inset-0 bg-[#1a120c]" />
         <div data-sun className="pointer-events-none absolute size-[170vmax] -translate-x-1/2 -translate-y-1/2" style={{ left: "34%", top: "82%" }}>
           <div className="gh-sun size-full bg-[radial-gradient(circle,#fff8e4_0%,rgba(231,161,90,0.4)_16%,rgba(196,106,69,0.08)_34%,transparent_52%)] mix-blend-screen" />
@@ -172,7 +173,7 @@ function Afternoon() {
         </Rise>
       </section>
       <section className="px-6 md:px-12">
-        <img src="/photos/bouquet.jpg" alt="" className="h-[58vh] w-full object-cover" />
+        <img src={day.images.bouquet.src} alt="" className="h-[58vh] w-full object-cover" />
       </section>
       <section className="grid gap-16 px-6 py-20 md:px-12">
         {day.hours.map((hour) => (
@@ -189,7 +190,7 @@ function Afternoon() {
       </section>
       <section className="grid items-center gap-10 bg-[#1e3328] px-6 py-16 text-[#f6ead8] md:grid-cols-2 md:px-12">
         <Rise>
-          <img src="/photos/kiss.jpg" alt="" className="aspect-[4/5] w-full object-cover" />
+          <img src={day.images.kiss.src} alt="" className="aspect-[4/5] w-full object-cover" />
         </Rise>
         <Rise>
           <h2 className="m-0 font-[family-name:var(--font-serif)] text-[clamp(2.2rem,5vw,3.6rem)] leading-none italic">Stay through Sunday.</h2>

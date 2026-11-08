@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { saltlineDay as day } from "./saltline-day";
 
 function useInView() {
@@ -54,7 +55,7 @@ function band(progress: number, start: number, end: number) {
 
 export function Saltline() {
   return (
-    <div className="bg-[#e7efe9] text-[#14221c]">
+    <div className="bg-[#e7efe9] text-[#14221c]" style={themeVars(day.colors)}>
       <style>{`
         .salt-rise { opacity: 0; transform: translateY(28px); }
         .salt-rise.is-in { animation: salt-rise 0.9s cubic-bezier(0.16, 0.84, 0.3, 1) forwards; }
@@ -177,8 +178,8 @@ function ScrollCover() {
     <section ref={rootRef} className="relative h-[520vh] bg-[#071411]" aria-label="Scroll up to enter">
       <div className="sticky top-0 h-dvh overflow-hidden">
         <div className="salt-water absolute inset-0" />
-        <img data-far src="/photos/couple.jpg" alt="" className="absolute inset-[-8%] h-[116%] w-[116%] object-cover opacity-0" />
-        <img data-near src="/photos/walk.jpg" alt="" className="absolute inset-[-8%] h-[116%] w-[116%] object-cover opacity-0" />
+        <img data-far src={day.images.couple.src} alt="" className="absolute inset-[-8%] h-[116%] w-[116%] object-cover opacity-0" />
+        <img data-near src={day.images.walk.src} alt="" className="absolute inset-[-8%] h-[116%] w-[116%] object-cover opacity-0" />
         <div data-mist className="absolute inset-0 bg-[#071411]" />
         <div data-wash className="absolute inset-0 bg-[#e7efe9] opacity-0" />
         <span className="salt-glint pointer-events-none absolute top-[22%] h-px w-2/5 bg-white/40" />
@@ -261,7 +262,7 @@ function Invitation({ live, revealed }: { live: boolean; revealed: boolean }) {
           <p className={`salt-rise m-0 mt-2 font-[family-name:var(--font-ui)] text-sm tracking-wide ${revealed ? "is-in" : ""}`} style={{ animationDelay: "0.4s" }}>{day.venue}</p>
         </div>
         <div className="relative order-1 min-h-[46vh] overflow-hidden md:order-2 md:min-h-dvh" style={{ transform: "translate3d(0, calc(var(--p, 0) * 48px), 0)" }}>
-          <img src="/photos/couple.jpg" alt="" className="salt-ken absolute inset-0 h-[112%] w-full object-cover" />
+          <img src={day.images.couple.src} alt="" className="salt-ken absolute inset-0 h-[112%] w-full object-cover" />
         </div>
       </section>
 
@@ -331,7 +332,7 @@ function Invitation({ live, revealed }: { live: boolean; revealed: boolean }) {
 
       <section className="grid items-center gap-8 bg-[#dfeae3] px-5 py-16 sm:px-10 md:grid-cols-2">
         <Rise>
-          <img src="/photos/dress.jpg" alt="" className="aspect-[4/5] w-full object-cover" />
+          <img src={day.images.dress.src} alt="" className="aspect-[4/5] w-full object-cover" />
         </Rise>
         <Rise delay="0.1s">
           <svg viewBox="0 0 240 48" className="mb-4 h-12 w-60" aria-hidden="true">
@@ -344,7 +345,7 @@ function Invitation({ live, revealed }: { live: boolean; revealed: boolean }) {
       </section>
 
       <section className="relative grid min-h-[80vh] place-items-end overflow-hidden px-5 py-16 sm:px-10">
-        <img src="/photos/rings.jpg" alt="" className="salt-ken absolute inset-0 h-full w-full object-cover" />
+        <img src={day.images.rings.src} alt="" className="salt-ken absolute inset-0 h-full w-full object-cover" />
         <div className="relative max-w-lg bg-[#14221c] px-6 py-8 text-[#e7efe9]">
           <p className="m-0 font-[family-name:var(--font-serif)] text-[clamp(1.8rem,4vw,2.6rem)] leading-snug">When the lanterns go down, the sound is only water.</p>
           <p className="m-0 mt-4 font-[family-name:var(--font-ui)] text-sm tracking-[0.18em] uppercase">{day.bride} and {day.groom}</p>

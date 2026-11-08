@@ -1,4 +1,14 @@
-export const jaleoDay = {
+import { defineDay } from "@/content";
+import { palettes } from "@/content/palettes";
+
+export const jaleoDay = defineDay(
+  {
+    id: "spanish-jaleo",
+    family: "genz",
+    style: "spanish",
+    name: "Jaleo",
+  },
+  {
   couple: "Claire & Thomas",
   bride: "Claire Beaumont",
   groom: "Thomas Reid",
@@ -35,4 +45,29 @@ export const jaleoDay = {
     { name: "Along the shore", detail: "Inns at Windermere, if you would rather the morning be quiet." },
     { name: "Port Carling", detail: "Rooms in the village if you come up on Friday." },
   ],
-};
+},
+  {
+    colors: palettes.jaleo,
+    images: {
+      couple: { src: "/photos/couple.jpg", focus: "center 30%", alt: "The couple" },
+      walk: { src: "/photos/walk.jpg", focus: "center 40%", alt: "Walking together" },
+      bouquet: { src: "/photos/bouquet.jpg", focus: "center", alt: "The bouquet" },
+      rings: { src: "/photos/rings.jpg", focus: "center", alt: "The rings" },
+      kiss: { src: "/photos/kiss.jpg", focus: "center 36%", alt: "A kiss" },
+      dress: { src: "/photos/dress.jpg", focus: "center", alt: "The dress" },
+      more: [
+        // Optional: add up to 4 more (10 total with the 6 above)
+        // { src: "/photos/hero-1.jpg", focus: "center", alt: "Extra 1" },
+        // { src: "/photos/hero-2.jpg", focus: "center", alt: "Extra 2" },
+        // { src: "/photos/hero-3.jpg", focus: "center", alt: "Extra 3" },
+        // { src: "/photos/hero-4.jpg", focus: "center", alt: "Extra 4" },
+      ],
+    },
+    ui: {
+          "introKicker": "Peel",
+          "rsvpTitle": "Save my place",
+          "rsvpSuccess": "We will look for you, {name}.",
+          "rsvpCta": "I am coming"
+    },
+  },
+);

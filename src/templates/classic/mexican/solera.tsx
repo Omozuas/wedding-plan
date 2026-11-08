@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { soleraDay as day } from "./solera-day";
 
 const PETALS = Array.from({ length: 14 }, (_, index) => ({
@@ -12,15 +13,15 @@ const PETALS = Array.from({ length: 14 }, (_, index) => ({
 }));
 
 const PLATES = [
-  { src: "/photos/rings.jpg", focus: "center", klass: "so-shot-a" },
-  { src: "/photos/bouquet.jpg", focus: "center", klass: "so-shot-b" },
-  { src: "/photos/couple.jpg", focus: "center 32%", klass: "so-shot-c" },
+  { src: day.images.rings.src, focus: "center", klass: "so-shot-a" },
+  { src: day.images.bouquet.src, focus: "center", klass: "so-shot-b" },
+  { src: day.images.couple.src, focus: "center 32%", klass: "so-shot-c" },
 ];
 
 export function Solera() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="overflow-x-hidden bg-[#f3eadc] text-[#2c1812]">
+    <div className="overflow-x-hidden bg-[#f3eadc] text-[#2c1812]" style={themeVars(day.colors)}>
       <style>{`
         .so-sky { opacity: 1; transition: opacity 1s ease; }
         .so-sky.is-leaving { opacity: 0; }
@@ -111,7 +112,7 @@ function Menu({ live }: { live: boolean }) {
       <section className="px-6 py-20 text-center">
         <p className="m-0 text-[0.68rem] tracking-[0.38em] text-[#9c4220] uppercase">{day.place}</p>
         <div className="mx-auto mt-8 size-[min(70vw,18rem)] overflow-hidden rounded-full border-[10px] border-[#f7f1e6] shadow-[0_0_0_1px_#b8893d,0_20px_40px_rgba(44,24,18,0.15)]">
-          <img src="/photos/couple.jpg" alt="Claire and Thomas at the lake" className="size-full object-cover object-[center_30%]" />
+          <img src={day.images.couple.src} alt="Claire and Thomas at the lake" className="size-full object-cover object-[center_30%]" />
         </div>
         <h1 className="m-0 mt-8 font-[family-name:var(--font-serif)] text-[clamp(3rem,8vw,5.5rem)] leading-[0.9] font-medium">
           {day.first}
@@ -160,7 +161,7 @@ function Menu({ live }: { live: boolean }) {
       </section>
       <section className="mx-auto grid max-w-5xl items-center gap-10 px-6 py-20 md:grid-cols-2">
         <Rise live={live}>
-          <img src="/photos/rings.jpg" alt="The rings" className="aspect-square w-full rounded-full object-cover" />
+          <img src={day.images.rings.src} alt="The rings" className="aspect-square w-full rounded-full object-cover" />
         </Rise>
         <Rise live={live}>
           <p className="m-0 text-[0.68rem] tracking-[0.28em] text-[#9c4220] uppercase">What to wear</p>

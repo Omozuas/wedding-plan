@@ -1,21 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { velaDay as day } from "./vela-day";
 
 const ROOMS = [
-  { src: "/photos/bouquet.jpg", focus: "center", kicker: "The flowers", line: day.dock[1], note: day.letter[0] },
-  { src: "/photos/couple.jpg", focus: "center 32%", kicker: "The two of them", line: `${day.first} and ${day.second}`, note: day.letter[1] },
-  { src: "/photos/walk.jpg", focus: "center 40%", kicker: "The water", line: day.dock[0], note: day.letter[2] },
-  { src: "/photos/rings.jpg", focus: "center", kicker: "The rings", line: day.dock[2], note: "Held up once, where the late light can find them." },
-  { src: "/photos/dress.jpg", focus: "center", kicker: "Supper", line: day.hours[2].detail, note: day.letter[3] },
-  { src: "/photos/kiss.jpg", focus: "center 40%", kicker: "After", line: day.dock[3], note: day.dress },
+  { src: day.images.bouquet.src, focus: "center", kicker: "The flowers", line: day.dock[1], note: day.letter[0] },
+  { src: day.images.couple.src, focus: "center 32%", kicker: "The two of them", line: `${day.first} and ${day.second}`, note: day.letter[1] },
+  { src: day.images.walk.src, focus: "center 40%", kicker: "The water", line: day.dock[0], note: day.letter[2] },
+  { src: day.images.rings.src, focus: "center", kicker: "The rings", line: day.dock[2], note: "Held up once, where the late light can find them." },
+  { src: day.images.dress.src, focus: "center", kicker: "Supper", line: day.hours[2].detail, note: day.letter[3] },
+  { src: day.images.kiss.src, focus: "center 40%", kicker: "After", line: day.dock[3], note: day.dress },
 ];
 
 export function Vela() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="overflow-x-clip bg-[#100c0a] text-[#f6efe6]">
+    <div className="overflow-x-clip bg-[#100c0a] text-[#f6efe6]" style={themeVars(day.colors)}>
       <style>{`
         .ve-sky { opacity: 1; transition: opacity 1.1s ease; }
         .ve-sky.is-leaving { opacity: 0; }
@@ -62,9 +63,9 @@ function Light({ onDone }: { onDone: () => void }) {
 
   return (
     <section className={`ve-sky fixed inset-0 z-50 overflow-hidden bg-[#100c0a] text-[#f6efe6] ${leaving ? "is-leaving" : ""}`} aria-label="A pool of light moves across the room, then the night opens">
-      <img src="/photos/bouquet.jpg" alt="" className="ve-photo object-center" style={{ animation: "ve-hold 7s ease both, ve-drift 18s ease-in-out alternate infinite" }} />
-      <img src="/photos/couple.jpg" alt="" className="ve-photo object-[center_32%]" style={{ animation: "ve-hold 7.2s ease 6.2s both, ve-drift 18s ease-in-out alternate infinite" }} />
-      <img src="/photos/walk.jpg" alt="" className="ve-photo ve-final object-[center_42%]" style={{ animation: "ve-stay 1.8s ease 12.8s forwards, ve-drift 18s ease-in-out alternate infinite" }} />
+      <img src={day.images.bouquet.src} alt="" className="ve-photo object-center" style={{ animation: "ve-hold 7s ease both, ve-drift 18s ease-in-out alternate infinite" }} />
+      <img src={day.images.couple.src} alt="" className="ve-photo object-[center_32%]" style={{ animation: "ve-hold 7.2s ease 6.2s both, ve-drift 18s ease-in-out alternate infinite" }} />
+      <img src={day.images.walk.src} alt="" className="ve-photo ve-final object-[center_42%]" style={{ animation: "ve-stay 1.8s ease 12.8s forwards, ve-drift 18s ease-in-out alternate infinite" }} />
       <div className="ve-shade z-[2]" />
       <p className="ve-line absolute top-[16vh] left-[8vw] z-[3] m-0 max-w-[12rem] font-[family-name:var(--font-serif)] text-2xl italic" style={{ animationDelay: "1.4s" }}>The flowers first.</p>
       <div className="absolute top-[18vh] left-1/2 z-[3] w-[min(80vw,24rem)] -translate-x-1/2 text-center">

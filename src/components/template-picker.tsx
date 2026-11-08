@@ -110,6 +110,11 @@ export function TemplatePicker() {
                   <SoleraCard />
                   <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Spanish</p>
                   <AzaharCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Afro-American</p>
+                  <LegacyCard />
+                  <CovenantCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">UK Black</p>
+                  <VestryCard />
                 </>
               )}
               {family.href === "/hubble/nigerian" && (
@@ -122,6 +127,10 @@ export function TemplatePicker() {
                   <MiradorCard />
                   <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Spanish</p>
                   <DuendeCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Afro-American</p>
+                  <SageCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">UK Black</p>
+                  <EllingtonCard />
                 </>
               )}
               {family.href === "/modern/nigerian" && (
@@ -134,6 +143,10 @@ export function TemplatePicker() {
                   <FandangoCard />
                   <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Spanish</p>
                   <CompasCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Afro-American</p>
+                  <StrideCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">UK Black</p>
+                  <MonarchCard />
                 </>
               )}
               {family.href === "/genz/nigerian" && (
@@ -150,6 +163,12 @@ export function TemplatePicker() {
                   <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Spanish</p>
                   <VelaCard />
                   <JaleoCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">Afro-American</p>
+                  <SkyburstCard />
+                  <SecondlineCard />
+                  <p className="m-0 mt-10 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">UK Black</p>
+                  <BasslineCard />
+                  <NottingCard />
                 </>
               )}
             </section>
@@ -564,6 +583,82 @@ function DuendeCard() {
   );
 }
 
+function LegacyCard() {
+  return (
+    <article className="mt-3 rounded-[1.6rem] bg-[#1a120e] px-5 pt-6 pb-5 text-[#f4ead8] shadow-[0_18px_40px_rgba(26,18,14,0.28)]">
+      <div className="relative mx-auto w-[78%] overflow-hidden border-[10px] border-[#f4ead8]">
+        <img src="/photos/couple.jpg" alt="Claire and Thomas at the lake" className="aspect-[3/4] w-full object-cover object-[center_30%]" />
+        <span className="absolute top-1/2 left-1/2 grid size-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[#c9a45c] bg-[#8a6a28] font-[family-name:var(--font-serif)] text-sm tracking-[0.08em] text-[#f4ead8]">C·T</span>
+      </div>
+      <h3 className="m-0 mt-5 text-center font-[family-name:var(--font-serif)] text-5xl leading-none text-[#c9a45c]">Legacy</h3>
+      <p className="m-0 mt-3 text-center font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#c9a45c] uppercase">Classic · Lake Rosseau</p>
+      <p className="m-0 mt-2 text-center font-[family-name:var(--font-serif)] text-lg">A gold locket opens through the day</p>
+      <div className="mt-5">
+        <Actions href="/classic/afroamerican/legacy" tone="gold" />
+      </div>
+    </article>
+  );
+}
+
+function CovenantCard() {
+  return (
+    <article className="mt-4 rounded-[1.6rem] bg-[#f7f0e4] px-5 pt-6 pb-5 text-[#2a1a12] shadow-[0_18px_40px_rgba(42,26,18,0.14)] ring-1 ring-[#d4a84b]/25">
+      <div className="relative overflow-hidden">
+        <img src="/photos/walk.jpg" alt="Claire and Thomas by the water" className="aspect-[16/10] w-full object-cover object-[center_40%]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0_40%,rgba(26,16,12,0.45)_100%)]" />
+      </div>
+      <h3 className="m-0 mt-5 text-center font-[family-name:var(--font-serif)] text-5xl leading-none">Covenant</h3>
+      <p className="m-0 mt-3 text-center font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#8b5a18] uppercase">Classic · Cedar Point</p>
+      <p className="m-0 mt-2 text-center font-[family-name:var(--font-serif)] text-lg">Stained light gathers, then the day comes into focus</p>
+      <div className="mt-5">
+        <Actions href="/classic/afroamerican/covenant" tone="navy" />
+      </div>
+    </article>
+  );
+}
+
+function SageCard() {
+  return (
+    <article className="mt-3 overflow-hidden bg-[#1a2e1c] text-[#f6f0e4] shadow-[0_18px_40px_rgba(26,46,28,0.35)]">
+      <div className="relative h-44 overflow-hidden">
+        <img src="/photos/florals.jpg" alt="Florals" className="size-full object-cover brightness-75" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1a2e1c] via-transparent to-[#1a2e1c]/40" />
+        <span className="absolute top-6 left-8 size-3 rounded-[60%_40%_55%_45%/55%_45%_60%_40%] bg-[#d4a84b]" />
+        <span className="absolute top-14 right-10 size-4 rotate-12 rounded-[60%_40%_55%_45%/55%_45%_60%_40%] bg-[#5f7d4a]" />
+      </div>
+      <div className="px-5 py-5">
+        <h3 className="m-0 font-[family-name:var(--font-serif)] text-5xl leading-none text-[#d4a84b]">Sage</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#d4a84b] uppercase">Hubble · Lake Rosseau</p>
+        <p className="m-0 mt-2 font-[family-name:var(--font-serif)] text-lg">Botanical veils part; the gathering begins</p>
+        <div className="mt-5">
+          <Actions href="/hubble/afroamerican/sage" tone="gold" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function StrideCard() {
+  return (
+    <article className="mt-3 overflow-hidden bg-[#0d0a08] text-[#f6efe2] shadow-[0_18px_40px_rgba(0,0,0,0.32)]">
+      <div className="grid grid-cols-5 gap-px bg-[#c9a227]/40">
+        {Array.from({ length: 5 }, (_, index) => (
+          <span key={index} className="h-16 bg-[#1a1008]" style={{ height: `${2.2 + (index % 3) * 0.45}rem` }} />
+        ))}
+      </div>
+      <img src="/photos/couple.jpg" alt="Claire and Thomas" className="h-36 w-full object-cover object-[center_30%]" />
+      <div className="px-5 py-5">
+        <h3 className="m-0 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em] text-[#c9a227]">Stride</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#c9a227] uppercase">Modern · Four o&apos;clock</p>
+        <p className="m-0 mt-2 text-sm text-white/75">Piano keys open on the beat, then the couple arrives</p>
+        <div className="mt-5">
+          <Actions href="/modern/afroamerican/stride" tone="cream" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
 function CompasCard() {
   return (
     <article className="mt-3 overflow-hidden bg-[#12080c] text-[#f4efe6] shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
@@ -618,6 +713,156 @@ function JaleoCard() {
         <p className="m-0 mt-2 text-sm">Prints peel away until the couple remains</p>
         <div className="mt-5">
           <Actions href="/genz/spanish/jaleo" tone="navy" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function SkyburstCard() {
+  return (
+    <article className="mt-3 overflow-hidden rounded-[1.4rem] bg-[#0a0708] text-[#fff6e8] shadow-[0_18px_40px_rgba(10,7,8,0.45)]">
+      <div className="relative h-48 overflow-hidden">
+        <img src="/photos/couple.jpg" alt="Claire and Thomas" className="size-full object-cover object-[center_28%] brightness-75" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(240,193,75,0.45),transparent_42%),radial-gradient(circle_at_78%_30%,rgba(226,59,74,0.35),transparent_40%)]" />
+        <span className="absolute top-6 left-8 size-2 rounded-full bg-[#f0c14b]" />
+        <span className="absolute top-10 right-12 size-3 rounded-full bg-[#e23b4a]" />
+        <span className="absolute bottom-16 left-1/2 size-2 rounded-full bg-[#2ecc71]" />
+      </div>
+      <div className="px-5 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em] text-[#f0c14b]">Skyburst</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#e23b4a] uppercase">Gen Z · Lake Rosseau</p>
+        <p className="m-0 mt-2 text-sm text-white/70">Photos orbit, then the couple fills the sky</p>
+        <div className="mt-5">
+          <Actions href="/genz/afroamerican/skyburst" tone="story" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function SecondlineCard() {
+  return (
+    <article className="mt-4 overflow-hidden rounded-[1.4rem] bg-[#140a18] text-[#f7efe4] shadow-[0_18px_40px_rgba(20,10,24,0.4)]">
+      <div className="relative h-48 overflow-hidden bg-[#1c1022]">
+        <img src="/photos/walk.jpg" alt="" className="absolute top-5 left-4 h-36 w-28 rotate-[-8deg] border-4 border-[#c9a227] object-cover" />
+        <img src="/photos/couple.jpg" alt="Claire and Thomas" className="absolute top-3 left-20 h-40 w-32 rotate-[3deg] border-4 border-[#f7efe4] object-cover object-[center_28%] shadow-lg" />
+        <span className="absolute right-6 bottom-8 size-12 rounded-full bg-[conic-gradient(#c9a227_0_25%,#6b2d8b_0_50%,#f7efe4_0_75%,#1a0c14_0)]" />
+      </div>
+      <div className="px-5 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em] text-[#c9a227]">Secondline</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#c9a227] uppercase">Gen Z · Cedar Point</p>
+        <p className="m-0 mt-2 text-sm text-white/70">A parade marches past, then stops with the couple</p>
+        <div className="mt-5">
+          <Actions href="/genz/afroamerican/secondline" tone="gold" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function VestryCard() {
+  return (
+    <article className="mt-3 rounded-[1.6rem] bg-[#1a1410] px-5 pt-6 pb-5 text-[#f3ebe0] shadow-[0_18px_40px_rgba(26,20,16,0.35)]">
+      <div className="relative mx-auto w-[78%] overflow-hidden rounded-[1rem]">
+        <img src="/photos/couple.jpg" alt="Claire and Thomas at the lake" className="aspect-[3/4] w-full object-cover object-[center_30%] brightness-75" />
+        <span className="absolute bottom-6 left-[18%] h-10 w-1.5 rounded-full bg-[#d4b07a]" />
+        <span className="absolute bottom-8 left-[32%] h-12 w-1.5 rounded-full bg-[#d4b07a]" />
+        <span className="absolute bottom-5 left-[48%] h-9 w-1.5 rounded-full bg-[#d4b07a]" />
+        <span className="absolute top-8 right-8 size-14 overflow-hidden rounded-full border-2 border-[#c9a45c]">
+          <img src="/photos/rings.jpg" alt="" className="size-full object-cover" />
+        </span>
+      </div>
+      <h3 className="m-0 mt-5 text-center font-[family-name:var(--font-serif)] text-5xl leading-none text-[#c9a45c]">Vestry</h3>
+      <p className="m-0 mt-3 text-center font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#c9a45c] uppercase">Classic · Lake Rosseau</p>
+      <p className="m-0 mt-2 text-center font-[family-name:var(--font-serif)] text-lg">Candles light the aisle, then the couple waits</p>
+      <div className="mt-5">
+        <Actions href="/classic/ukblack/vestry" tone="gold" />
+      </div>
+    </article>
+  );
+}
+
+function EllingtonCard() {
+  return (
+    <article className="mt-3 overflow-hidden bg-[#efe6d6] text-[#1a120e] shadow-[0_18px_40px_rgba(26,18,14,0.16)] ring-1 ring-[#1a120e]/10">
+      <div className="relative mx-auto mt-5 grid size-40 place-items-center">
+        <span className="absolute size-40 rounded-full border-[10px] border-[#1a120e]" />
+        <span className="absolute size-28 overflow-hidden rounded-full border-2 border-[#c9a45c]">
+          <img src="/photos/couple.jpg" alt="Claire and Thomas" className="size-full object-cover object-[center_30%]" />
+        </span>
+        <span className="absolute top-2 right-4 h-16 w-1 origin-top rotate-12 bg-[#c9a45c]" />
+      </div>
+      <div className="px-5 pt-4 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-serif)] text-5xl leading-none">Ellington</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#8a6a28] uppercase">Hubble · Cedar Point</p>
+        <p className="m-0 mt-2 font-[family-name:var(--font-serif)] text-lg">A stylus drops; the vinyl opens into the day</p>
+        <div className="mt-5">
+          <Actions href="/hubble/ukblack/ellington" tone="navy" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function MonarchCard() {
+  return (
+    <article className="mt-3 overflow-hidden bg-[#14080c] text-[#f6ebe0] shadow-[0_18px_40px_rgba(20,8,12,0.4)]">
+      <div className="relative h-48 overflow-hidden">
+        <img src="/photos/couple.jpg" alt="Claire and Thomas" className="size-full object-cover object-[center_30%] brightness-70" />
+        <span className="absolute inset-y-0 left-0 w-[42%] border-r border-[#c9a227] bg-[#1c0e12]/75" />
+        <span className="absolute inset-y-0 right-0 w-[42%] border-l border-[#c9a227] bg-[#1c0e12]/75" />
+        <span className="absolute top-1/2 left-[40%] h-10 w-2 -translate-y-1/2 rounded-full bg-[#c9a227]" />
+        <span className="absolute top-1/2 right-[40%] h-10 w-2 -translate-y-1/2 rounded-full bg-[#c9a227]" />
+      </div>
+      <div className="px-5 py-5">
+        <h3 className="m-0 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em] text-[#c9a227]">Monarch</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#c9a227] uppercase">Modern · Four o&apos;clock</p>
+        <p className="m-0 mt-2 text-sm text-white/75">Gold doors swing open onto the couple</p>
+        <div className="mt-5">
+          <Actions href="/modern/ukblack/monarch" tone="cream" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function BasslineCard() {
+  return (
+    <article className="mt-3 overflow-hidden rounded-[1.4rem] bg-[#050507] text-[#f4f1ea] shadow-[0_18px_40px_rgba(5,5,7,0.45)]">
+      <div className="relative h-40 overflow-hidden">
+        <img src="/photos/kiss.jpg" alt="" className="size-full object-cover object-[center_35%] brightness-60" />
+        <span className="absolute inset-x-[8%] top-1/2 h-0.5 -translate-y-1/2 bg-[#ff3d7f] shadow-[0_0_16px_#ff3d7f]" />
+        <span className="absolute inset-x-[18%] top-[42%] h-0.5 bg-[#4df0ff]/80" />
+        <span className="absolute inset-x-[24%] top-[58%] h-0.5 bg-[#4df0ff]/60" />
+      </div>
+      <div className="px-5 pb-5 pt-4">
+        <h3 className="m-0 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em] text-[#ff3d7f]">Bassline</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#4df0ff] uppercase">Gen Z · Lake Rosseau</p>
+        <p className="m-0 mt-2 text-sm text-white/70">Strobe cuts the day, then a neon wave holds</p>
+        <div className="mt-5">
+          <Actions href="/genz/ukblack/bassline" tone="story" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function NottingCard() {
+  return (
+    <article className="mt-4 overflow-hidden rounded-[1.4rem] bg-[#0d0a10] text-[#fff6ec] shadow-[0_18px_40px_rgba(13,10,16,0.45)]">
+      <div className="relative h-44 overflow-hidden">
+        <img src="/photos/couple.jpg" alt="Claire and Thomas" className="size-full object-cover object-[center_30%] brightness-75" />
+        <span className="absolute inset-y-0 left-[-10%] w-[40%] rotate-[-18deg] bg-[#e23b6a]/70 mix-blend-screen" />
+        <span className="absolute inset-y-0 left-[30%] w-[35%] rotate-[14deg] bg-[#f0c14b]/55 mix-blend-screen" />
+        <span className="absolute inset-y-0 right-[-5%] w-[30%] rotate-[-10deg] bg-[#5b2cff]/60 mix-blend-screen" />
+      </div>
+      <div className="px-5 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-display)] text-5xl leading-none font-extrabold tracking-[-0.05em] text-[#e23b6a]">Notting</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#f0c14b] uppercase">Gen Z · Cedar Point</p>
+        <p className="m-0 mt-2 text-sm text-white/70">Colour silks sweep the day, then love stays</p>
+        <div className="mt-5">
+          <Actions href="/genz/ukblack/notting" tone="story" />
         </div>
       </div>
     </article>

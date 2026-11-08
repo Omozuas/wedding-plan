@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { kindlingDay as day } from "./kindling-day";
 
 const EMBERS = Array.from({ length: 16 }, (_, index) => ({
@@ -11,16 +12,16 @@ const EMBERS = Array.from({ length: 16 }, (_, index) => ({
 }));
 
 const LANTERNS = [
-  { src: "/photos/bouquet.jpg", focus: "center", className: "bottom-[12%] left-[4%] w-[min(24vw,10rem)]", delay: "11.2s" },
-  { src: "/photos/rings.jpg", focus: "center", className: "right-[5%] bottom-[22%] w-[min(20vw,8.5rem)]", delay: "13.4s" },
-  { src: "/photos/kiss.jpg", focus: "center 40%", className: "bottom-[6%] left-[28%] w-[min(18vw,7.5rem)]", delay: "15.6s" },
+  { src: day.images.bouquet.src, focus: "center", className: "bottom-[12%] left-[4%] w-[min(24vw,10rem)]", delay: "11.2s" },
+  { src: day.images.rings.src, focus: "center", className: "right-[5%] bottom-[22%] w-[min(20vw,8.5rem)]", delay: "13.4s" },
+  { src: day.images.kiss.src, focus: "center 40%", className: "bottom-[6%] left-[28%] w-[min(18vw,7.5rem)]", delay: "15.6s" },
 ];
 
 const CHAPTERS = [
-  { src: "/photos/walk.jpg", focus: "center 40%", line: day.dock[0] },
-  { src: "/photos/bouquet.jpg", focus: "center", line: day.dock[1] },
-  { src: "/photos/rings.jpg", focus: "center", line: day.dock[2] },
-  { src: "/photos/dress.jpg", focus: "center", line: day.dock[3] },
+  { src: day.images.walk.src, focus: "center 40%", line: day.dock[0] },
+  { src: day.images.bouquet.src, focus: "center", line: day.dock[1] },
+  { src: day.images.rings.src, focus: "center", line: day.dock[2] },
+  { src: day.images.dress.src, focus: "center", line: day.dock[3] },
 ];
 
 const HOUR_PHOTOS = ["/photos/couple.jpg", "/photos/kiss.jpg", "/photos/dress.jpg", "/photos/walk.jpg"];
@@ -28,7 +29,7 @@ const HOUR_PHOTOS = ["/photos/couple.jpg", "/photos/kiss.jpg", "/photos/dress.jp
 export function Kindling() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="overflow-x-hidden bg-[#140e0b] text-[#f6efe6]">
+    <div className="overflow-x-hidden bg-[#140e0b] text-[#f6efe6]" style={themeVars(day.colors)}>
       <style>{`
         .ki-sky { opacity: 1; transition: opacity 1.2s ease; }
         .ki-sky.is-leaving { opacity: 0; }
@@ -94,7 +95,7 @@ function Dusk({ onDone }: { onDone: () => void }) {
         <p className="ki-line m-0 mt-1 text-sm text-[#ffd7b0]" style={{ animationDelay: "20.8s" }}>{day.venue}</p>
       </div>
       <div className="ki-horizon absolute inset-x-0 bottom-0 overflow-hidden">
-        <img src="/photos/walk.jpg" alt="" className="ki-pan absolute inset-0 size-full object-cover object-[center_42%]" />
+        <img src={day.images.walk.src} alt="" className="ki-pan absolute inset-0 size-full object-cover object-[center_42%]" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-[#140e0b]" />
         {LANTERNS.map((lantern) => (
           <div key={lantern.src} className={`ki-in absolute ${lantern.className}`} style={{ animationDelay: lantern.delay }}>
@@ -115,7 +116,7 @@ function Hearth({ live }: { live: boolean }) {
   return (
     <div inert={live ? undefined : true} aria-hidden={live ? undefined : true}>
       <section className="relative min-h-dvh overflow-hidden">
-        <img src="/photos/couple.jpg" alt="Claire and Thomas at the lake" className="ki-pan absolute inset-0 size-full object-cover object-[center_32%]" />
+        <img src={day.images.couple.src} alt="Claire and Thomas at the lake" className="ki-pan absolute inset-0 size-full object-cover object-[center_32%]" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#140e0b] via-[#140e0b]/35 to-[#140e0b]/55" />
         {EMBERS.slice(0, 8).map((ember, index) => (
           <span key={index} className="ki-ember" style={{ left: ember.left, width: ember.size, height: ember.size, animationDelay: ember.delay, animationDuration: ember.duration }} />
@@ -179,7 +180,7 @@ function Hearth({ live }: { live: boolean }) {
       <section className="grid items-center gap-10 px-5 py-16 sm:px-10 lg:grid-cols-2">
         <Rise live={live}>
           <div className="overflow-hidden rounded-[2.5rem]">
-            <img src="/photos/dress.jpg" alt="Supper in the boathouse" className="ki-pan aspect-[4/5] w-full object-cover" />
+            <img src={day.images.dress.src} alt="Supper in the boathouse" className="ki-pan aspect-[4/5] w-full object-cover" />
           </div>
         </Rise>
         <Rise live={live}>
@@ -197,7 +198,7 @@ function Hearth({ live }: { live: boolean }) {
       </section>
 
       <section className="relative min-h-[70vh] overflow-hidden">
-        <img src="/photos/kiss.jpg" alt="The kiss" className="ki-pan absolute inset-0 size-full object-cover object-[center_40%]" />
+        <img src={day.images.kiss.src} alt="The kiss" className="ki-pan absolute inset-0 size-full object-cover object-[center_40%]" />
         <div className="absolute inset-0 bg-[#140e0b]/55" />
         <div className="relative flex min-h-[70vh] items-end px-5 py-16 sm:px-10">
           <p className="m-0 max-w-xl font-[family-name:var(--font-serif)] text-[clamp(2.2rem,5vw,3.6rem)] leading-snug italic">We will be on the dock when the lanterns come on.</p>

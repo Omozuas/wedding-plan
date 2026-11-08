@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { azaharDay as day } from "./azahar-day";
 
 const BLOOMS = [
@@ -13,18 +14,18 @@ const BLOOMS = [
 ];
 
 const FRAMES = [
-  { src: "/photos/walk.jpg", focus: "center 40%", title: "The dock", line: day.dock[0], note: day.letter[0] },
-  { src: "/photos/bouquet.jpg", focus: "center", title: "The flowers", line: day.dock[1], note: day.letter[1] },
-  { src: "/photos/rings.jpg", focus: "center", title: "The rings", line: day.dock[2], note: day.letter[2] },
-  { src: "/photos/kiss.jpg", focus: "center 40%", title: "Before the light goes", line: day.dock[3], note: day.letter[3] },
-  { src: "/photos/dress.jpg", focus: "center", title: "Supper", line: day.hours[2].detail, note: day.dress },
-  { src: "/photos/couple.jpg", focus: "center 32%", title: "Claire and Thomas", line: `${day.time}. ${day.venue}.`, note: day.address },
+  { src: day.images.walk.src, focus: "center 40%", title: "The dock", line: day.dock[0], note: day.letter[0] },
+  { src: day.images.bouquet.src, focus: "center", title: "The flowers", line: day.dock[1], note: day.letter[1] },
+  { src: day.images.rings.src, focus: "center", title: "The rings", line: day.dock[2], note: day.letter[2] },
+  { src: day.images.kiss.src, focus: "center 40%", title: "Before the light goes", line: day.dock[3], note: day.letter[3] },
+  { src: day.images.dress.src, focus: "center", title: "Supper", line: day.hours[2].detail, note: day.dress },
+  { src: day.images.couple.src, focus: "center 32%", title: "Claire and Thomas", line: `${day.time}. ${day.venue}.`, note: day.address },
 ];
 
 export function Azahar() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="overflow-x-clip bg-[#f6f1e7] text-[#2a241c]">
+    <div className="overflow-x-clip bg-[#f6f1e7] text-[#2a241c]" style={themeVars(day.colors)}>
       <style>{`
         .az-sky { opacity: 1; transition: opacity 1s ease; }
         .az-sky.is-leaving { opacity: 0; }
@@ -78,10 +79,10 @@ function Focus({ onDone }: { onDone: () => void }) {
 
   return (
     <section className={`az-sky fixed inset-0 z-50 overflow-hidden bg-[#1a140f] text-[#f6f1e7] ${leaving ? "is-leaving" : ""}`} aria-label="The afternoon comes into focus">
-      <img src="/photos/couple.jpg" alt="" className="az-shot az-focus object-[center_32%]" />
-      <img src="/photos/walk.jpg" alt="" className="az-shot az-mid object-[center_40%]" style={{ animation: "az-mid 3.8s ease 7.4s both" }} />
-      <img src="/photos/bouquet.jpg" alt="" className="az-shot az-mid object-center" style={{ animation: "az-mid 3.6s ease 10.8s both" }} />
-      <img src="/photos/couple.jpg" alt="" className="az-shot az-final object-[center_32%]" />
+      <img src={day.images.couple.src} alt="" className="az-shot az-focus object-[center_32%]" />
+      <img src={day.images.walk.src} alt="" className="az-shot az-mid object-[center_40%]" style={{ animation: "az-mid 3.8s ease 7.4s both" }} />
+      <img src={day.images.bouquet.src} alt="" className="az-shot az-mid object-center" style={{ animation: "az-mid 3.6s ease 10.8s both" }} />
+      <img src={day.images.couple.src} alt="" className="az-shot az-final object-[center_32%]" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/25" />
       {BLOOMS.map((bloom) => (
         <span key={bloom.left + bloom.top} className="az-bloom" style={{ left: bloom.left, top: bloom.top, width: bloom.size, height: bloom.size, animationDelay: bloom.delay }} />
@@ -102,7 +103,7 @@ function Letter({ live }: { live: boolean }) {
   return (
     <div inert={live ? undefined : true} aria-hidden={live ? undefined : true}>
       <section className="relative min-h-dvh">
-        <img src="/photos/couple.jpg" alt="Claire and Thomas at the lake" className="az-drift absolute inset-0 size-full object-cover object-[center_32%]" />
+        <img src={day.images.couple.src} alt="Claire and Thomas at the lake" className="az-drift absolute inset-0 size-full object-cover object-[center_32%]" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1a140f]/80 via-[#1a140f]/20 to-[#1a140f]/30" />
         <div className="relative flex min-h-dvh flex-col items-center justify-end px-6 pb-16 text-center text-[#f6f1e7]">
           <p className="m-0 text-[0.68rem] tracking-[0.34em] text-[#f0c56e] uppercase">{day.place}</p>
@@ -160,7 +161,7 @@ function Letter({ live }: { live: boolean }) {
             </ol>
           </Rise>
           <Rise live={live}>
-            <img src="/photos/walk.jpg" alt="Claire and Thomas by the water" className="aspect-[3/4] w-full object-cover object-[center_40%]" />
+            <img src={day.images.walk.src} alt="Claire and Thomas by the water" className="aspect-[3/4] w-full object-cover object-[center_40%]" />
             <p className="m-0 mt-6 font-[family-name:var(--font-serif)] text-2xl leading-snug">{day.dress}</p>
           </Rise>
         </div>
@@ -178,7 +179,7 @@ function Letter({ live }: { live: boolean }) {
           </ul>
         </Rise>
         <Rise live={live}>
-          <img src="/photos/kiss.jpg" alt="" className="aspect-[4/5] w-full object-cover object-[center_40%]" />
+          <img src={day.images.kiss.src} alt="" className="aspect-[4/5] w-full object-cover object-[center_40%]" />
         </Rise>
       </section>
       <section className="bg-[#f3e7d2] px-6 py-20 text-center">

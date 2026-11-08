@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { plungeDay as day } from "./plunge-day";
 
 const PRINTS = [
-  { src: "/photos/walk.jpg", focus: "center 40%" },
-  { src: "/photos/bouquet.jpg", focus: "center" },
-  { src: "/photos/rings.jpg", focus: "center" },
-  { src: "/photos/couple.jpg", focus: "center 36%" },
+  { src: day.images.walk.src, focus: "center 40%" },
+  { src: day.images.bouquet.src, focus: "center" },
+  { src: day.images.rings.src, focus: "center" },
+  { src: day.images.couple.src, focus: "center 36%" },
 ];
 const PRINT_START = 10.4;
 const PRINT_STEP = 2.6;
@@ -15,7 +16,7 @@ const PRINT_STEP = 2.6;
 export function Plunge() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="overflow-x-hidden bg-[#090909] text-[#f6f6f1]">
+    <div className="overflow-x-hidden bg-[#090909] text-[#f6f6f1]" style={themeVars(day.colors)}>
       <style>{`
         .pl-sky { opacity: 1; transition: opacity 1.2s ease; }
         .pl-sky.is-leaving { opacity: 0; }
@@ -141,7 +142,7 @@ function Dock({ live }: { live: boolean }) {
           </div>
           <Rise live={live}>
             <div className="pl-print overflow-hidden border-[10px] border-white bg-white shadow-[8px_10px_0_#e8ff47]">
-              <img src="/photos/couple.jpg" alt="Claire and Thomas at the lake" className="aspect-[3/4] w-full object-cover object-[center_38%]" />
+              <img src={day.images.couple.src} alt="Claire and Thomas at the lake" className="aspect-[3/4] w-full object-cover object-[center_38%]" />
             </div>
           </Rise>
         </div>
@@ -153,13 +154,13 @@ function Dock({ live }: { live: boolean }) {
         </Rise>
         <div className="mt-8">
           <Rise live={live}>
-            <img src="/photos/walk.jpg" alt="Claire and Thomas walking to the water" className="pl-stack aspect-[16/10] w-[92%] border-[8px] border-white object-cover object-[center_40%]" />
+            <img src={day.images.walk.src} alt="Claire and Thomas walking to the water" className="pl-stack aspect-[16/10] w-[92%] border-[8px] border-white object-cover object-[center_40%]" />
           </Rise>
           <Rise live={live} className="-mt-16 flex justify-end sm:-mt-36">
-            <img src="/photos/bouquet.jpg" alt="The bouquet" className="pl-stack aspect-[4/5] w-[48%] border-[8px] border-[#e8ff47] object-cover object-center" />
+            <img src={day.images.bouquet.src} alt="The bouquet" className="pl-stack aspect-[4/5] w-[48%] border-[8px] border-[#e8ff47] object-cover object-center" />
           </Rise>
           <Rise live={live} className="-mt-20 sm:-mt-44">
-            <img src="/photos/rings.jpg" alt="The rings" className="pl-stack aspect-square w-[40%] border-[8px] border-white object-cover" />
+            <img src={day.images.rings.src} alt="The rings" className="pl-stack aspect-square w-[40%] border-[8px] border-white object-cover" />
           </Rise>
         </div>
         <ul className="m-0 mt-10 list-none p-0">

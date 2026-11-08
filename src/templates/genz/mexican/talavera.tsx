@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { themeVars } from "@/content";
 import { talaveraDay as day } from "./talavera-day";
 
 const COLORS = ["#143a8c", "#f0a202", "#f7f1e8", "#d23b6a"];
@@ -42,7 +43,7 @@ const TILES = FACES.map((face, index) => {
 export function Talavera() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="overflow-x-hidden bg-[#f7f1e8] text-[#1c140f]">
+    <div className="overflow-x-hidden bg-[#f7f1e8] text-[#1c140f]" style={themeVars(day.colors)}>
       <style>{`
         .tl-sky { opacity: 1; transition: opacity 1s ease; }
         .tl-sky.is-leaving { opacity: 0; }
@@ -174,7 +175,7 @@ function Courtyard({ live }: { live: boolean }) {
       <section className="grid items-center gap-8 px-6 py-16 md:grid-cols-2">
         <Rise live={live}>
           <div className="tl-frame p-2">
-            <img src="/photos/dress.jpg" alt="The table set for supper" className="aspect-[4/5] w-full object-cover" />
+            <img src={day.images.dress.src} alt="The table set for supper" className="aspect-[4/5] w-full object-cover" />
           </div>
         </Rise>
         <Rise live={live}>
