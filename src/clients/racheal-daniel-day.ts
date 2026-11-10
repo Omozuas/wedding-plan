@@ -137,9 +137,8 @@ export const rachealDanielDay = defineDay(
     extras: {
       hashtag: "#Foreverstarttoday",
       ceremonyType: "White wedding",
-      spotifyTrackId: "36GYWNzc0MwGSSmXZLP6bX",
-      songLabel: "iseoluwa · Fireboy",
-      musicSrc: "/music/iseoluwa-preview.mp3",
+      songLabel: "Romantic piano",
+      musicSrc: "/music/romantic-instrumental.mp3",
     },
   },
 );

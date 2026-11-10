@@ -119,6 +119,13 @@ export function Sage({
           pointer-events: none;
         }
         .sg-fade-slide.is-active { opacity: 1; }
+        .sg-progress {
+          position: absolute; top: 0; left: 0; z-index: 7;
+          height: 2px; width: 0; background: var(--w-accent);
+          box-shadow: 0 0 12px color-mix(in srgb, var(--w-accent) 55%, transparent);
+          animation: sg-progress 19.2s linear forwards;
+        }
+        @keyframes sg-progress { to { width: 100%; } }
         @keyframes sg-part {
           to { width: 0%; opacity: 0.35; }
         }
@@ -151,7 +158,8 @@ export function Sage({
         @keyframes sg-glow { from { opacity: 0.45; } to { opacity: 0.9; } }
         @media (prefers-reduced-motion: reduce) {
           .sg-veil-l, .sg-veil-r, .sg-leaf, .sg-said { display: none; }
-          .sg-couple, .sg-name, .sg-line, .sg-rise, .sg-stamp, .sg-unfurl, .sg-unfurl-r, .sg-breathe, .sg-vine, .sg-glow { animation: none; opacity: 1; transform: none; }
+          .sg-couple, .sg-name, .sg-line, .sg-rise, .sg-stamp, .sg-unfurl, .sg-unfurl-r, .sg-breathe, .sg-vine, .sg-glow, .sg-progress { animation: none; opacity: 1; transform: none; }
+          .sg-progress { width: 100%; }
           .sg-rise.is-in .sg-frame::before, .sg-rise.is-in .sg-frame::after { opacity: 1; animation: none; }
         }
         @media (max-width: 767px) {
@@ -217,7 +225,10 @@ function Seal({ day, onOpen }: { day: WeddingDay; onOpen: () => void }) {
           {day.first}
           <span className="mt-1 block text-[var(--w-accent)]">{day.second}</span>
         </p>
-        <span className="mt-2 border border-[color-mix(in_srgb,var(--w-accent)_55%,transparent)] bg-[color-mix(in_srgb,var(--w-accent)_18%,transparent)] px-8 py-3 text-[0.72rem] tracking-[0.28em] uppercase">
+        <p className="m-0 text-[0.72rem] tracking-[0.22em] text-[color-mix(in_srgb,var(--w-ink)_75%,transparent)] uppercase">
+          A short welcome
+        </p>
+        <span className="mt-1 border border-[color-mix(in_srgb,var(--w-accent)_55%,transparent)] bg-[color-mix(in_srgb,var(--w-accent)_18%,transparent)] px-8 py-3 text-[0.72rem] tracking-[0.28em] uppercase">
           Open
         </span>
       </button>
@@ -254,8 +265,9 @@ function Bloom({
   return (
     <section
       className={`sg-sky fixed inset-0 z-50 min-h-[100dvh] overflow-hidden bg-[var(--w-bg)] text-[var(--w-ink)] ${leaving ? "is-leaving" : ""}`}
-      aria-label={`Botanical veils part to reveal ${day.first} and ${day.second}`}
+      aria-label={`Welcome intro for ${day.first} and ${day.second}`}
     >
+      <div className="sg-progress" aria-hidden />
       <img
         src={day.images.couple.src}
         alt=""
@@ -308,6 +320,11 @@ function Bloom({
           {day.venue}
         </p>
       </div>
+      <div className="absolute top-5 left-5 z-[6] flex items-center gap-3">
+        <p className="m-0 border border-[color-mix(in_srgb,var(--w-accent)_40%,transparent)] bg-black/35 px-3 py-1.5 text-[0.65rem] tracking-[0.24em] text-[var(--w-accent)] uppercase">
+          Welcome
+        </p>
+      </div>
       <button
         type="button"
         onClick={() => {
@@ -318,6 +335,9 @@ function Bloom({
       >
         {day.ui.skip}
       </button>
+      <p className="absolute inset-x-0 bottom-4 z-[6] m-0 px-6 text-center text-[0.65rem] tracking-[0.2em] text-[color-mix(in_srgb,var(--w-ink)_70%,transparent)] uppercase">
+        A short welcome · then the invitation
+      </p>
     </section>
   );
 }

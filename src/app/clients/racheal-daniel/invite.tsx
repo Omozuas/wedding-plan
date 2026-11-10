@@ -8,11 +8,11 @@ import { rachealDanielDay } from "@/clients/racheal-daniel-day";
 const songLabel =
   typeof rachealDanielDay.extras.songLabel === "string"
     ? rachealDanielDay.extras.songLabel
-    : "iseoluwa · Fireboy";
+    : "Romantic piano";
 const musicSrc =
   typeof rachealDanielDay.extras.musicSrc === "string"
     ? rachealDanielDay.extras.musicSrc
-    : "/music/iseoluwa-preview.mp3";
+    : "/music/romantic-instrumental.mp3";
 
 export function RachealDanielInvite() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
