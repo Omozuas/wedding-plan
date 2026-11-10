@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Ivory } from "@/templates/birthday/ivory";
-import { graceTabiowoDay } from "@/clients/grace-tabiowo-day";
+import { graceTabiowoDay } from "@/clients/grace-tabiowo/day";
+import type { BirthdayDay } from "@/templates/birthday/ivory-day";
 
 export function GraceTabiowoInvite() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -53,7 +54,7 @@ export function GraceTabiowoInvite() {
 
   return (
     <div style={{ ["--b-bg" as string]: graceTabiowoDay.colors.bg, ["--b-ink" as string]: graceTabiowoDay.colors.ink, ["--b-accent" as string]: graceTabiowoDay.colors.accent, ["--b-on-accent" as string]: graceTabiowoDay.colors.onAccent }}>
-      <Ivory day={graceTabiowoDay} onBegin={startMusic} />
+      <Ivory day={graceTabiowoDay as BirthdayDay} onBegin={startMusic} />
       <button
         type="button"
         onClick={toggleMusic}

@@ -9,9 +9,9 @@ import {
   type FormEvent,
   type ReactNode,
 } from "react";
-import { graceTabiowoDay, type BirthdayPhoto, type GraceTabiowoDay } from "@/clients/grace-tabiowo-day";
+import { ivoryDay, type BirthdayDay, type BirthdayPhoto } from "@/templates/birthday/ivory-day";
 
-function themeVars(colors: GraceTabiowoDay["colors"]): CSSProperties {
+function themeVars(colors: BirthdayDay["colors"]): CSSProperties {
   return {
     ["--b-bg" as string]: colors.bg,
     ["--b-ink" as string]: colors.ink,
@@ -127,10 +127,10 @@ function PhotoFade({
 }
 
 export function Ivory({
-  day = graceTabiowoDay,
+  day = ivoryDay,
   onBegin,
 }: {
-  day?: GraceTabiowoDay;
+  day?: BirthdayDay;
   onBegin?: () => void;
 }) {
   const [begun, setBegun] = useState(false);
@@ -300,7 +300,7 @@ function CelebrateFX() {
   );
 }
 
-function Seal({ day, onOpen }: { day: GraceTabiowoDay; onOpen: () => void }) {
+function Seal({ day, onOpen }: { day: BirthdayDay; onOpen: () => void }) {
   return (
     <section className="fixed inset-0 z-50 grid min-h-[100dvh] place-items-center overflow-hidden bg-[var(--b-bg)]">
       <PhotoFade photos={day.photos} live max={4} opacityClass="opacity-50" className="iv-mobile-cover" />
@@ -327,7 +327,7 @@ function Seal({ day, onOpen }: { day: GraceTabiowoDay; onOpen: () => void }) {
 }
 
 /** Sticky scroll welcome: images + copy change as the user scrolls. */
-function ScrollIntro({ day }: { day: GraceTabiowoDay }) {
+function ScrollIntro({ day }: { day: BirthdayDay }) {
   const trackRef = useRef<HTMLElement>(null);
   const scenes = day.introScenes;
   const sceneCount = scenes.length;
@@ -536,7 +536,7 @@ function GenZGallery({ photos, live }: { photos: BirthdayPhoto[]; live: boolean 
   );
 }
 
-function Celebration({ day, live }: { day: GraceTabiowoDay; live: boolean }) {
+function Celebration({ day, live }: { day: BirthdayDay; live: boolean }) {
   const [sent, setSent] = useState<string | null>(null);
   const featured = day.photos[0];
 

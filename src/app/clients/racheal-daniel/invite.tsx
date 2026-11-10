@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { themeVars } from "@/content";
 import { Sage } from "@/templates/hubble/afroamerican/sage";
-import { rachealDanielDay } from "@/clients/racheal-daniel-day";
+import { rachealDanielDay } from "@/clients/racheal-daniel/day";
 
 const songLabel =
   typeof rachealDanielDay.extras.songLabel === "string"

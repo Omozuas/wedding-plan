@@ -94,6 +94,35 @@ export function TemplatePicker() {
           Select a template
         </h1>
         <div className="mt-12 grid gap-12">
+          <section className="motion-reduce:animate-none" style={{ animation: "picker-in 0.8s ease 0.02s both" }}>
+            <h2 className="m-0 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">
+              Client
+            </h2>
+            <ClientCard
+              href="/clients/racheal-daniel"
+              name="Daniel & Racheal"
+              kind="Sage · Wedding"
+              note="Sky-blue scroll welcome with parting veils"
+              photo="/photos/racheal-daniel/photo-5.jpg"
+              focus="center 28%"
+            />
+            <ClientCard
+              href="/clients/grace-tabiowo"
+              name="Mrs Grace Tabiowo"
+              kind="Ivory · Birthday"
+              note="Gold-on-ink eightieth celebration"
+              photo="/photos/grace-tabiowo/photo-1.jpg"
+              focus="center 18%"
+            />
+          </section>
+
+          <section className="motion-reduce:animate-none" style={{ animation: "picker-in 0.8s ease 0.08s both" }}>
+            <h2 className="m-0 font-[family-name:var(--font-ui)] text-[0.72rem] tracking-[0.28em] text-[#9a7b45] uppercase">
+              Birthday
+            </h2>
+            <IvoryCard />
+          </section>
+
           {families.map((family) => (
             <section
               key={family.href}
@@ -182,6 +211,76 @@ export function TemplatePicker() {
 type CardProps = {
   family: (typeof families)[number];
 };
+
+function ClientCard({
+  href,
+  name,
+  kind,
+  note,
+  photo,
+  focus,
+}: {
+  href: string;
+  name: string;
+  kind: string;
+  note: string;
+  photo: string;
+  focus: string;
+}) {
+  return (
+    <article className="mt-3 overflow-hidden rounded-[1.4rem] bg-[#16120e] text-[#f6efe6] shadow-[0_18px_40px_rgba(22,18,14,0.28)]">
+      <div className="relative h-56 overflow-hidden">
+        <img
+          src={photo}
+          alt={name}
+          className="size-full object-cover motion-safe:animate-[picker-ken_16s_ease-in-out_infinite_alternate] motion-reduce:animate-none"
+          style={{ objectPosition: focus }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#16120e] via-[#16120e]/25 to-transparent" />
+      </div>
+      <div className="px-5 pt-1 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-serif)] text-[clamp(2.2rem,8vw,3.2rem)] leading-[0.95]">{name}</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#d4b57a] uppercase">
+          {kind}
+        </p>
+        <p className="m-0 mt-2 font-[family-name:var(--font-serif)] text-lg text-[#f6efe6]/75">{note}</p>
+        <div className="mt-5">
+          <Actions href={href} tone="gold" />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function IvoryCard() {
+  return (
+    <article className="mt-3 overflow-hidden rounded-[1.4rem] bg-[#0f0c08] text-[#f7f0e4] shadow-[0_18px_40px_rgba(15,12,8,0.4)]">
+      <div className="relative h-56 overflow-hidden">
+        <img
+          src="/photos/florals.jpg"
+          alt="Ivory birthday template"
+          className="size-full object-cover object-[center_35%] brightness-75 motion-safe:animate-[picker-ken_16s_ease-in-out_infinite_alternate] motion-reduce:animate-none"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0c08] via-transparent to-[#0f0c08]/45" />
+        <span className="absolute top-5 left-5 border border-[#d4b57a]/55 px-3 py-1 font-[family-name:var(--font-ui)] text-[0.62rem] tracking-[0.24em] text-[#d4b57a] uppercase">
+          Birthday
+        </span>
+      </div>
+      <div className="px-5 pt-2 pb-5">
+        <h3 className="m-0 font-[family-name:var(--font-serif)] text-5xl leading-none text-[#d4b57a]">Ivory</h3>
+        <p className="m-0 mt-3 font-[family-name:var(--font-ui)] text-[0.68rem] tracking-[0.22em] text-[#d4b57a] uppercase">
+          Birthday · Celebration
+        </p>
+        <p className="m-0 mt-2 font-[family-name:var(--font-serif)] text-lg text-[#f7f0e4]/80">
+          Scroll welcome, gold accents, and an intimate dinner invite
+        </p>
+        <div className="mt-5">
+          <Actions href="/birthday/ivory" tone="gold" />
+        </div>
+      </div>
+    </article>
+  );
+}
 
 function CouplePhoto({ src, className }: { src: string; className: string }) {
   return (
