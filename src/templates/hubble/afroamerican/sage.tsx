@@ -51,6 +51,12 @@ export function Sage({
     day.images.dress,
     day.images.more?.[0] ?? day.images.bouquet,
   ].slice(0, 5);
+  const heroSlides: Photo[] = [
+    day.images.couple,
+    day.images.walk,
+    day.images.kiss,
+    day.images.more?.[0] ?? day.images.dress,
+  ].slice(0, 4);
   const veilExtra = day.images.more?.[0]?.src ?? day.images.bouquet.src;
   const hashtag = typeof day.extras.hashtag === "string" ? day.extras.hashtag : null;
 
@@ -186,7 +192,7 @@ export function Sage({
         />
       )}
       {begun && !open && <Bloom day={day} veilExtra={veilExtra} onDone={() => setOpen(true)} />}
-      <Grove day={day} gather={gather} coupleSlides={coupleSlides} hashtag={hashtag} live={open} />
+      <Grove day={day} gather={gather} coupleSlides={coupleSlides} heroSlides={heroSlides} hashtag={hashtag} live={open} />
     </div>
   );
 }
@@ -316,17 +322,40 @@ function Bloom({
   );
 }
 
-function CoupleFade({ slides, live }: { slides: Photo[]; live: boolean }) {
+function useFadeIndex(live: boolean, total: number, intervalMs = 4200) {
   const [index, setIndex] = useState(0);
-  const total = Math.min(5, slides.length);
-
   useEffect(() => {
     if (!live || total < 2) return;
     const id = window.setInterval(() => {
       setIndex((current) => (current + 1) % total);
-    }, 4200);
+    }, intervalMs);
     return () => window.clearInterval(id);
-  }, [live, total]);
+  }, [live, total, intervalMs]);
+  return index;
+}
+
+function HeroFade({ slides, live }: { slides: Photo[]; live: boolean }) {
+  const total = Math.min(4, slides.length);
+  const index = useFadeIndex(live, total, 4500);
+
+  return (
+    <div className="absolute inset-0 opacity-45" aria-hidden>
+      {slides.slice(0, 4).map((photo, i) => (
+        <img
+          key={photo.src}
+          src={photo.src}
+          alt=""
+          className={`sg-fade-slide sg-mobile-cover absolute inset-0 ${i === index ? "is-active" : ""}`}
+          style={{ objectPosition: photo.focus ?? "center 28%" }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function CoupleFade({ slides, live }: { slides: Photo[]; live: boolean }) {
+  const total = Math.min(5, slides.length);
+  const index = useFadeIndex(live, total, 4200);
 
   return (
     <div className="sg-frame sg-fade-frame relative aspect-[4/5] w-full overflow-hidden">
@@ -347,24 +376,21 @@ function Grove({
   day,
   gather,
   coupleSlides,
+  heroSlides,
   hashtag,
   live,
 }: {
   day: WeddingDay;
   gather: { src: string; focus: string; label: string; note: string; contain?: boolean }[];
   coupleSlides: Photo[];
+  heroSlides: Photo[];
   hashtag: string | null;
   live: boolean;
 }) {
   return (
     <div inert={live ? undefined : true} aria-hidden={live ? undefined : true}>
       <section className="relative grid min-h-[100dvh] items-end overflow-hidden bg-[var(--w-bg)] px-5 pb-12 pt-20 text-[var(--w-ink)] sm:px-6 md:px-14 md:py-16">
-        <img
-          src={day.images.couple.src}
-          alt=""
-          className="sg-breathe sg-mobile-cover absolute inset-0 opacity-45"
-          style={{ objectPosition: day.images.couple.focus ?? "center 28%" }}
-        />
+        <HeroFade slides={heroSlides} live={live} />
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--w-surface)] via-[color-mix(in_srgb,var(--w-bg)_70%,transparent)] to-[color-mix(in_srgb,var(--w-bg)_35%,transparent)]" />
         {LEAVES.slice(0, 5).map((leaf) => (
           <span
