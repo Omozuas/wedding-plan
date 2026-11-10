@@ -24,6 +24,7 @@ export function Sage({
   onBegin?: () => void;
 }) {
   const [begun, setBegun] = useState(false);
+  const veilExtra = day.images.more?.[0]?.src ?? day.images.bouquet.src;
   const moreRooms = (day.images.more ?? []).map((photo, index) => {
     const isGele = photo.src.includes("photo-12");
     return {
@@ -61,6 +62,17 @@ export function Sage({
   return (
     <div className="overflow-x-clip bg-[var(--w-ink)] text-[var(--w-bg)]" style={themeVars(day.colors)}>
       <style>{`
+        .sg-veil-l, .sg-veil-r {
+          position: absolute; inset-block: 0; overflow: hidden;
+          will-change: width, opacity;
+        }
+        .sg-veil-l { left: 0; }
+        .sg-veil-r { right: 0; }
+        .sg-veil-l img { object-position: left center; width: 100%; height: 100%; object-fit: cover; }
+        .sg-veil-r img { object-position: right center; transform: scaleX(-1); width: 100%; height: 100%; object-fit: cover; }
+        .sg-couple-scroll {
+          will-change: opacity, transform;
+        }
         .sg-mobile-cover {
           width: 100%;
           height: 100%;
@@ -74,6 +86,9 @@ export function Sage({
           animation: sg-fall 5.5s ease-in-out infinite;
           box-shadow: 0 4px 12px color-mix(in srgb, var(--w-bg) 35%, transparent);
         }
+        .sg-said { opacity: 0; animation: sg-said 3.2s ease 0.5s both; }
+        .sg-name { opacity: 0; transform: translateY(28px); animation: sg-grow 1.35s cubic-bezier(0.16, 0.84, 0.3, 1) both; }
+        .sg-line { opacity: 0; animation: sg-line 1.1s ease both; }
         .sg-rise { opacity: 0; transform: translateY(30px); }
         .sg-rise.is-in { animation: sg-line 1s cubic-bezier(0.16, 0.84, 0.3, 1) forwards; }
         .sg-scene-text {
@@ -143,6 +158,10 @@ export function Sage({
           .sg-fade-slide {
             object-position: center 18% !important;
           }
+          .sg-veil-l img,
+          .sg-veil-r img {
+            object-position: center 18% !important;
+          }
           .sg-breathe {
             animation: none !important;
             transform: none !important;
@@ -164,7 +183,7 @@ export function Sage({
       )}
       {begun && (
         <>
-          <ScrollIntro day={day} />
+          <ScrollIntro day={day} veilExtra={veilExtra} />
           <Grove day={day} gather={gather} coupleSlides={coupleSlides} heroSlides={heroSlides} hashtag={hashtag} live />
         </>
       )}
@@ -193,7 +212,7 @@ function Seal({ day, onOpen }: { day: WeddingDay; onOpen: () => void }) {
           <span className="mt-1 block text-[var(--w-accent)]">{day.second}</span>
         </p>
         <p className="m-0 text-[0.72rem] tracking-[0.22em] text-[color-mix(in_srgb,var(--w-ink)_75%,transparent)] uppercase">
-          Tap open, then scroll the welcome
+          Open, then scroll through the welcome
         </p>
         <span className="mt-1 border border-[color-mix(in_srgb,var(--w-accent)_55%,transparent)] bg-[color-mix(in_srgb,var(--w-accent)_18%,transparent)] px-8 py-3 text-[0.72rem] tracking-[0.28em] uppercase">
           Open
@@ -208,13 +227,13 @@ type IntroScene = { kicker: string; title: string; accent: string; body: string 
 function defaultIntroScenes(day: WeddingDay): IntroScene[] {
   return [
     {
-      kicker: "Scroll to begin",
+      kicker: "The story",
       title: "Two hearts,",
       accent: "one forever",
       body: day.arrival,
     },
     {
-      kicker: "The story",
+      kicker: "Finding each other",
       title: day.first,
       accent: `& ${day.second}`,
       body: day.dock[0] ?? day.letter[0],
@@ -274,20 +293,23 @@ const INTRO_SPARKS = [
   { left: "68%", top: "44%", delay: "0.9s" },
 ];
 
-/** Sticky scroll welcome: images + copy change as the user scrolls. */
-function ScrollIntro({ day }: { day: WeddingDay }) {
+function clamp01(n: number) {
+  return Math.min(1, Math.max(0, n));
+}
+
+/** One continuous scroll welcome: veils part, names reveal, then photos + copy keep changing. */
+function ScrollIntro({ day, veilExtra }: { day: WeddingDay; veilExtra: string }) {
   const trackRef = useRef<HTMLElement>(null);
-  const scenes = introScenesFor(day);
+  const storyScenes = introScenesFor(day);
   const photos = introPhotosFor(day);
-  const sceneCount = scenes.length;
+  // chapters: 0 veil, 1 names/reveal, then story scenes
+  const chapterCount = 2 + storyScenes.length;
   const [progress, setProgress] = useState(0);
-  const [scene, setScene] = useState(0);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
       setProgress(1);
-      setScene(sceneCount - 1);
       return;
     }
 
@@ -298,9 +320,8 @@ function ScrollIntro({ day }: { day: WeddingDay }) {
       if (!el) return;
       const rect = el.getBoundingClientRect();
       const total = el.offsetHeight - window.innerHeight;
-      const raw = total <= 0 ? 1 : Math.min(1, Math.max(0, -rect.top / total));
+      const raw = total <= 0 ? 1 : clamp01(-rect.top / total);
       setProgress(raw);
-      setScene(Math.min(sceneCount - 1, Math.floor(raw * sceneCount + 0.001)));
     }
 
     function onScroll() {
@@ -316,7 +337,7 @@ function ScrollIntro({ day }: { day: WeddingDay }) {
       window.removeEventListener("resize", onScroll);
       if (frame) window.cancelAnimationFrame(frame);
     };
-  }, [sceneCount]);
+  }, []);
 
   function skipToEnd() {
     const el = trackRef.current;
@@ -324,30 +345,88 @@ function ScrollIntro({ day }: { day: WeddingDay }) {
     window.scrollTo({ top: el.offsetTop + el.offsetHeight - window.innerHeight + 8, behavior: "smooth" });
   }
 
-  const photoIndex = Math.min(scene, Math.max(0, photos.length - 1));
+  const chapterF = progress * chapterCount;
+  const chapter = Math.min(chapterCount - 1, Math.floor(chapterF + 0.0001));
+  const local = clamp01(chapterF - chapter);
+
+  // Veil opens across chapter 0 and finishes early in chapter 1
+  const veilOpen = chapter === 0 ? local : 1;
+  const veilWidth = `${Math.max(0, 54 * (1 - veilOpen))}%`;
+  const veilOpacity = chapter === 0 ? 1 - local * 0.65 : Math.max(0, 0.35 - (chapter - 1 + local) * 0.35);
+
+  // Couple scales/fades in as veils open
+  const coupleT = chapter === 0 ? clamp01(local * 1.15) : 1;
+  const coupleOpacity = 0.25 + coupleT * 0.75;
+  const coupleScale = 1.1 - coupleT * 0.1;
+
+  // Names chapter (1) — linger, then fade as story photos begin
+  const namesOpacity =
+    chapter === 0
+      ? clamp01((local - 0.72) / 0.28)
+      : chapter === 1
+        ? 1 - clamp01((local - 0.82) / 0.18)
+        : 0;
+
+  // Story chapters start at 2
+  const storyIndex = chapter >= 2 ? chapter - 2 : -1;
+  const photoIndex = storyIndex < 0 ? 0 : Math.min(photos.length - 1, storyIndex);
+
+  const cue =
+    progress > 0.94
+      ? "Keep scrolling · the invitation is next"
+      : chapter === 0
+        ? "Scroll to part the veils"
+        : chapter === 1
+          ? "Scroll to continue their story"
+          : "Scroll to continue";
 
   return (
     <section
       ref={trackRef}
       className="relative"
-      style={{ height: `${Math.max(sceneCount, photos.length) * 100}vh` }}
+      style={{ height: `${chapterCount * 100}vh` }}
       aria-label={`Scroll welcome for ${day.first} and ${day.second}`}
     >
       <div className="sticky top-0 h-[100dvh] overflow-hidden bg-[var(--w-bg)] text-[var(--w-ink)]">
-        <div className="absolute inset-0">
-          {photos.map((photo, i) => (
-            <img
-              key={photo.src}
-              src={photo.src}
-              alt=""
-              className={`sg-mobile-cover absolute inset-0 size-full object-cover transition-[opacity,transform] duration-700 ease-out ${
-                i === photoIndex ? "scale-100 opacity-100" : "scale-[1.06] opacity-0"
-              }`}
-              style={{ objectPosition: photo.focus ?? "center 22%" }}
-            />
-          ))}
+        {/* Base couple during veil + names */}
+        <img
+          src={day.images.couple.src}
+          alt=""
+          className="sg-couple-scroll sg-mobile-cover absolute inset-0 size-full object-cover"
+          style={{
+            objectPosition: day.images.couple.focus ?? "center 28%",
+            opacity: storyIndex < 0 ? coupleOpacity : 0,
+            transform: `scale(${coupleScale})`,
+            transition: "opacity 0.25s linear",
+          }}
+        />
+
+        {/* Story photos continue after the reveal */}
+        {photos.map((photo, i) => (
+          <img
+            key={photo.src}
+            src={photo.src}
+            alt=""
+            className="sg-mobile-cover absolute inset-0 size-full object-cover transition-[opacity,transform] duration-500 ease-out"
+            style={{
+              objectPosition: photo.focus ?? "center 22%",
+              opacity: storyIndex >= 0 && i === photoIndex ? 1 : 0,
+              transform: storyIndex >= 0 && i === photoIndex ? "scale(1)" : "scale(1.05)",
+            }}
+          />
+        ))}
+
+        <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[var(--w-bg)] via-[color-mix(in_srgb,var(--w-bg)_45%,transparent)] to-[color-mix(in_srgb,var(--w-bg)_35%,transparent)]" />
+
+        {/* Scroll-driven veils */}
+        <div className="sg-veil-l z-[2]" style={{ width: veilWidth, opacity: Math.max(veilOpacity, 0) }}>
+          <img src={veilExtra} alt="" className="sg-mobile-cover brightness-75" />
+          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--w-bg)_35%,transparent)]" />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--w-bg)] via-[color-mix(in_srgb,var(--w-bg)_48%,transparent)] to-[color-mix(in_srgb,var(--w-bg)_38%,transparent)]" />
+        <div className="sg-veil-r z-[2]" style={{ width: veilWidth, opacity: Math.max(veilOpacity, 0) }}>
+          <img src={day.images.bouquet.src} alt="" className="sg-mobile-cover brightness-75" />
+          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--w-bg)_35%,transparent)]" />
+        </div>
 
         {INTRO_SPARKS.map((spark) => (
           <span
@@ -356,7 +435,7 @@ function ScrollIntro({ day }: { day: WeddingDay }) {
             style={{ left: spark.left, top: spark.top, animationDelay: spark.delay }}
           />
         ))}
-        {LEAVES.slice(0, 5).map((leaf) => (
+        {LEAVES.slice(0, 6).map((leaf) => (
           <span
             key={`intro-${leaf.left}`}
             className="sg-leaf z-[4]"
@@ -367,12 +446,13 @@ function ScrollIntro({ day }: { day: WeddingDay }) {
               height: leaf.size * 1.35,
               animationDelay: leaf.delay,
               ["--r" as string]: leaf.rot,
+              opacity: chapter <= 1 ? undefined : 0.35,
             }}
           />
         ))}
 
         <div
-          className="absolute top-0 left-0 z-[8] h-1 bg-[var(--w-accent)] transition-[width] duration-150 ease-out"
+          className="absolute top-0 left-0 z-[8] h-1 bg-[var(--w-accent)] transition-[width] duration-100 ease-out"
           style={{ width: `${progress * 100}%` }}
           aria-hidden
         />
@@ -382,7 +462,7 @@ function ScrollIntro({ day }: { day: WeddingDay }) {
             Welcome
           </p>
           <p className="m-0 text-[0.62rem] tracking-[0.18em] text-[color-mix(in_srgb,var(--w-ink)_70%,transparent)] uppercase">
-            {scene + 1}/{sceneCount}
+            {chapter + 1}/{chapterCount}
           </p>
         </div>
         <button
@@ -393,12 +473,33 @@ function ScrollIntro({ day }: { day: WeddingDay }) {
           {day.ui.skip}
         </button>
 
+        {/* Chapter 0–1: gather close + names (previous intro, scroll-driven) */}
+        <p
+          className="absolute inset-x-0 top-[12vh] z-[5] m-0 text-center font-[family-name:var(--font-serif)] text-[clamp(1.5rem,3.5vw,2.6rem)] italic transition-opacity duration-300"
+          style={{ opacity: chapter === 0 ? clamp01(0.2 + local * 0.8) * (1 - clamp01((local - 0.85) / 0.15)) : 0 }}
+        >
+          {day.ui.introKicker}
+        </p>
+
+        <div
+          className="absolute inset-x-0 bottom-[10vh] z-[5] px-6 text-center transition-opacity duration-300"
+          style={{ opacity: namesOpacity }}
+        >
+          <p className="m-0 text-[0.68rem] tracking-[0.34em] text-[var(--w-accent)] uppercase">{day.place}</p>
+          <p className="m-0 mt-3 font-[family-name:var(--font-serif)] text-[clamp(3rem,9vw,6.4rem)] leading-[0.86]">{day.first}</p>
+          <p className="m-0 font-[family-name:var(--font-serif)] text-[clamp(3rem,9vw,6.4rem)] leading-[0.86] text-[var(--w-accent)]">{day.second}</p>
+          <p className="m-0 mt-4 font-[family-name:var(--font-serif)] text-2xl italic">{day.time}</p>
+          <p className="m-0 mt-1 text-sm tracking-[0.16em] uppercase">{day.dateLabel}</p>
+          <p className="m-0 mt-1 text-sm text-[var(--w-accent)]">{day.venue}</p>
+        </div>
+
+        {/* Later chapters: story scenes + photo changes */}
         <div className="absolute inset-x-0 bottom-0 z-[5] px-6 pb-24 pt-24 md:px-14 md:pb-28">
-          {scenes.map((item, i) => (
+          {storyScenes.map((item, i) => (
             <div
               key={`${item.title}-${item.accent}`}
               className={`sg-scene-text absolute inset-x-6 bottom-24 max-w-3xl md:inset-x-14 md:bottom-28 ${
-                i === scene ? "is-on" : "is-off"
+                storyIndex === i ? "is-on" : "is-off"
               }`}
             >
               <p className="m-0 text-[0.68rem] tracking-[0.32em] text-[var(--w-accent)] uppercase">{item.kicker}</p>
@@ -409,15 +510,14 @@ function ScrollIntro({ day }: { day: WeddingDay }) {
               <p className="m-0 mt-5 max-w-xl text-[clamp(1rem,2.8vw,1.25rem)] leading-relaxed text-[color-mix(in_srgb,var(--w-ink)_88%,transparent)]">
                 {item.body}
               </p>
-              {i === scene ? (
-                <p className="sg-scroll-cue m-0 mt-6 flex items-center gap-3 text-[0.62rem] tracking-[0.22em] text-[color-mix(in_srgb,var(--w-ink)_72%,transparent)] uppercase">
-                  <span className="block h-px w-8 bg-[var(--w-accent)]" aria-hidden />
-                  {progress > 0.92 ? "Keep scrolling · the invitation is next" : "Scroll to continue"}
-                </p>
-              ) : null}
             </div>
           ))}
         </div>
+
+        <p className="sg-scroll-cue absolute bottom-5 left-6 z-[6] m-0 flex items-center gap-3 text-[0.62rem] tracking-[0.22em] text-[color-mix(in_srgb,var(--w-ink)_72%,transparent)] uppercase md:left-14">
+          <span className="block h-px w-8 bg-[var(--w-accent)]" aria-hidden />
+          {cue}
+        </p>
       </div>
     </section>
   );
