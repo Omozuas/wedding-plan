@@ -90,7 +90,7 @@ export type WeddingContent = {
   images: WeddingImages;
   colors: WeddingColors;
   ui: WeddingUi;
-  extras?: Record<string, string | string[]>;
+  extras?: Record<string, unknown>;
 };
 
 /**
@@ -119,7 +119,7 @@ export type WeddingDay = {
   images: WeddingImages;
   colors: WeddingColors;
   ui: WeddingUi;
-  extras: Record<string, string | string[]>;
+  extras: Record<string, unknown>;
   /** Optional Mirador (and similar) climb labels. */
   floors?: string[];
 };
@@ -199,7 +199,7 @@ export function defineDay(
     colors: WeddingColors;
     images?: Partial<WeddingImages>;
     ui?: Partial<WeddingUi>;
-    extras?: Record<string, string | string[]>;
+    extras?: Record<string, unknown>;
   },
 ): WeddingDay & Record<string, unknown> {
   const [firstGuess, secondGuess] = day.couple.split(/\s*&\s*/);

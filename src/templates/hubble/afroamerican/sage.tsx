@@ -24,7 +24,6 @@ export function Sage({
   onBegin?: () => void;
 }) {
   const [begun, setBegun] = useState(false);
-  const [open, setOpen] = useState(false);
   const moreRooms = (day.images.more ?? []).map((photo, index) => {
     const isGele = photo.src.includes("photo-12");
     return {
@@ -57,26 +56,11 @@ export function Sage({
     day.images.kiss,
     day.images.more?.[0] ?? day.images.dress,
   ].slice(0, 4);
-  const veilExtra = day.images.more?.[0]?.src ?? day.images.bouquet.src;
   const hashtag = typeof day.extras.hashtag === "string" ? day.extras.hashtag : null;
 
   return (
     <div className="overflow-x-clip bg-[var(--w-ink)] text-[var(--w-bg)]" style={themeVars(day.colors)}>
       <style>{`
-        .sg-sky { opacity: 1; transition: opacity 1.15s ease; }
-        .sg-sky.is-leaving { opacity: 0; }
-        .sg-veil-l, .sg-veil-r {
-          position: absolute; inset-block: 0; width: 54%; overflow: hidden;
-          animation: sg-part 3.4s cubic-bezier(0.45, 0, 0.2, 1) 1.2s forwards;
-        }
-        .sg-veil-l { left: 0; }
-        .sg-veil-r { right: 0; }
-        .sg-veil-l img { object-position: left center; width: 100%; height: 100%; object-fit: cover; }
-        .sg-veil-r img { object-position: right center; transform: scaleX(-1); width: 100%; height: 100%; object-fit: cover; }
-        .sg-couple {
-          opacity: 0; transform: scale(1.12);
-          animation: sg-reveal 2.6s cubic-bezier(0.16, 0.84, 0.3, 1) 3.6s forwards;
-        }
         .sg-mobile-cover {
           width: 100%;
           height: 100%;
@@ -90,11 +74,27 @@ export function Sage({
           animation: sg-fall 5.5s ease-in-out infinite;
           box-shadow: 0 4px 12px color-mix(in srgb, var(--w-bg) 35%, transparent);
         }
-        .sg-said { opacity: 0; animation: sg-said 3.2s ease 0.5s both; }
-        .sg-name { opacity: 0; transform: translateY(28px); animation: sg-grow 1.35s cubic-bezier(0.16, 0.84, 0.3, 1) both; }
-        .sg-line { opacity: 0; animation: sg-line 1.1s ease both; }
         .sg-rise { opacity: 0; transform: translateY(30px); }
         .sg-rise.is-in { animation: sg-line 1s cubic-bezier(0.16, 0.84, 0.3, 1) forwards; }
+        .sg-scene-text {
+          transition: opacity 0.45s ease, transform 0.55s cubic-bezier(0.16, 0.84, 0.3, 1);
+        }
+        .sg-scene-text.is-on { opacity: 1; transform: none; }
+        .sg-scene-text.is-off { opacity: 0; transform: translateY(18px); pointer-events: none; }
+        .sg-scroll-cue { animation: sg-cue 1.8s ease-in-out infinite; }
+        @keyframes sg-cue {
+          0%, 100% { opacity: 0.55; }
+          50% { opacity: 1; }
+        }
+        .sg-spark {
+          position: absolute; width: 5px; height: 5px; border-radius: 999px; pointer-events: none;
+          background: radial-gradient(circle, #fff 0%, var(--w-accent) 55%, transparent 70%);
+          animation: sg-twinkle 2.6s ease-in-out infinite;
+        }
+        @keyframes sg-twinkle {
+          0%, 100% { opacity: 0.15; transform: scale(0.7); }
+          50% { opacity: 0.95; transform: scale(1.3); }
+        }
         .sg-frame { position: relative; }
         .sg-frame::before, .sg-frame::after {
           content: ""; position: absolute; width: 2.4rem; height: 2.4rem; border: 2px solid var(--w-accent); opacity: 0;
@@ -119,35 +119,11 @@ export function Sage({
           pointer-events: none;
         }
         .sg-fade-slide.is-active { opacity: 1; }
-        .sg-progress {
-          position: absolute; top: 0; left: 0; z-index: 7;
-          height: 2px; width: 0; background: var(--w-accent);
-          box-shadow: 0 0 12px color-mix(in srgb, var(--w-accent) 55%, transparent);
-          animation: sg-progress 19.2s linear forwards;
-        }
-        @keyframes sg-progress { to { width: 100%; } }
-        @keyframes sg-part {
-          to { width: 0%; opacity: 0.35; }
-        }
-        @keyframes sg-reveal {
-          from { opacity: 0; transform: scale(1.12); }
-          to { opacity: 1; transform: scale(1); }
-        }
         @keyframes sg-fall {
           0% { opacity: 0; transform: translateY(-12px) rotate(var(--r, 0deg)) scale(0.5); }
           22% { opacity: 0.95; transform: translateY(8px) rotate(calc(var(--r, 0deg) + 12deg)) scale(1); }
           70% { opacity: 0.55; }
           100% { opacity: 0; transform: translateY(48px) rotate(calc(var(--r, 0deg) + 28deg)) scale(0.7); }
-        }
-        @keyframes sg-said {
-          0% { opacity: 0; transform: translateY(10px); }
-          18% { opacity: 1; transform: none; }
-          68% { opacity: 1; }
-          100% { opacity: 0; }
-        }
-        @keyframes sg-grow {
-          from { opacity: 0; transform: translateY(28px) scale(0.96); }
-          to { opacity: 1; transform: none; }
         }
         @keyframes sg-line { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
         @keyframes sg-corner { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: none; } }
@@ -157,32 +133,19 @@ export function Sage({
         @keyframes sg-vine { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes sg-glow { from { opacity: 0.45; } to { opacity: 0.9; } }
         @media (prefers-reduced-motion: reduce) {
-          .sg-veil-l, .sg-veil-r, .sg-leaf, .sg-said { display: none; }
-          .sg-couple, .sg-name, .sg-line, .sg-rise, .sg-stamp, .sg-unfurl, .sg-unfurl-r, .sg-breathe, .sg-vine, .sg-glow, .sg-progress { animation: none; opacity: 1; transform: none; }
-          .sg-progress { width: 100%; }
+          .sg-leaf, .sg-spark { display: none; }
+          .sg-rise, .sg-stamp, .sg-unfurl, .sg-unfurl-r, .sg-breathe, .sg-vine, .sg-glow, .sg-scroll-cue, .sg-scene-text { animation: none; opacity: 1; transform: none; }
           .sg-rise.is-in .sg-frame::before, .sg-rise.is-in .sg-frame::after { opacity: 1; animation: none; }
+          .sg-scene-text.is-on { opacity: 1; }
         }
         @media (max-width: 767px) {
           .sg-mobile-cover,
-          .sg-couple,
           .sg-fade-slide {
-            object-position: center 18% !important;
-          }
-          .sg-veil-l img,
-          .sg-veil-r img {
             object-position: center 18% !important;
           }
           .sg-breathe {
             animation: none !important;
             transform: none !important;
-          }
-          .sg-couple {
-            transform: none;
-            animation: sg-reveal-mobile 2.2s cubic-bezier(0.16, 0.84, 0.3, 1) 3.2s forwards;
-          }
-          @keyframes sg-reveal-mobile {
-            from { opacity: 0; transform: scale(1.04); }
-            to { opacity: 1; transform: scale(1); }
           }
           .sg-fade-frame {
             aspect-ratio: 3 / 4;
@@ -199,8 +162,12 @@ export function Sage({
           }}
         />
       )}
-      {begun && !open && <Bloom day={day} veilExtra={veilExtra} onDone={() => setOpen(true)} />}
-      <Grove day={day} gather={gather} coupleSlides={coupleSlides} heroSlides={heroSlides} hashtag={hashtag} live={open} />
+      {begun && (
+        <>
+          <ScrollIntro day={day} />
+          <Grove day={day} gather={gather} coupleSlides={coupleSlides} heroSlides={heroSlides} hashtag={hashtag} live />
+        </>
+      )}
     </div>
   );
 }
@@ -226,7 +193,7 @@ function Seal({ day, onOpen }: { day: WeddingDay; onOpen: () => void }) {
           <span className="mt-1 block text-[var(--w-accent)]">{day.second}</span>
         </p>
         <p className="m-0 text-[0.72rem] tracking-[0.22em] text-[color-mix(in_srgb,var(--w-ink)_75%,transparent)] uppercase">
-          A short welcome
+          Tap open, then scroll the welcome
         </p>
         <span className="mt-1 border border-[color-mix(in_srgb,var(--w-accent)_55%,transparent)] bg-[color-mix(in_srgb,var(--w-accent)_18%,transparent)] px-8 py-3 text-[0.72rem] tracking-[0.28em] uppercase">
           Open
@@ -236,108 +203,222 @@ function Seal({ day, onOpen }: { day: WeddingDay; onOpen: () => void }) {
   );
 }
 
-function Bloom({
-  day,
-  veilExtra,
-  onDone,
-}: {
-  day: WeddingDay;
-  veilExtra: string;
-  onDone: () => void;
-}) {
-  const finish = useRef(onDone);
-  const [leaving, setLeaving] = useState(false);
-  finish.current = onDone;
+type IntroScene = { kicker: string; title: string; accent: string; body: string };
+
+function defaultIntroScenes(day: WeddingDay): IntroScene[] {
+  return [
+    {
+      kicker: "Scroll to begin",
+      title: "Two hearts,",
+      accent: "one forever",
+      body: day.arrival,
+    },
+    {
+      kicker: "The story",
+      title: day.first,
+      accent: `& ${day.second}`,
+      body: day.dock[0] ?? day.letter[0],
+    },
+    {
+      kicker: "The day",
+      title: day.shortDate,
+      accent: day.time,
+      body: `${day.venue} · ${day.place}`,
+    },
+    {
+      kicker: "Gather close",
+      title: "Come celebrate",
+      accent: "with us",
+      body: day.dock[3] ?? day.letter[day.letter.length - 1],
+    },
+  ];
+}
+
+function introPhotosFor(day: WeddingDay): Photo[] {
+  const custom = day.extras.introPhotos;
+  if (Array.isArray(custom) && custom.length > 0) {
+    return custom.flatMap((p) => {
+      if (!p || typeof p !== "object" || !("src" in p)) return [];
+      const photo = p as Photo;
+      return typeof photo.src === "string" ? [photo] : [];
+    });
+  }
+  return [
+    day.images.couple,
+    day.images.walk,
+    day.images.bouquet,
+    day.images.kiss,
+    day.images.dress,
+    ...(day.images.more ?? []),
+  ];
+}
+
+function introScenesFor(day: WeddingDay): IntroScene[] {
+  const custom = day.extras.introScenes;
+  if (Array.isArray(custom) && custom.length > 0) {
+    return custom.filter((scene): scene is IntroScene => {
+      if (!scene || typeof scene !== "object") return false;
+      const s = scene as Partial<IntroScene>;
+      return Boolean(s.kicker && s.title && s.accent && s.body);
+    });
+  }
+  return defaultIntroScenes(day);
+}
+
+const INTRO_SPARKS = [
+  { left: "12%", top: "16%", delay: "0s" },
+  { left: "78%", top: "20%", delay: "0.6s" },
+  { left: "28%", top: "28%", delay: "1.2s" },
+  { left: "86%", top: "36%", delay: "0.3s" },
+  { left: "18%", top: "48%", delay: "1.5s" },
+  { left: "68%", top: "44%", delay: "0.9s" },
+];
+
+/** Sticky scroll welcome: images + copy change as the user scrolls. */
+function ScrollIntro({ day }: { day: WeddingDay }) {
+  const trackRef = useRef<HTMLElement>(null);
+  const scenes = introScenesFor(day);
+  const photos = introPhotosFor(day);
+  const sceneCount = scenes.length;
+  const [progress, setProgress] = useState(0);
+  const [scene, setScene] = useState(0);
 
   useEffect(() => {
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const leave = window.setTimeout(() => (reduce ? finish.current() : setLeaving(true)), reduce ? 400 : 17800);
-    const done = window.setTimeout(() => finish.current(), reduce ? 400 : 19200);
+    if (reduce) {
+      setProgress(1);
+      setScene(sceneCount - 1);
+      return;
+    }
+
+    let frame = 0;
+    function update() {
+      frame = 0;
+      const el = trackRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const total = el.offsetHeight - window.innerHeight;
+      const raw = total <= 0 ? 1 : Math.min(1, Math.max(0, -rect.top / total));
+      setProgress(raw);
+      setScene(Math.min(sceneCount - 1, Math.floor(raw * sceneCount + 0.001)));
+    }
+
+    function onScroll() {
+      if (frame) return;
+      frame = window.requestAnimationFrame(update);
+    }
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
-      window.clearTimeout(leave);
-      window.clearTimeout(done);
-      document.body.style.overflow = previous;
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [sceneCount]);
+
+  function skipToEnd() {
+    const el = trackRef.current;
+    if (!el) return;
+    window.scrollTo({ top: el.offsetTop + el.offsetHeight - window.innerHeight + 8, behavior: "smooth" });
+  }
+
+  const photoIndex = Math.min(scene, Math.max(0, photos.length - 1));
 
   return (
     <section
-      className={`sg-sky fixed inset-0 z-50 min-h-[100dvh] overflow-hidden bg-[var(--w-bg)] text-[var(--w-ink)] ${leaving ? "is-leaving" : ""}`}
-      aria-label={`Welcome intro for ${day.first} and ${day.second}`}
+      ref={trackRef}
+      className="relative"
+      style={{ height: `${Math.max(sceneCount, photos.length) * 100}vh` }}
+      aria-label={`Scroll welcome for ${day.first} and ${day.second}`}
     >
-      <div className="sg-progress" aria-hidden />
-      <img
-        src={day.images.couple.src}
-        alt=""
-        className="sg-couple sg-mobile-cover absolute inset-0 size-full"
-        style={{ objectPosition: day.images.couple.focus ?? "center 28%" }}
-      />
-      <div className="sg-veil-l z-[2]">
-        <img src={veilExtra} alt="" className="sg-mobile-cover brightness-75" />
-        <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--w-bg)_35%,transparent)]" />
-      </div>
-      <div className="sg-veil-r z-[2]">
-        <img src={day.images.bouquet.src} alt="" className="sg-mobile-cover brightness-75" />
-        <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--w-bg)_35%,transparent)]" />
-      </div>
-      <div className="absolute inset-0 z-[3] bg-gradient-to-t from-[var(--w-bg)] via-transparent to-[color-mix(in_srgb,var(--w-bg)_45%,transparent)]" />
-      {LEAVES.map((leaf) => (
-        <span
-          key={`${leaf.left}-${leaf.top}`}
-          className="sg-leaf z-[4]"
-          style={{
-            left: leaf.left,
-            top: leaf.top,
-            width: leaf.size,
-            height: leaf.size * 1.35,
-            animationDelay: leaf.delay,
-            ["--r" as string]: leaf.rot,
-          }}
+      <div className="sticky top-0 h-[100dvh] overflow-hidden bg-[var(--w-bg)] text-[var(--w-ink)]">
+        <div className="absolute inset-0">
+          {photos.map((photo, i) => (
+            <img
+              key={photo.src}
+              src={photo.src}
+              alt=""
+              className={`sg-mobile-cover absolute inset-0 size-full object-cover transition-[opacity,transform] duration-700 ease-out ${
+                i === photoIndex ? "scale-100 opacity-100" : "scale-[1.06] opacity-0"
+              }`}
+              style={{ objectPosition: photo.focus ?? "center 22%" }}
+            />
+          ))}
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--w-bg)] via-[color-mix(in_srgb,var(--w-bg)_48%,transparent)] to-[color-mix(in_srgb,var(--w-bg)_38%,transparent)]" />
+
+        {INTRO_SPARKS.map((spark) => (
+          <span
+            key={`${spark.left}-${spark.top}`}
+            className="sg-spark z-[4]"
+            style={{ left: spark.left, top: spark.top, animationDelay: spark.delay }}
+          />
+        ))}
+        {LEAVES.slice(0, 5).map((leaf) => (
+          <span
+            key={`intro-${leaf.left}`}
+            className="sg-leaf z-[4]"
+            style={{
+              left: leaf.left,
+              top: leaf.top,
+              width: leaf.size,
+              height: leaf.size * 1.35,
+              animationDelay: leaf.delay,
+              ["--r" as string]: leaf.rot,
+            }}
+          />
+        ))}
+
+        <div
+          className="absolute top-0 left-0 z-[8] h-1 bg-[var(--w-accent)] transition-[width] duration-150 ease-out"
+          style={{ width: `${progress * 100}%` }}
+          aria-hidden
         />
-      ))}
-      <p className="sg-said absolute inset-x-0 top-[12vh] z-[5] m-0 text-center font-[family-name:var(--font-serif)] text-[clamp(1.5rem,3.5vw,2.6rem)] italic">
-        {day.ui.introKicker}
-      </p>
-      <div className="absolute inset-x-0 bottom-[8vh] z-[5] px-6 text-center">
-        <p className="sg-line sg-glow m-0 text-[0.68rem] tracking-[0.34em] text-[var(--w-accent)] uppercase" style={{ animationDelay: "6.8s" }}>
-          {day.place}
-        </p>
-        <p className="sg-name m-0 mt-3 font-[family-name:var(--font-serif)] text-[clamp(3rem,9vw,6.4rem)] leading-[0.86]" style={{ animationDelay: "8.4s" }}>
-          {day.first}
-        </p>
-        <p className="sg-name m-0 font-[family-name:var(--font-serif)] text-[clamp(3rem,9vw,6.4rem)] leading-[0.86] text-[var(--w-accent)]" style={{ animationDelay: "10.2s" }}>
-          {day.second}
-        </p>
-        <p className="sg-line m-0 mt-4 font-[family-name:var(--font-serif)] text-2xl italic" style={{ animationDelay: "12.4s" }}>
-          {day.time}
-        </p>
-        <p className="sg-line m-0 mt-1 text-sm tracking-[0.16em] uppercase" style={{ animationDelay: "13.8s" }}>
-          {day.dateLabel}
-        </p>
-        <p className="sg-line m-0 mt-1 text-sm text-[var(--w-accent)]" style={{ animationDelay: "15s" }}>
-          {day.venue}
-        </p>
+
+        <div className="absolute top-5 left-5 z-[6] flex items-center gap-2">
+          <p className="m-0 border border-[color-mix(in_srgb,var(--w-accent)_40%,transparent)] bg-black/35 px-3 py-1.5 text-[0.65rem] tracking-[0.24em] text-[var(--w-accent)] uppercase">
+            Welcome
+          </p>
+          <p className="m-0 text-[0.62rem] tracking-[0.18em] text-[color-mix(in_srgb,var(--w-ink)_70%,transparent)] uppercase">
+            {scene + 1}/{sceneCount}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={skipToEnd}
+          className="absolute top-5 right-5 z-[6] cursor-pointer border border-[color-mix(in_srgb,var(--w-accent)_45%,transparent)] bg-black/40 px-4 py-2 text-[0.68rem] tracking-[0.22em] uppercase"
+        >
+          {day.ui.skip}
+        </button>
+
+        <div className="absolute inset-x-0 bottom-0 z-[5] px-6 pb-24 pt-24 md:px-14 md:pb-28">
+          {scenes.map((item, i) => (
+            <div
+              key={`${item.title}-${item.accent}`}
+              className={`sg-scene-text absolute inset-x-6 bottom-24 max-w-3xl md:inset-x-14 md:bottom-28 ${
+                i === scene ? "is-on" : "is-off"
+              }`}
+            >
+              <p className="m-0 text-[0.68rem] tracking-[0.32em] text-[var(--w-accent)] uppercase">{item.kicker}</p>
+              <h2 className="m-0 mt-3 font-[family-name:var(--font-serif)] text-[clamp(2.4rem,8vw,4.8rem)] leading-[0.92] font-medium">
+                {item.title}
+                <span className="mt-1 block text-[var(--w-accent)]">{item.accent}</span>
+              </h2>
+              <p className="m-0 mt-5 max-w-xl text-[clamp(1rem,2.8vw,1.25rem)] leading-relaxed text-[color-mix(in_srgb,var(--w-ink)_88%,transparent)]">
+                {item.body}
+              </p>
+              {i === scene ? (
+                <p className="sg-scroll-cue m-0 mt-6 flex items-center gap-3 text-[0.62rem] tracking-[0.22em] text-[color-mix(in_srgb,var(--w-ink)_72%,transparent)] uppercase">
+                  <span className="block h-px w-8 bg-[var(--w-accent)]" aria-hidden />
+                  {progress > 0.92 ? "Keep scrolling · the invitation is next" : "Scroll to continue"}
+                </p>
+              ) : null}
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="absolute top-5 left-5 z-[6] flex items-center gap-3">
-        <p className="m-0 border border-[color-mix(in_srgb,var(--w-accent)_40%,transparent)] bg-black/35 px-3 py-1.5 text-[0.65rem] tracking-[0.24em] text-[var(--w-accent)] uppercase">
-          Welcome
-        </p>
-      </div>
-      <button
-        type="button"
-        onClick={() => {
-          setLeaving(true);
-          window.setTimeout(() => finish.current(), 240);
-        }}
-        className="absolute top-5 right-5 z-[6] cursor-pointer border border-[color-mix(in_srgb,var(--w-accent)_45%,transparent)] bg-black/40 px-4 py-2 text-[0.68rem] tracking-[0.22em] uppercase"
-      >
-        {day.ui.skip}
-      </button>
-      <p className="absolute inset-x-0 bottom-4 z-[6] m-0 px-6 text-center text-[0.65rem] tracking-[0.2em] text-[color-mix(in_srgb,var(--w-ink)_70%,transparent)] uppercase">
-        A short welcome · then the invitation
-      </p>
     </section>
   );
 }
