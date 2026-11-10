@@ -15,7 +15,15 @@ const LEAVES = [
   { left: "66%", top: "34%", delay: "2.7s", size: 15, rot: "-36deg" },
 ];
 
-export function Sage({ day = sageDay }: { day?: WeddingDay }) {
+export function Sage({
+  day = sageDay,
+  onBegin,
+}: {
+  day?: WeddingDay;
+  /** Called synchronously from the Open tap so music can start with the intro. */
+  onBegin?: () => void;
+}) {
+  const [begun, setBegun] = useState(false);
   const [open, setOpen] = useState(false);
   const moreRooms = (day.images.more ?? []).map((photo, index) => {
     const isGele = photo.src.includes("photo-12");
@@ -57,11 +65,17 @@ export function Sage({ day = sageDay }: { day?: WeddingDay }) {
         }
         .sg-veil-l { left: 0; }
         .sg-veil-r { right: 0; }
-        .sg-veil-l img { object-position: left center; }
-        .sg-veil-r img { object-position: right center; transform: scaleX(-1); }
+        .sg-veil-l img { object-position: left center; width: 100%; height: 100%; object-fit: cover; }
+        .sg-veil-r img { object-position: right center; transform: scaleX(-1); width: 100%; height: 100%; object-fit: cover; }
         .sg-couple {
           opacity: 0; transform: scale(1.12);
           animation: sg-reveal 2.6s cubic-bezier(0.16, 0.84, 0.3, 1) 3.6s forwards;
+        }
+        .sg-mobile-cover {
+          width: 100%;
+          height: 100%;
+          max-width: none;
+          object-fit: cover;
         }
         .sg-leaf {
           position: absolute; border-radius: 60% 40% 55% 45% / 55% 45% 60% 40%;
@@ -134,10 +148,74 @@ export function Sage({ day = sageDay }: { day?: WeddingDay }) {
           .sg-couple, .sg-name, .sg-line, .sg-rise, .sg-stamp, .sg-unfurl, .sg-unfurl-r, .sg-breathe, .sg-vine, .sg-glow { animation: none; opacity: 1; transform: none; }
           .sg-rise.is-in .sg-frame::before, .sg-rise.is-in .sg-frame::after { opacity: 1; animation: none; }
         }
+        @media (max-width: 767px) {
+          .sg-mobile-cover,
+          .sg-couple,
+          .sg-fade-slide {
+            object-position: center 18% !important;
+          }
+          .sg-veil-l img,
+          .sg-veil-r img {
+            object-position: center 18% !important;
+          }
+          .sg-breathe {
+            animation: none !important;
+            transform: none !important;
+          }
+          .sg-couple {
+            transform: none;
+            animation: sg-reveal-mobile 2.2s cubic-bezier(0.16, 0.84, 0.3, 1) 3.2s forwards;
+          }
+          @keyframes sg-reveal-mobile {
+            from { opacity: 0; transform: scale(1.04); }
+            to { opacity: 1; transform: scale(1); }
+          }
+          .sg-fade-frame {
+            aspect-ratio: 3 / 4;
+            max-height: min(68vh, 34rem);
+          }
+        }
       `}</style>
-      {!open && <Bloom day={day} veilExtra={veilExtra} onDone={() => setOpen(true)} />}
+      {!begun && (
+        <Seal
+          day={day}
+          onOpen={() => {
+            onBegin?.();
+            setBegun(true);
+          }}
+        />
+      )}
+      {begun && !open && <Bloom day={day} veilExtra={veilExtra} onDone={() => setOpen(true)} />}
       <Grove day={day} gather={gather} coupleSlides={coupleSlides} hashtag={hashtag} live={open} />
     </div>
+  );
+}
+
+function Seal({ day, onOpen }: { day: WeddingDay; onOpen: () => void }) {
+  return (
+    <section className="fixed inset-0 z-50 grid min-h-[100dvh] place-items-center overflow-hidden bg-[var(--w-bg)] text-[var(--w-ink)]">
+      <img
+        src={day.images.couple.src}
+        alt=""
+        className="sg-mobile-cover absolute inset-0 size-full opacity-55"
+        style={{ objectPosition: day.images.couple.focus ?? "center 28%" }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--w-bg)] via-[color-mix(in_srgb,var(--w-bg)_55%,transparent)] to-[color-mix(in_srgb,var(--w-bg)_40%,transparent)]" />
+      <button
+        type="button"
+        onClick={onOpen}
+        className="relative z-[2] mx-6 flex max-w-lg flex-col items-center gap-5 text-center"
+      >
+        <p className="m-0 text-[0.68rem] tracking-[0.34em] text-[var(--w-accent)] uppercase">{day.place}</p>
+        <p className="m-0 font-[family-name:var(--font-serif)] text-[clamp(2.8rem,8vw,5.2rem)] leading-[0.9] font-medium">
+          {day.first}
+          <span className="mt-1 block text-[var(--w-accent)]">{day.second}</span>
+        </p>
+        <span className="mt-2 border border-[color-mix(in_srgb,var(--w-accent)_55%,transparent)] bg-[color-mix(in_srgb,var(--w-accent)_18%,transparent)] px-8 py-3 text-[0.72rem] tracking-[0.28em] uppercase">
+          Open
+        </span>
+      </button>
+    </section>
   );
 }
 
@@ -169,21 +247,21 @@ function Bloom({
 
   return (
     <section
-      className={`sg-sky fixed inset-0 z-50 overflow-hidden bg-[var(--w-bg)] text-[var(--w-ink)] ${leaving ? "is-leaving" : ""}`}
+      className={`sg-sky fixed inset-0 z-50 min-h-[100dvh] overflow-hidden bg-[var(--w-bg)] text-[var(--w-ink)] ${leaving ? "is-leaving" : ""}`}
       aria-label={`Botanical veils part to reveal ${day.first} and ${day.second}`}
     >
       <img
         src={day.images.couple.src}
         alt=""
-        className="sg-couple absolute inset-0 size-full object-cover"
+        className="sg-couple sg-mobile-cover absolute inset-0 size-full"
         style={{ objectPosition: day.images.couple.focus ?? "center 28%" }}
       />
       <div className="sg-veil-l z-[2]">
-        <img src={veilExtra} alt="" className="size-full object-cover brightness-75" />
+        <img src={veilExtra} alt="" className="sg-mobile-cover brightness-75" />
         <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--w-bg)_35%,transparent)]" />
       </div>
       <div className="sg-veil-r z-[2]">
-        <img src={day.images.bouquet.src} alt="" className="size-full object-cover brightness-75" />
+        <img src={day.images.bouquet.src} alt="" className="sg-mobile-cover brightness-75" />
         <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--w-bg)_35%,transparent)]" />
       </div>
       <div className="absolute inset-0 z-[3] bg-gradient-to-t from-[var(--w-bg)] via-transparent to-[color-mix(in_srgb,var(--w-bg)_45%,transparent)]" />
@@ -251,13 +329,13 @@ function CoupleFade({ slides, live }: { slides: Photo[]; live: boolean }) {
   }, [live, total]);
 
   return (
-    <div className="sg-frame relative aspect-[4/5] w-full overflow-hidden">
+    <div className="sg-frame sg-fade-frame relative aspect-[4/5] w-full overflow-hidden">
       {slides.slice(0, 5).map((photo, i) => (
         <img
           key={photo.src}
           src={photo.src}
           alt={photo.alt ?? ""}
-          className={`sg-fade-slide size-full object-cover ${i === index ? "is-active" : ""}`}
+          className={`sg-fade-slide sg-mobile-cover absolute inset-0 ${i === index ? "is-active" : ""}`}
           style={{ objectPosition: photo.focus ?? "center 28%" }}
         />
       ))}
@@ -280,17 +358,18 @@ function Grove({
 }) {
   return (
     <div inert={live ? undefined : true} aria-hidden={live ? undefined : true}>
-      <section className="relative grid min-h-dvh items-end overflow-hidden bg-[var(--w-bg)] px-6 py-16 text-[var(--w-ink)] md:px-14">
+      <section className="relative grid min-h-[100dvh] items-end overflow-hidden bg-[var(--w-bg)] px-5 pb-12 pt-20 text-[var(--w-ink)] sm:px-6 md:px-14 md:py-16">
         <img
-          src={day.images.more?.[0]?.src ?? day.images.walk.src}
+          src={day.images.couple.src}
           alt=""
-          className="sg-breathe absolute inset-0 size-full object-cover opacity-40"
+          className="sg-breathe sg-mobile-cover absolute inset-0 opacity-45"
+          style={{ objectPosition: day.images.couple.focus ?? "center 28%" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--w-surface)] via-[color-mix(in_srgb,var(--w-bg)_65%,transparent)] to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--w-surface)] via-[color-mix(in_srgb,var(--w-bg)_70%,transparent)] to-[color-mix(in_srgb,var(--w-bg)_35%,transparent)]" />
         {LEAVES.slice(0, 5).map((leaf) => (
           <span
             key={`hero-${leaf.left}`}
-            className="sg-leaf z-[1]"
+            className="sg-leaf z-[1] hidden md:block"
             style={{
               left: leaf.left,
               top: leaf.top,
@@ -301,13 +380,13 @@ function Grove({
             }}
           />
         ))}
-        <div className="relative z-[2] max-w-4xl">
+        <div className="relative z-[2] w-full max-w-4xl">
           <p className="sg-glow m-0 text-[0.68rem] tracking-[0.36em] text-[var(--w-accent)] uppercase">{day.place}</p>
-          <h1 className="m-0 mt-4 font-[family-name:var(--font-serif)] text-[clamp(3.4rem,9vw,7rem)] leading-[0.84] font-medium">
+          <h1 className="m-0 mt-3 font-[family-name:var(--font-serif)] text-[clamp(2.8rem,14vw,7rem)] leading-[0.88] font-medium md:mt-4 md:leading-[0.84]">
             {day.first}
             <span className="block text-[var(--w-accent)]">{day.second}</span>
           </h1>
-          <p className="m-0 mt-6 max-w-xl font-[family-name:var(--font-serif)] text-2xl italic">
+          <p className="m-0 mt-5 max-w-xl font-[family-name:var(--font-serif)] text-[clamp(1.15rem,4.5vw,1.5rem)] italic md:mt-6 md:text-2xl">
             {day.dateLabel} · {day.time}
           </p>
           <p className="m-0 mt-2 text-[color-mix(in_srgb,var(--w-ink)_85%,transparent)]">{day.venue}</p>
@@ -344,21 +423,21 @@ function Grove({
       </section>
 
       {gather.map((room, index) => (
-        <section key={room.label} className={`relative min-h-[90vh] overflow-hidden ${index % 2 ? "bg-[var(--w-surface)]" : "bg-[var(--w-bg)]"}`}>
+        <section key={room.label} className={`relative min-h-[100dvh] overflow-hidden md:min-h-[90vh] ${index % 2 ? "bg-[var(--w-surface)]" : "bg-[var(--w-bg)]"}`}>
           <img
             src={room.src}
             alt=""
-            className={`absolute inset-0 size-full opacity-90 ${room.contain ? "object-contain" : "sg-breathe object-cover"}`}
-            style={{ objectPosition: room.focus, animationDuration: room.contain ? undefined : `${16 + (index % 3) * 3}s` }}
+            className={`absolute inset-0 opacity-90 ${room.contain ? "size-full object-contain object-top md:object-center" : "sg-breathe sg-mobile-cover"}`}
+            style={{ objectPosition: room.contain ? undefined : room.focus, animationDuration: room.contain ? undefined : `${16 + (index % 3) * 3}s` }}
           />
           <div
             className={`absolute inset-0 ${
               index % 2
-                ? "bg-gradient-to-r from-[color-mix(in_srgb,var(--w-surface)_88%,transparent)] via-[color-mix(in_srgb,var(--w-surface)_35%,transparent)] to-transparent"
-                : "bg-gradient-to-t from-[color-mix(in_srgb,var(--w-bg)_90%,transparent)] via-[color-mix(in_srgb,var(--w-bg)_25%,transparent)] to-transparent"
+                ? "bg-gradient-to-t from-[color-mix(in_srgb,var(--w-surface)_92%,transparent)] via-[color-mix(in_srgb,var(--w-surface)_40%,transparent)] to-transparent md:bg-gradient-to-r md:from-[color-mix(in_srgb,var(--w-surface)_88%,transparent)] md:via-[color-mix(in_srgb,var(--w-surface)_35%,transparent)] md:to-transparent"
+                : "bg-gradient-to-t from-[color-mix(in_srgb,var(--w-bg)_92%,transparent)] via-[color-mix(in_srgb,var(--w-bg)_30%,transparent)] to-transparent"
             }`}
           />
-          <div className={`relative flex min-h-[90vh] items-end px-6 py-14 text-[var(--w-ink)] md:px-14 ${index % 2 ? "justify-start" : "justify-end"}`}>
+          <div className={`relative flex min-h-[100dvh] items-end px-5 py-12 text-[var(--w-ink)] md:min-h-[90vh] md:px-14 md:py-14 ${index % 2 ? "justify-start" : "justify-end"}`}>
             <Rise live={live}>
               <div className="max-w-xl">
                 <p className="sg-stamp m-0 inline-block rounded-full border border-[color-mix(in_srgb,var(--w-accent)_60%,transparent)] bg-[var(--w-accent)] px-3 py-1 text-[0.68rem] font-medium tracking-[0.2em] text-[var(--w-on-accent)] uppercase">
