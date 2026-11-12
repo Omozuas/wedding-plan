@@ -312,7 +312,7 @@ function Seal({ day, onOpen }: { day: BirthdayDay; onOpen: () => void }) {
         className="relative z-[2] mx-6 flex max-w-lg flex-col items-center gap-4 text-center"
       >
         <p className="m-0 text-[0.68rem] tracking-[0.34em] text-[var(--b-accent)] uppercase">{day.ui.introKicker}</p>
-        <p className="m-0 font-[family-name:var(--font-serif)] text-[clamp(2.4rem,8vw,4.6rem)] leading-[0.92] font-medium">
+        <p className="m-0 max-w-[16ch] font-[family-name:var(--font-serif)] text-[clamp(1.9rem,6.5vw,3.8rem)] leading-[1.02] font-medium">
           {day.shortName}
           <span className="mt-2 block text-[var(--b-accent)]">at {day.age}</span>
         </p>
@@ -458,7 +458,15 @@ function ScrollIntro({ day }: { day: BirthdayDay }) {
   );
 }
 
-function GenZGallery({ photos, live }: { photos: BirthdayPhoto[]; live: boolean }) {
+function GenZGallery({
+  photos,
+  live,
+  shortName,
+}: {
+  photos: BirthdayPhoto[];
+  live: boolean;
+  shortName: string;
+}) {
   const layouts = [
     "md:col-span-2 md:row-span-2 aspect-[3/4] md:aspect-auto md:min-h-[28rem] -rotate-1",
     "aspect-[4/5] rotate-2",
@@ -477,7 +485,7 @@ function GenZGallery({ photos, live }: { photos: BirthdayPhoto[]; live: boolean 
         <p className="iv-marquee m-0 flex w-max gap-10 text-[0.78rem] tracking-[0.28em] text-[var(--b-accent)] uppercase">
           {Array.from({ length: 2 }).map((_, loop) => (
             <span key={loop} className="flex gap-10">
-              {"80 · Grace · Blessed · White & Gold · Mummy Grace · Faithful · ".repeat(3)}
+              {`80 · Grace · Blessed · White & Gold · ${shortName} · Faithful · `.repeat(3)}
             </span>
           ))}
         </p>
@@ -555,7 +563,7 @@ function Celebration({ day, live }: { day: BirthdayDay; live: boolean }) {
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--b-surface)] via-[color-mix(in_srgb,var(--b-bg)_70%,transparent)] to-[color-mix(in_srgb,var(--b-bg)_40%,transparent)]" />
         <div className="relative z-[2] w-full max-w-4xl">
           <p className="m-0 text-[0.68rem] tracking-[0.34em] text-[var(--b-accent)] uppercase">{day.place}</p>
-          <h1 className="m-0 mt-3 font-[family-name:var(--font-serif)] text-[clamp(2.6rem,12vw,6.2rem)] leading-[0.9] font-medium">
+          <h1 className="m-0 mt-3 max-w-[16ch] font-[family-name:var(--font-serif)] text-[clamp(2.1rem,9vw,5.2rem)] leading-[1.02] font-medium">
             {day.shortName}
             <span className="mt-1 block text-[var(--b-accent)]">turns {day.age}</span>
           </h1>
@@ -625,7 +633,7 @@ function Celebration({ day, live }: { day: BirthdayDay; live: boolean }) {
         </ol>
       </section>
 
-      <GenZGallery photos={day.photos} live={live} />
+      <GenZGallery photos={day.photos} live={live} shortName={day.shortName} />
 
       <section className="grid gap-10 bg-[var(--b-surface)] px-5 py-16 md:grid-cols-2 md:px-14">
         <Rise live={live}>

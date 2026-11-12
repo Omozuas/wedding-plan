@@ -1,6 +1,6 @@
 import { defineDay } from "@/content";
 
-/** Daniel & Racheal — Sage client site (sky blue / deep blue). */
+/** Judah & Seyifunmi — Sage client site (sky blue / deep blue). */
 export const rachealDanielDay = defineDay(
   {
     id: "client-racheal-daniel",
@@ -9,11 +9,11 @@ export const rachealDanielDay = defineDay(
     name: "Sage",
   },
   {
-    couple: "Daniel & Racheal",
-    bride: "Racheal",
-    groom: "Daniel",
-    first: "Daniel",
-    second: "Racheal",
+    couple: "Judah & Seyifunmi",
+    bride: "Seyifunmi",
+    groom: "Judah",
+    first: "Judah",
+    second: "Seyifunmi",
     dateLabel: "Thursday, 1 October 2026",
     shortDate: "1 October",
     time: "Twelve noon",
@@ -23,8 +23,8 @@ export const rachealDanielDay = defineDay(
     arrival: "A love written in the stars. Two hearts. One future.",
     letter: [
       "Some love stories begin with a grand gesture. Theirs began with two hearts finding something special in each other.",
-      "When Daniel met Racheal, he did not know that a simple moment would become the beginning of a beautiful journey. There was something about her warmth, her smile, and the way she made ordinary moments feel special that drew him closer.",
-      "For Racheal, Daniel became more than someone she loved. He became her friend, her safe place, and the person she wanted beside her through life’s unexpected turns.",
+      "When Judah met Seyifunmi, he did not know that a simple moment would become the beginning of a beautiful journey. There was something about her warmth, her smile, and the way she made ordinary moments feel special that drew him closer.",
+      "For Seyifunmi, Judah became more than someone she loved. He became her friend, her safe place, and the person she wanted beside her through life’s unexpected turns.",
       "Together they chose each other, learned together, laughed through the little things, and stood together when life was not so easy. Now they begin the next chapter — shared dreams, whispered promises, and a love that continues to grow.",
     ],
     dock: [
@@ -47,7 +47,7 @@ export const rachealDanielDay = defineDay(
       {
         time: "After",
         title: "The gathering",
-        detail: "Sky blue and deep blue. Joy, family, and #Foreverstarttoday.",
+        detail: "Soft sky blue and blush. Joy, family, and #Foreverstarttoday.",
       },
       {
         time: "Evening",
@@ -55,7 +55,7 @@ export const rachealDanielDay = defineDay(
         detail: "Stay for the music, the laughter, and the last dance.",
       },
     ],
-    dress: "White wedding. Sky blue and deep blue welcome. Soft, elegant, and ready to celebrate. #Foreverstarttoday",
+    dress: "White wedding. Soft sky blue and blush pink welcome. Soft, elegant, and ready to celebrate. #Foreverstarttoday",
     stays: [
       { name: "Suzy Hall, Ikeja", detail: "Ceremony and reception in one place. Arrive ready for noon." },
       { name: "Around Ikeja", detail: "Hotels and guest houses nearby if you are travelling in." },
@@ -77,53 +77,56 @@ export const rachealDanielDay = defineDay(
       couple: {
         src: "/photos/racheal-daniel/photo-5.jpg",
         focus: "center 28%",
-        alt: "Daniel and Racheal on their wedding day",
+        alt: "Judah and Seyifunmi on their wedding day",
       },
       walk: {
         src: "/photos/racheal-daniel/photo-2.jpg",
         focus: "center 40%",
-        alt: "Daniel and Racheal outdoors",
+        alt: "Judah and Seyifunmi outdoors",
       },
       bouquet: {
         src: "/photos/racheal-daniel/photo-9.jpg",
         focus: "center 30%",
-        alt: "Racheal with her bouquet",
+        alt: "Seyifunmi with her bouquet",
       },
       rings: {
         src: "/photos/racheal-daniel/photo-8.jpg",
         focus: "center 25%",
-        alt: "Daniel in white tuxedo",
+        alt: "Judah in white tuxedo",
       },
       kiss: {
         src: "/photos/racheal-daniel/photo-11.jpg",
         focus: "center 35%",
-        alt: "Daniel and Racheal’s first dance",
+        alt: "Judah and Seyifunmi’s first dance",
       },
       dress: {
         src: "/photos/racheal-daniel/photo-3.jpg",
         focus: "center 30%",
-        alt: "Daniel and Racheal under the arches",
+        alt: "Judah and Seyifunmi under the arches",
       },
       more: [
+        { src: "/photos/racheal-daniel/photo-1.jpg", focus: "center 22%", alt: "Judah and Seyifunmi outdoors" },
+        { src: "/photos/racheal-daniel/photo-4.jpg", focus: "center 40%", alt: "A quiet forehead kiss" },
+        { src: "/photos/racheal-daniel/photo-6.jpg", focus: "center 30%", alt: "Judah and Seyifunmi in traditional green" },
+        { src: "/photos/racheal-daniel/photo-7.jpg", focus: "center 28%", alt: "A candid smile" },
+        { src: "/photos/racheal-daniel/photo-10.jpg", focus: "center 25%", alt: "Seyifunmi with her bouquet raised" },
+        { src: "/photos/racheal-daniel/photo-12.jpg", focus: "center top", alt: "Seyifunmi in emerald gele" },
+        { src: "/photos/racheal-daniel/photo-5.jpg", focus: "center 18%", alt: "Close portrait" },
+        { src: "/photos/racheal-daniel/photo-2.jpg", focus: "center 20%", alt: "Candid walk" },
+        { src: "/photos/racheal-daniel/photo-11.jpg", focus: "center 20%", alt: "Dance floor moment" },
+        { src: "/photos/racheal-daniel/photo-9.jpg", focus: "center 18%", alt: "Bouquet detail" },
+        { src: "/photos/racheal-daniel/photo-8.jpg", focus: "center 15%", alt: "Groom portrait" },
+        { src: "/photos/racheal-daniel/photo-6.jpg", focus: "center 18%", alt: "Traditional look, close" },
+        { src: "/photos/racheal-daniel/photo-3.jpg", focus: "center 18%", alt: "Under the arches, candid" },
+        { src: "/photos/racheal-daniel/photo-1.jpg", focus: "center 35%", alt: "Together in soft light" },
+        { src: "/photos/racheal-daniel/photo-4.jpg", focus: "center 22%", alt: "Tender moment" },
+        { src: "/photos/racheal-daniel/photo-7.jpg", focus: "center 15%", alt: "Joy on their faces" },
+        { src: "/photos/racheal-daniel/photo-10.jpg", focus: "center 15%", alt: "Celebration lift" },
+        { src: "/photos/racheal-daniel/photo-12.jpg", focus: "center 20%", alt: "Gele, soft focus" },
         {
-          src: "/photos/racheal-daniel/photo-6.jpg",
-          focus: "center 30%",
-          alt: "Daniel and Racheal in traditional green",
-        },
-        {
-          src: "/photos/racheal-daniel/photo-10.jpg",
-          focus: "center 25%",
-          alt: "Racheal with her bouquet raised",
-        },
-        {
-          src: "/photos/racheal-daniel/photo-12.jpg",
-          focus: "center top",
-          alt: "Racheal in emerald gele",
-        },
-        {
-          src: "/photos/racheal-daniel/photo-4.jpg",
-          focus: "center 40%",
-          alt: "A quiet forehead kiss",
+          src: "/cinema/judah-seyifunmi.mp4",
+          kind: "video",
+          alt: "Judah and Seyifunmi — a short film from their photos",
         },
       ],
     },
@@ -139,12 +142,15 @@ export const rachealDanielDay = defineDay(
       ceremonyType: "White wedding",
       songLabel: "Romantic piano",
       musicSrc: "/music/romantic-instrumental.mp3",
+      mapsQuery: "Suzy Hall, Ikeja, Lagos",
+      mapsEmbedUrl:
+        "https://maps.google.com/maps?q=Suzy%20Hall%2C%20Ikeja%2C%20Lagos&z=15&output=embed",
       introScenes: [
         {
           kicker: "Scroll to begin",
           title: "Two hearts,",
           accent: "one forever",
-          body: "A love written in the stars. Daniel and Racheal invite you into their beginning.",
+          body: "A love written in the stars. Judah and Seyifunmi invite you into their beginning.",
         },
         {
           kicker: "The story",
@@ -162,7 +168,7 @@ export const rachealDanielDay = defineDay(
           kicker: "The gathering",
           title: "Suzy Hall,",
           accent: "Ikeja",
-          body: "Thursday, 1 October 2026 · Twelve noon · White wedding · Sky blue and deep blue.",
+          body: "Thursday, 1 October 2026 · Twelve noon · White wedding · Soft sky blue and blush.",
         },
         {
           kicker: "#Foreverstarttoday",
@@ -172,14 +178,14 @@ export const rachealDanielDay = defineDay(
         },
       ],
       introPhotos: [
-        { src: "/photos/racheal-daniel/photo-5.jpg", focus: "center 28%", alt: "Daniel and Racheal" },
-        { src: "/photos/racheal-daniel/photo-1.jpg", focus: "center 22%", alt: "Daniel and Racheal outdoors" },
+        { src: "/photos/racheal-daniel/photo-5.jpg", focus: "center 28%", alt: "Judah and Seyifunmi" },
+        { src: "/photos/racheal-daniel/photo-1.jpg", focus: "center 22%", alt: "Judah and Seyifunmi outdoors" },
         { src: "/photos/racheal-daniel/photo-2.jpg", focus: "center 35%", alt: "A walk together" },
         { src: "/photos/racheal-daniel/photo-11.jpg", focus: "center 32%", alt: "First dance" },
-        { src: "/photos/racheal-daniel/photo-9.jpg", focus: "center 26%", alt: "Racheal with bouquet" },
+        { src: "/photos/racheal-daniel/photo-9.jpg", focus: "center 26%", alt: "Seyifunmi with bouquet" },
         { src: "/photos/racheal-daniel/photo-6.jpg", focus: "center 28%", alt: "Traditional green" },
         { src: "/photos/racheal-daniel/photo-3.jpg", focus: "center 30%", alt: "Under the arches" },
-        { src: "/photos/racheal-daniel/photo-8.jpg", focus: "center 22%", alt: "Daniel in white tuxedo" },
+        { src: "/photos/racheal-daniel/photo-8.jpg", focus: "center 22%", alt: "Judah in white tuxedo" },
       ],
     },
   },

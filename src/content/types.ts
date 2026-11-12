@@ -4,6 +4,8 @@ export type Photo = {
   src: string;
   focus?: string;
   alt?: string;
+  /** Optional media kind for album grids (defaults to image). */
+  kind?: "image" | "video";
 };
 
 export type Hour = {
@@ -31,7 +33,7 @@ export type WeddingColors = {
 /**
  * Photo pack for a template.
  * - 6 required named slots (couple → dress)
- * - `more`: optional extras, up to 4 → **10 photos max total**
+ * - `more`: optional extras for the album / extra rooms (up to 30)
  */
 export type WeddingImages = {
   couple: Photo;
@@ -40,7 +42,7 @@ export type WeddingImages = {
   rings: Photo;
   kiss: Photo;
   dress: Photo;
-  /** Extra photos (max 4). Combined with the 6 named slots = up to 10. */
+  /** Extra photos/videos for the album (and optional narrative rooms). */
   more?: Photo[];
 };
 
@@ -134,16 +136,16 @@ export const defaultImages: WeddingImages = {
   more: [],
 };
 
-const MAX_MORE = 4;
+const MAX_MORE = 30;
 
-/** Flatten named slots + extras into one list (6–10 photos). */
+/** Flatten named slots + extras into one list. */
 export function photoList(images: WeddingImages): Photo[] {
   const named = [images.couple, images.walk, images.bouquet, images.rings, images.kiss, images.dress];
   const extras = (images.more ?? []).slice(0, MAX_MORE);
   return [...named, ...extras];
 }
 
-/** Merge user images onto defaults; clamp `more` to 4. */
+/** Merge user images onto defaults; clamp `more` to MAX_MORE. */
 export function normalizeImages(partial?: Partial<WeddingImages>): WeddingImages {
   const more = [...(partial?.more ?? defaultImages.more ?? [])].slice(0, MAX_MORE);
   return {
@@ -155,6 +157,12 @@ export function normalizeImages(partial?: Partial<WeddingImages>): WeddingImages
     dress: partial?.dress ?? defaultImages.dress,
     more,
   };
+}
+
+export function isVideoPhoto(photo: Photo) {
+  if (photo.kind === "video") return true;
+  if (photo.kind === "image") return false;
+  return /\.(mp4|webm|mov|m4v)(\?|$)/i.test(photo.src);
 }
 
 export function themeVars(colors: WeddingColors): CSSProperties {

@@ -100,7 +100,7 @@ export function TemplatePicker() {
             </h2>
             <ClientCard
               href="/clients/racheal-daniel"
-              name="Daniel & Racheal"
+              name="Judah & Seyifunmi"
               kind="Sage · Wedding"
               note="Sky-blue scroll welcome with parting veils"
               photo="/photos/racheal-daniel/photo-5.jpg"
@@ -111,8 +111,8 @@ export function TemplatePicker() {
               name="Mrs Grace Tabiowo"
               kind="Ivory · Birthday"
               note="Gold-on-ink eightieth celebration"
-              photo="/photos/grace-tabiowo/photo-1.jpg"
-              focus="center 18%"
+              photo="/photos/grace-tabiowo/photo-9.jpg"
+              focus="center 22%"
             />
           </section>
 

@@ -26,7 +26,7 @@ export const graceTabiowoDay = {
   id: "client-grace-tabiowo",
   template: "Ivory",
   name: "Mrs Grace Ayo Tabiowo",
-  shortName: "Mummy Grace",
+  shortName: "Mummy Grace Ayo Tabiowo",
   age: 80,
   headline: "A life preserved by God’s Grace",
   message:
@@ -47,13 +47,13 @@ export const graceTabiowoDay = {
       time: "10:00",
       title: "Thanksgiving Mass",
       detail:
-        "Our Lady of Fatima Catholic Church, 12 Adetayo Sode Street near Nepa installation, Aguda, Surulere, Lagos.",
+        "Our Lady of Fatima Catholic Church, 1/2 Adetayo Sode Street, Beside Nepa installation, Aguda Surulere, Lagos.",
     },
     {
       time: "12:00",
       title: "Reception",
       detail:
-        "Multipurpose Hall, Sickle Cell Foundation Nigeria, National Sickle Cell Center, Ishaga Road opposite LASUTH, Idi-Araba, Lagos.",
+        "Multipurpose Hall, Sickle Cell Foundation Nigeria, National Sickle Cell Center, Ishaga Road opposite LUTH, Idi-Araba, Lagos.",
     },
   ] satisfies BirthdayHour[],
   colors: {
@@ -66,8 +66,13 @@ export const graceTabiowoDay = {
     surfaceAlt: "#2a2218",
     onAccent: "#0f0c08",
   } satisfies BirthdayColors,
-  /** Image 1 featured first (per form). */
+  /** Front-page seated portrait first, then the rest of the pack. */
   photos: [
+    {
+      src: "/photos/grace-tabiowo/photo-9.jpg",
+      focus: "center 22%",
+      alt: "Mummy Grace Ayo Tabiowo seated in peach lace and gele",
+    },
     {
       src: "/photos/grace-tabiowo/photo-1.jpg",
       focus: "center 18%",
@@ -86,7 +91,7 @@ export const graceTabiowoDay = {
     {
       src: "/photos/grace-tabiowo/photo-4.jpg",
       focus: "center 18%",
-      alt: "A joyful portrait of Mummy Grace",
+      alt: "A joyful portrait of Mummy Grace Ayo Tabiowo",
     },
     {
       src: "/photos/grace-tabiowo/photo-5.jpg",
@@ -117,7 +122,7 @@ export const graceTabiowoDay = {
       kicker: "Scroll to begin",
       title: "A birthday,",
       accent: "beautifully yours",
-      body: "A little corner of the internet for Mummy Grace — eighty years of light, laughter, and love.",
+      body: "A little corner of the internet for Mummy Grace Ayo Tabiowo — eighty years of light, laughter, and love.",
     },
     {
       kicker: "The celebration",

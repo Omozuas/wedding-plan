@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { themeVars, type Photo, type WeddingDay } from "@/content";
+import { isVideoPhoto, photoList, themeVars, type Photo, type WeddingDay } from "@/content";
 import { sageDay } from "./sage-day";
 
 const LEAVES = [
@@ -24,17 +24,22 @@ export function Sage({
   onBegin?: () => void;
 }) {
   const [begun, setBegun] = useState(false);
-  const veilExtra = day.images.more?.[0]?.src ?? day.images.bouquet.src;
-  const moreRooms = (day.images.more ?? []).map((photo, index) => {
-    const isGele = photo.src.includes("photo-12");
-    return {
-      src: photo.src,
-      focus: isGele ? "center top" : (photo.focus ?? "center"),
-      label: ["More light", "Closer still", "Another glance", "Held close"][index] ?? "More",
-      note: photo.alt ?? day.dock[index % day.dock.length] ?? day.couple,
-      contain: isGele,
-    };
-  });
+  const veilExtra =
+    day.images.more?.find((photo) => !isVideoPhoto(photo))?.src ?? day.images.bouquet.src;
+  const album = photoList(day.images);
+  const moreRooms = (day.images.more ?? [])
+    .filter((photo) => !isVideoPhoto(photo))
+    .slice(0, 4)
+    .map((photo, index) => {
+      const isGele = photo.src.includes("photo-12");
+      return {
+        src: photo.src,
+        focus: isGele ? "center top" : (photo.focus ?? "center"),
+        label: ["More light", "Closer still", "Another glance", "Held close"][index] ?? "More",
+        note: photo.alt ?? day.dock[index % day.dock.length] ?? day.couple,
+        contain: isGele,
+      };
+    });
   const gather = [
     { src: day.images.bouquet.src, focus: day.images.bouquet.focus ?? "center", label: "The gathering", note: day.letter[0], contain: false },
     { src: day.images.walk.src, focus: day.images.walk.focus ?? "center 40%", label: "The walk", note: day.dock[0], contain: false },
@@ -49,15 +54,19 @@ export function Sage({
     day.images.walk,
     day.images.kiss,
     day.images.dress,
-    day.images.more?.[0] ?? day.images.bouquet,
+    day.images.more?.find((photo) => !isVideoPhoto(photo)) ?? day.images.bouquet,
   ].slice(0, 5);
   const heroSlides: Photo[] = [
     day.images.couple,
     day.images.walk,
     day.images.kiss,
-    day.images.more?.[0] ?? day.images.dress,
+    day.images.more?.find((photo) => !isVideoPhoto(photo)) ?? day.images.dress,
   ].slice(0, 4);
   const hashtag = typeof day.extras.hashtag === "string" ? day.extras.hashtag : null;
+  const mapsEmbedUrl =
+    typeof day.extras.mapsEmbedUrl === "string"
+      ? day.extras.mapsEmbedUrl
+      : `https://maps.google.com/maps?q=${encodeURIComponent(day.address || `${day.venue}, ${day.place}`)}&z=15&output=embed`;
 
   return (
     <div className="overflow-x-clip bg-[var(--w-ink)] text-[var(--w-bg)]" style={themeVars(day.colors)}>
@@ -184,7 +193,16 @@ export function Sage({
       {begun && (
         <>
           <ScrollIntro day={day} veilExtra={veilExtra} />
-          <Grove day={day} gather={gather} coupleSlides={coupleSlides} heroSlides={heroSlides} hashtag={hashtag} live />
+          <Grove
+            day={day}
+            gather={gather}
+            coupleSlides={coupleSlides}
+            heroSlides={heroSlides}
+            album={album}
+            mapsEmbedUrl={mapsEmbedUrl}
+            hashtag={hashtag}
+            live
+          />
         </>
       )}
     </div>
@@ -259,7 +277,7 @@ function introPhotosFor(day: WeddingDay): Photo[] {
     return custom.flatMap((p) => {
       if (!p || typeof p !== "object" || !("src" in p)) return [];
       const photo = p as Photo;
-      return typeof photo.src === "string" ? [photo] : [];
+      return typeof photo.src === "string" && !isVideoPhoto(photo) ? [photo] : [];
     });
   }
   return [
@@ -269,7 +287,7 @@ function introPhotosFor(day: WeddingDay): Photo[] {
     day.images.kiss,
     day.images.dress,
     ...(day.images.more ?? []),
-  ];
+  ].filter((photo) => !isVideoPhoto(photo));
 }
 
 function introScenesFor(day: WeddingDay): IntroScene[] {
@@ -578,6 +596,8 @@ function Grove({
   gather,
   coupleSlides,
   heroSlides,
+  album,
+  mapsEmbedUrl,
   hashtag,
   live,
 }: {
@@ -585,6 +605,8 @@ function Grove({
   gather: { src: string; focus: string; label: string; note: string; contain?: boolean }[];
   coupleSlides: Photo[];
   heroSlides: Photo[];
+  album: Photo[];
+  mapsEmbedUrl: string;
   hashtag: string | null;
   live: boolean;
 }) {
@@ -649,6 +671,35 @@ function Grove({
         </Rise>
       </section>
 
+      <section className="bg-[var(--w-surface)] px-6 py-16 text-[var(--w-ink)] md:px-14">
+        <Rise live={live}>
+          <p className="m-0 text-[0.68rem] tracking-[0.32em] text-[var(--w-accent)] uppercase">Find us</p>
+          <h2 className="sg-unfurl m-0 mt-3 font-[family-name:var(--font-serif)] text-[clamp(2rem,4vw,3rem)] font-medium">{day.venue}</h2>
+          <p className="m-0 mt-2 max-w-xl text-lg text-[color-mix(in_srgb,var(--w-ink)_80%,transparent)]">{day.address}</p>
+          <p className="m-0 mt-1 text-sm tracking-[0.16em] text-[var(--w-accent)] uppercase">{day.place}</p>
+        </Rise>
+        <Rise live={live}>
+          <div className="sg-frame mt-8 overflow-hidden border border-[color-mix(in_srgb,var(--w-accent)_35%,transparent)] bg-[var(--w-bg)]">
+            <iframe
+              title={`Map to ${day.venue}`}
+              src={mapsEmbedUrl}
+              className="block aspect-[16/10] w-full border-0 grayscale-[0.15]"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+          </div>
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(day.address || `${day.venue}, ${day.place}`)}`}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-4 inline-block border border-[color-mix(in_srgb,var(--w-accent)_55%,transparent)] bg-[color-mix(in_srgb,var(--w-accent)_18%,transparent)] px-5 py-3 text-[0.72rem] tracking-[0.22em] text-[var(--w-ink)] uppercase no-underline"
+          >
+            Open directions
+          </a>
+        </Rise>
+      </section>
+
       {gather.map((room, index) => (
         <section key={room.label} className={`relative min-h-[100dvh] overflow-hidden md:min-h-[90vh] ${index % 2 ? "bg-[var(--w-surface)]" : "bg-[var(--w-bg)]"}`}>
           <img
@@ -678,6 +729,47 @@ function Grove({
           </div>
         </section>
       ))}
+
+      <section className="bg-[var(--w-bg)] px-6 py-20 text-[var(--w-ink)] md:px-14">
+        <Rise live={live}>
+          <p className="m-0 text-[0.68rem] tracking-[0.32em] text-[var(--w-accent)] uppercase">The album</p>
+          <h2 className="sg-unfurl m-0 mt-3 font-[family-name:var(--font-serif)] text-[clamp(2rem,4vw,3.2rem)] font-medium">
+            Pictures &amp; short films
+          </h2>
+          <p className="m-0 mt-3 max-w-2xl text-lg text-[color-mix(in_srgb,var(--w-ink)_78%,transparent)]">
+            Wedding moments, candid faces, and a few short clips from the celebration.
+          </p>
+        </Rise>
+        <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
+          {album.map((item, index) => (
+            <Rise
+              key={`${item.src}-${item.focus ?? "c"}-${index}`}
+              live={live}
+              className={isVideoPhoto(item) ? "col-span-full" : undefined}
+            >
+              <div className="sg-frame overflow-hidden bg-[var(--w-surface)]">
+                {isVideoPhoto(item) ? (
+                  <video
+                    src={item.src}
+                    className="mx-auto aspect-[4/5] max-h-[min(92vh,56rem)] w-full object-contain"
+                    controls
+                    playsInline
+                    preload="metadata"
+                    aria-label={item.alt ?? "Wedding video"}
+                  />
+                ) : (
+                  <img
+                    src={item.src}
+                    alt={item.alt ?? ""}
+                    className="sg-photo aspect-[4/5] w-full object-cover"
+                    style={{ objectPosition: item.focus ?? "center" }}
+                  />
+                )}
+              </div>
+            </Rise>
+          ))}
+        </div>
+      </section>
 
       <section className="bg-[var(--w-ink)] px-6 py-20 text-[var(--w-bg)] md:px-14">
         <Rise live={live}>
@@ -719,11 +811,130 @@ function Grove({
           <Reply day={day} />
         </Rise>
       </section>
+
+      <GuestWall day={day} live={live} />
     </div>
   );
 }
 
-function Rise({ live, children }: { live: boolean; children: ReactNode }) {
+type GuestNote = {
+  id: string;
+  name: string;
+  kind: "note" | "prayer" | "wish";
+  message: string;
+  at: string;
+};
+
+function GuestWall({ day, live }: { day: WeddingDay; live: boolean }) {
+  const storageKey = `guest-wall:${day.meta.id}`;
+  const [notes, setNotes] = useState<GuestNote[]>([]);
+  const [sent, setSent] = useState(false);
+
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(storageKey);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as GuestNote[];
+      if (Array.isArray(parsed)) setNotes(parsed);
+    } catch {
+      // ignore bad storage
+    }
+  }, [storageKey]);
+
+  function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const name = String(form.get("name") || "").trim();
+    const rawKind = String(form.get("kind") || "note");
+    const kind: GuestNote["kind"] = rawKind === "prayer" || rawKind === "wish" ? rawKind : "note";
+    const message = String(form.get("message") || "").trim();
+    if (!name || !message) return;
+    const entry: GuestNote = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      name,
+      kind,
+      message,
+      at: new Date().toISOString(),
+    };
+    const next = [entry, ...notes].slice(0, 60);
+    setNotes(next);
+    setSent(true);
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(next));
+    } catch {
+      // ignore quota errors
+    }
+    event.currentTarget.reset();
+    window.setTimeout(() => setSent(false), 2400);
+  }
+
+  return (
+    <section className="bg-[var(--w-surface)] px-6 py-20 text-[var(--w-ink)] md:px-14">
+      <Rise live={live}>
+        <p className="m-0 text-[0.68rem] tracking-[0.32em] text-[var(--w-accent)] uppercase">Guest wall</p>
+        <h2 className="sg-unfurl m-0 mt-3 font-[family-name:var(--font-serif)] text-[clamp(2rem,4vw,3.2rem)] font-medium">
+          Notes, prayers &amp; wishes
+        </h2>
+        <p className="m-0 mt-3 max-w-2xl text-lg text-[color-mix(in_srgb,var(--w-ink)_78%,transparent)]">
+          Leave a few words for {day.first} and {day.second}. Your message stays on this device for now.
+        </p>
+      </Rise>
+      <div className="mt-10 grid gap-10 md:grid-cols-[0.95fr_1.05fr] md:items-start">
+        <Rise live={live}>
+          <form className="grid max-w-md gap-3" onSubmit={submit}>
+            <label className="grid gap-1 text-sm">
+              Your name
+              <input name="name" required placeholder="Your name" className="min-h-12 border border-[color-mix(in_srgb,var(--w-accent)_40%,transparent)] bg-transparent px-3 text-base" />
+            </label>
+            <label className="grid gap-1 text-sm">
+              Kind of message
+              <select name="kind" defaultValue="wish" className="min-h-12 border border-[color-mix(in_srgb,var(--w-accent)_40%,transparent)] bg-[var(--w-bg)] px-3 text-base text-[var(--w-ink)]">
+                <option value="wish">A wish</option>
+                <option value="prayer">A prayer</option>
+                <option value="note">A note</option>
+              </select>
+            </label>
+            <label className="grid gap-1 text-sm">
+              Your message
+              <textarea name="message" required rows={4} placeholder="Write from the heart" className="border border-[color-mix(in_srgb,var(--w-accent)_40%,transparent)] bg-transparent px-3 py-2 text-base" />
+            </label>
+            <button type="submit" className="min-h-12 cursor-pointer border-0 bg-[var(--w-accent)] px-5 text-base text-[var(--w-on-accent)]">
+              Leave it on the wall
+            </button>
+            {sent ? <p className="m-0 text-sm tracking-[0.14em] text-[var(--w-accent)] uppercase">Thank you — it is on the wall.</p> : null}
+          </form>
+        </Rise>
+        <Rise live={live}>
+          <ul className="m-0 grid list-none gap-4 p-0">
+            {notes.length === 0 ? (
+              <li className="border border-[color-mix(in_srgb,var(--w-accent)_25%,transparent)] bg-[var(--w-bg)] px-5 py-6 text-[color-mix(in_srgb,var(--w-ink)_75%,transparent)]">
+                Be the first to leave a wish.
+              </li>
+            ) : (
+              notes.map((note) => (
+                <li key={note.id} className="border border-[color-mix(in_srgb,var(--w-accent)_25%,transparent)] bg-[var(--w-bg)] px-5 py-5">
+                  <p className="m-0 text-[0.62rem] tracking-[0.22em] text-[var(--w-accent)] uppercase">{note.kind}</p>
+                  <p className="m-0 mt-2 font-[family-name:var(--font-serif)] text-xl leading-snug">{note.message}</p>
+                  <p className="m-0 mt-3 text-sm text-[color-mix(in_srgb,var(--w-ink)_70%,transparent)]">— {note.name}</p>
+                </li>
+              ))
+            )}
+          </ul>
+        </Rise>
+      </div>
+    </section>
+  );
+}
+
+function Rise({
+  live,
+  children,
+  className = "",
+}: {
+  live: boolean;
+  children: ReactNode;
+  className?: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [on, setOn] = useState(false);
   useEffect(() => {
@@ -740,7 +951,11 @@ function Rise({ live, children }: { live: boolean; children: ReactNode }) {
     observer.observe(node);
     return () => observer.disconnect();
   }, [live]);
-  return <div ref={ref} className={`sg-rise min-w-0 ${on ? "is-in" : ""}`}>{children}</div>;
+  return (
+    <div ref={ref} className={`sg-rise min-w-0 ${on ? "is-in" : ""} ${className}`.trim()}>
+      {children}
+    </div>
+  );
 }
 
 function Reply({ day }: { day: WeddingDay }) {
